@@ -1,5 +1,7 @@
 # Stony Brook Sim
 
+Firebase: https://stony-brook-sim.firebaseapp.com/
+
 Description coming soon!
 
 ## Project Members
