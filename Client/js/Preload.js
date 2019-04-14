@@ -21,7 +21,7 @@ TopDownGame.Preload.prototype = {
     this.load.spritesheet('playerLeft', 'assets/images/lookingleft.png', 128, 128, 2);
     this.load.spritesheet('playerDown', 'assets/images/lookingdown.png', 128, 128, 2);
     this.load.image('browndoor', 'assets/images/browndoor.png');
-    
+    this.load.image('mini_map', 'assets/images/mini_map.png');
   },
   create: function() {
     this.state.start('Game');

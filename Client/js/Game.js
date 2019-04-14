@@ -19,6 +19,7 @@ TopDownGame.Game.prototype = {
 
     //resizes the game world to match the layer dimensions
     this.backgroundlayer.resizeWorld();
+    //this.blockedLayer.resizeWorld();  
 
     this.createItems();
     this.createDoors();    
@@ -33,7 +34,8 @@ TopDownGame.Game.prototype = {
     //this.player.animations.add('walkingRight');
     //this.player.animations.add('walkingRight', Phaser.Animation.generateFrameNames('lookingright.png', 0, 1), 10, true);
     this.game.physics.arcade.enable(this.player);
-
+    //this.gameObjects = this.map.objects['objectsLayer'];
+    //console.log(this.gameObjects);
     //the camera will follow the player in the world
     this.game.camera.follow(this.player);
 
@@ -66,7 +68,9 @@ TopDownGame.Game.prototype = {
     // console.log(this.blockedLayer.layer.data);
     //this.blockedLayer.layer.data
     this.traversalPosition = 0;
-    this.traversalGroup = new Array()
+    this.traversalGroup = new Array();
+
+    //this.createMiniMap();
   },
   promptPosition: function() {
     let response = prompt("Please enter coordinates to go to, comma delimited; x,y:", "1,1");
@@ -354,5 +358,83 @@ TopDownGame.Game.prototype = {
       }
     }
     return new Graph(binaryGraph);
+  },
+  updateUnitDots: function(unitDots) {
+    console.log("updatingunitdots");
+    unitDots.clear();
+    this.gameObjects.forEach(function(object) {        
+      var unitMiniX = object.x * this.renderTexture.resolution;
+      var unitMiniY = object.y * this.renderTexture.resolution;
+      var objectType = object.type;
+      console.log(objectType);
+      if (objectType == 'tilelayer' || objectType == 'building' || objectType == 'wall') {            
+        if (playerColors[object.player - 2] == undefined) {                
+            // player 1                
+          var color = '0x1331a1';
+        } else {                
+          var color = playerColors[object.player - 2].color;
+        }            
+        unitDots.beginFill(color);
+        if (objectType == 'building') {                
+          unitDots.drawRect(unitMiniX, unitMiniY, 5, 5);
+        } else {                
+          unitDots.drawEllipse(unitMiniX, unitMiniY, 1.5, 1.5);
+        }        
+      } else if (objectType == 'plant') { 
+        // tree            
+        unitDots.beginFill(0x2A4B17);
+        unitDots.drawEllipse(unitMiniX, unitMiniY, 2, 2);
+      } else {            
+        var color = '0x666666';
+        // gray            
+        unitDots.beginFill(color);
+        unitDots.drawRect(unitMiniX, unitMiniY, 5, 5);
+      }
+    });
+    let temp = this;
+    setTimeout(function(){ temp.updateUnitDots(unitDots) }, 10000);
+  },
+  createMiniMap: function() {
+    miniMapContainer = this.game.add.group();
+    let gameSize = (this.game.world.width / 100);
+    resolution = 2 / gameSize;
+    var renderWH;
+    if (this.game.world.width > 8000) {        
+      renderWH = 8000;
+    } else {        
+      renderWH = this.game.world.width;
+    }    
+    renderTexture = this.game.add.renderTexture(renderWH, renderWH);
+    renderTexture.resolution = resolution;
+    var cropRect = new Phaser.Rectangle(0, 0, 200, 200);
+    renderTexture.crop = cropRect;
+    var miniMapY = this.game.camera.view.height - (this.game.world.height * resolution);
+    var miniMapUI = this.game.add.image(0, 0, 'mini_map');
+    renderTexture.trueWidth = renderTexture.resolution * this.game.world.width;
+    renderTexture.trueHeight = renderTexture.resolution * this.game.world.height;
+    var cropRect = new Phaser.Rectangle(0, 0, renderTexture.trueWidth, renderTexture.trueHeight);
+    renderTexture.crop = cropRect;
+    var miniWidth = .075 * renderTexture.trueWidth;
+    var miniHeight = miniMapY - (.06 * renderTexture.trueHeight);
+    miniMap = this.game.add.sprite(miniWidth, miniHeight, renderTexture);
+    var padding = .241 * renderTexture.trueHeight;
+    miniMapUI.width = (renderTexture.trueWidth + padding);
+    miniMapUI.height = (renderTexture.trueHeight + padding);
+    miniMapUI.y = this.game.camera.view.height - miniMapUI.height;
+    miniMapUI.fixedToCamera = true;
+    miniMap.fixedToCamera = true;
+    viewRect = this.game.add.graphics(0, 0);
+    viewRect.lineStyle(1, 0xFFFFFF);
+    viewRect.drawRect(miniMap.x, miniMap.y, this.game.camera.view.width * resolution, this.game.camera.view.height * resolution);
+    let unitDots = this.game.add.graphics(miniMap.x, miniMap.y);
+    unitDots.fixedToCamera = true;
+    var bg = this.game.add.graphics(0, 0);
+    bg.beginFill(0x000000, 1);
+    bg.drawRect(0, miniMapUI.y + (miniMapUI.height * .1), miniMapUI.width * .95, miniMapUI.height * .9);
+    bg.fixedToCamera = true;
+    var children = [bg, miniMap, unitDots, viewRect, miniMapUI];
+    miniMapContainer.addMultiple(children);
+    let temp = this;
+    setTimeout(function(){ temp.updateUnitDots(unitDots) }, 10000);
   },
 };
