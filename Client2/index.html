@@ -4,38 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>University Simulator</title>
+    <title>University Simulator - Login</title>
 
     <style>
-      ::placeholder {
-        color: black;
-      }
-
-      #game-container {
-        margin: 0;
-        padding: 0;
-      }
-      
-      #game-container {
-        width: 100vw;
-        height: 100vh;
-        position: fixed;
-        top: 10px;
-        left: 10px;
-      }
-
-      #chat-box {
-        position: fixed;
-        bottom: 70px;
-        left: 20px;
-        width: 500px;
-        height: 30px;
-        font-size: 100%;
-        background-color: rgba(255, 255, 255, 0.4);
-        border: 1px solid black;
-        display: none;
-      }
-
       #player-stats {
         position: fixed;
         bottom: 10px;
@@ -51,16 +22,24 @@
   </head>
 
   <body>
-    <div id="player-stats">
-      <table style='width:100%'>
-        <tr><td id='player-name'>Ilan Kleiman</td><td id='player-idn'>ID: 110942711</td><td id='player-year'>Year: Junior</td></tr>
-        <tr><td>University Simulator</td><td id='player-credits'>Credits: 107/120</td><td id='player-cash'>$5,900</td></tr>
-      </table>
-    </div>
-    <div id="game-container"></div>
-    <input type="text" placeholder=" Chat with the world!" id="chat-box"/>
+    <center>
+      <h3>Login</h3>
+      <input type='text' placeholder='username' id='username'/>
+      <br>
+      <input type='password' placeholder='password' id='password'/>
+      <br>
+      <button type='button' onClick='login()'>Login</button>
+    </center>
+    <script type='text/javascript'>
+      function login() {
+        $.getJSON("../CServer/index.php?method=get_user&username=" + $("#username").val(), function(data) {
+          localStorage.setItem("player", JSON.stringify(data));
+          window.location = "player.html";
+        }).fail(() => {
+          alert("Invalid login");
+        });
+      }
+    </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="//cdn.jsdelivr.net/npm/phaser@3.16.2/dist/phaser.js"></script>
-    <script src="./js/index.js" type="module"></script>
   </body>
 </html>

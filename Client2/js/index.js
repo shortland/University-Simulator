@@ -26,10 +26,10 @@ let showDebug = true;
 
 var some;
 var aboveLayer;
-var doors;
-var items;
+var act;
 var map;
 var speed = 200;
+var collidedInteractable = false;
 
 function preload() {
   this.load.image("tiles", "assets/tilesets/SBU.png");
@@ -62,8 +62,8 @@ function create() {
   const belowLayer = map.createStaticLayer("Below Player", [tileset, tileset2, tileset3, tileset4], 0, 0);
   const worldLayer = map.createStaticLayer("World", [tileset, tileset2, tileset3, tileset4], 0, 0);
   aboveLayer = map.createStaticLayer("Above Player", [tileset, tileset2, tileset3, tileset4], 0, 0);
-  const interactableLayer = map.createStaticLayer("Interactables", tileset3, 0, 0);
-  const dynamicLayer = map.createBlankDynamicLayer("DynamicItems", tileset3, 0, 0);
+  const interactableLayer = map.createStaticLayer("Interactables", [tileset3, tileset4], 0, 0);
+  const dynamicLayer = map.createBlankDynamicLayer("DynamicItems", tileset4, 0, 0);
 
   belowLayer2.setScale( 0.25 );
   belowLayer.setScale( 0.25 );
@@ -72,36 +72,29 @@ function create() {
   dynamicLayer.setScale( 0.25 );
   interactableLayer.setScale( 0.25 );
 
-  var SOME_INDEX = 135; // chest icon index
-  // for (let i = 0; i < 100; ++i) { // put chests places
-  //   dynamicLayer.putTileAt(SOME_INDEX, i, i);
-  // }
-
   // set collisions with player and world tiles
+  interactableLayer.setCollisionBetween(1, 10000, true, 'Interactables');
   worldLayer.setCollisionBetween(1, 10000, true, 'World');
-  
-  interactableLayer.setTileIndexCallback(SOME_INDEX, function(evt) {
-    console.log("collided with thing");
-    console.log(evt);
-    // if (!collidedInteractable) {
-    //   handlePlayerInteractable();
-    // }
-  });
-  // dynamicLayer.setTileIndexCallback(SOME_INDEX, () => {
-  //   console.log("collided with thing");
-  // });
+  act = this;
 
-  // By default, everything gets depth sorted on the screen in the order we created things. Here, we
-  // want the "Above Player" layer to sit on top of the player, so we explicitly give it a depth.
-  // Higher depths will sit on top of lower depth objects.
+  /**
+   * INTERACTIONS WITH TILES
+   */
+  
+  // doors! // 195 is invisible doormat
+  interactableLayer.setTileIndexCallback([193, 194, 195], () => {
+    tileInteraction("door");
+  });
+
+  // crappy chest credit
+  interactableLayer.setTileIndexCallback(135, () => {
+    tileInteraction("cashForCredit");
+  });
+
   aboveLayer.setDepth(10);
 
-  // Object layers in Tiled let you embed extra info into a map - like a spawn point or custom
-  // collision shapes. In the tmx file, there's an object layer with a point named "Spawn Point"
   const spawnPoint = map.findObject("Objects", obj => obj.name === "Spawn Point");
 
-  // Create a sprite with physics enabled via the physics system. The image used for the sprite has
-  // a bit of whitespace, so I'm using setSize & setOffset to control the size of the player's body.
   player = this.physics.add
     .sprite(spawnPoint.x, spawnPoint.y, "atlas", "misa-front")
     .setSize(30, 40)
@@ -165,23 +158,7 @@ function create() {
   const camera = this.cameras.main;
   camera.startFollow(player);
   camera.setBounds(0, 0, 3200, 3200);
-  //camera.zoom = 2;
-
   cursors = this.input.keyboard.createCursorKeys();
-
-  // /**
-  //  * Create graphics
-  //  */
-  // const graphics = this.add.graphics({ fillStyle: { color: 0x0000ff } })
-  // .setDepth(33);
-
-  // Help text that has a "fixed" position on the screen
-  // let helpTip = new ToolTip({
-  //   game: this,
-  //   text: "Arrow keys to move\nShift+Arrow keys to view map\n[Click to close]",
-  //   align: "center",
-  //   clickDestroy: true
-  // });
 
   let helpMenuTitle = new ToolTip({
     game: this,
@@ -235,6 +212,10 @@ function create() {
     }
   });
 
+  this.input.keyboard.on("keydown-" + "P", event => {
+    alert("Not yet implemented");
+  });
+
   $("#chat-box").on("keydown", function (e) {
     if (
       e.keyCode == 72 || // h
@@ -257,6 +238,7 @@ function create() {
       }
       if (e.keyCode == 13) {
         console.log($("#chat-box").val());
+        alert("Not yet implemented!");
         $("#chat-box").hide();
         $("#chat-box").val("");
         $("#chat-box").blur();
@@ -324,54 +306,40 @@ function update(time, delta) {
   }
 }
 
-function findObjectsByName(name, map, layer) {
-  var result = new Array();
-  map.objects[layer].objects.forEach(function(element){
-    if(element.name === name) {
-      //Phaser uses top left, Tiled bottom left so we have to adjust
-      //also keep in mind that the cup images are a bit smaller than the tile which is 16x16
-      //so they might not be placed in the exact position as in Tiled
-      element.y -= map.tileHeight;
-      result.push(element);
-    }      
-  });
-  return result;
-}
-//create a sprite from an object
-function createFromTiledObject(element, type, group) {
-  console.log(element,type,group);
-  var sprite = group.create(element.x, element.y, element.properties.sprite);
+function tileInteraction(itemType) {
+  let message;
+  if (itemType == "door") {
+    message = "Enter building?<br><br>[Y] Yes &nbsp;&nbsp;&nbsp;&nbsp; [N] No";
+  } else if (itemType == "cashForCredit") {
+    message = "Buy 1 credit for $200?<br><br>[Y] Yes &nbsp;&nbsp;&nbsp;&nbsp; [N] No";
+  } else {
+    message = "UNKNOWN INTERACTION @function tileInteract(itemType):";
+  }
 
-    //copy all properties to the sprite
-    Object.keys(element.properties).forEach(function(key){
-      sprite[key] = element.properties[key];
-    });
-}
 
-function createItems() {
-  //create items
-  items = some.add.group();
-  items.enableBody = true;
-  var item;    
-  let result = findObjectsByName('item', map, 0);
-  result.forEach(function(element){
-    createFromTiledObject(element, 'item', items);
-  }, this);
-}
+  if (!collidedInteractable) {
+    if ($("#prompt").is(":visible")) {
+      collidedInteractable = true;
+    } else {
+      $("#prompt").show();
+      collidedInteractable = true;
+      $("#prompt").html(
+        "<center>"+message+"</center>"
+      );
 
-function createDoors() {
-  //create doors
-  doors = some.add.group();
-  doors.enableBody = true;
-  let result = [];
-  result.push(findObjectsByName('freydoor1', map, 0));
-  result.push(findObjectsByName('freydoor2', map, 0));
-  result.push(findObjectsByName('libdoor1', map, 0));
-  result.push(findObjectsByName('libdoor2', map, 0));
-  result.push(findObjectsByName('sacdoor1', map, 0));
-  result.push(findObjectsByName('sacdoor2', map, 0));
-
-  result.forEach(function(element){
-    createFromTiledObject(element, 'door', doors);
-  }, this);
+      act.input.keyboard.on("keydown-" + "Y", event => {
+        console.log("interact thing");
+        $("#prompt").hide();
+        collidedInteractable = false;
+        return;
+      });
+    
+      act.input.keyboard.on("keydown-" + "N", event => {
+        console.log("dont interact thing");
+        $("#prompt").hide();
+        collidedInteractable = false;
+        return;
+      });
+    }
+  }
 }

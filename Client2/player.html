@@ -4,42 +4,93 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>University Simulator - Login</title>
+    <title>University Simulator</title>
 
     <style>
+      * {
+        font-family: "Comic Sans MS", cursive, sans-serif;
+        font-weight: bold;
+      }
+
+      ::placeholder {
+        color: black;
+      }
+
+      #game-container {
+        margin: 0;
+        padding: 0;
+      }
+      
+      #game-container {
+        width: 100vw;
+        height: 100vh;
+        position: fixed;
+        top: 10px;
+        left: 10px;
+      }
+
+      #chat-box {
+        position: fixed;
+        bottom: 70px;
+        left: 20px;
+        width: 500px;
+        height: 30px;
+        font-size: 100%;
+        background-color: rgba(255, 255, 255, 0.4);
+        border: 1px solid black;
+        display: none;
+      }
+
       #player-stats {
         position: fixed;
-        bottom: 10px;
+        bottom: 0px;
         left: 10px;
         background-color: rgba(255, 0, 0, 1.0);
         color: rgba(255, 255, 255, 1.0);
         width: 800px;
         height: 55px;
         z-index: 3;
-        font-family: "Comic Sans MS", cursive, sans-serif;
+      }
+
+      #prompt {
+        box-sizing: border-box;
+        padding: 20px;
+        position: fixed;
+        top: 200px;
+        left: 200px;
+        height: 200px;
+        width: 400px;
+        background-color: white;
+        border: 2px solid red;
+        color: black;
+        display: none;
+        z-index: 4;
       }
     </style>
   </head>
 
   <body>
-    <center>
-      <h3>Login</h3>
-      <input type='text' placeholder='username' id='username'/>
-      <br>
-      <input type='password' placeholder='password' id='password'/>
-      <br>
-      <button type='button' onClick='login()'>Login</button>
-    </center>
-    <script type='text/javascript'>
-      function login() {
-        $.getJSON("../CServer/index.php?method=get_user&username=" + $("#username").val(), function(data) {
-          localStorage.setItem("player", JSON.stringify(data));
-          window.location = "player.html";
-        }).fail(() => {
-          alert("Invalid login");
-        });
-      }
-    </script>
+    <div id="prompt"></div>
+    <div id="player-stats">
+      <table style='width:100%'>
+        <tr><td id='player-name'>--- ---</td><td id='player-idn'>ID: ---</td><td id='player-year'>Year: </td></tr>
+        <tr><td>University Simulator</td><td id='player-credits'>Credits: ---/120</td><td id='player-cash'>$ ---</td></tr>
+      </table>
+    </div>
+    <div id="game-container"></div>
+    <input type="text" placeholder=" Chat with the world!" id="chat-box"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/phaser@3.16.2/dist/phaser.js"></script>
+    <script src="./js/index.js" type="module"></script>
+    <script defer type="text/javascript">
+      const player = JSON.parse(localStorage.getItem("player"));
+      $(document).ready(function() {
+        $("#player-name").html(player.name);
+        $("#player-idn").html("ID: "+player.idn);
+        $("#player-year").html("Year: "+player.year);
+        $("#player-credits").html("Credits: "+player.credits + "/120");
+        $("#player-cash").html("$"+player.cash);
+      });
+    </script>
   </body>
 </html>
