@@ -16,10 +16,16 @@
 
     if ($_GET['method'] == 'save_user') {
         try {
-            if (!file_put_contents("users/" . $_GET['username'] . ".json", $_GET['user_data'])) {
+            $jsonData = file_get_contents('php://input');
+            if (!file_put_contents("users/" . $_GET['username'] . ".json", $jsonData)) {
                 echo json_encode([
                     "error" => true,
                     "message" => "error saving user data"
+                ]);
+            } else {
+                echo json_encode([
+                    "status" => "ok",
+                    "message" => "save success"
                 ]);
             }
         } catch(Exception $e) {

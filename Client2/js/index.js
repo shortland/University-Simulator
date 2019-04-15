@@ -80,7 +80,7 @@ function create() {
   /**
    * INTERACTIONS WITH TILES
    */
-  
+
   // doors! // 195 is invisible doormat
   interactableLayer.setTileIndexCallback([193, 194, 195], () => {
     tileInteraction("door");
@@ -173,7 +173,7 @@ function create() {
   let helpMenuLeft = new ToolTip({
     game: this,
     // \nShift+⬅️: Scroll left\nShift+➡️: Scroll right\nShift+⬆️: Scroll up\nShift+⬇️: Scroll down
-    text: "[H] Show/Hide this help menu\n\n⬅️: Move left\n➡️: Move right\n⬆️: Move up\n⬇️: Move down\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n_______________________________",
+    text: "⬅️: Move left\n➡️: Move right\n⬆️: Move up\n⬇️: Move down\n\n[H] Show/hide this help menu\n\n[S] Show all player stats\n\n[Z] Toggle running (devmode)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n_______________________________",
     align: "left",
     clickDestroy: false,
     depth: 100,
@@ -183,7 +183,7 @@ function create() {
   });
   let helpMenuRight = new ToolTip({
     game: this,
-    text: "[P] Turn on/off phone\n[Y] Accept transaction\n[N] Reject transaction\n[I] Open/close inventory\n[Tab] Show online players\n[Esc] Show settings\n[T] Toggle chat\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n_______________________________",
+    text: "[P] Turn on/off phone\n[Y] Accept transaction\n[N] Reject transaction\n[I] Open/close inventory\n[T] Toggle chat\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n_______________________________",
     align: "left",
     clickDestroy: false,
     depth: 100,
@@ -212,7 +212,19 @@ function create() {
     }
   });
 
+  this.input.keyboard.on("keydown-" + "S", event => {
+    if ($("#player-stats-all").is(":visible")) {
+      $("#player-stats-all").hide();
+    } else {
+      $("#player-stats-all").show();
+    }
+  });
+
   this.input.keyboard.on("keydown-" + "P", event => {
+    alert("Not yet implemented");
+  });
+
+  this.input.keyboard.on("keydown-" + "I", event => {
     alert("Not yet implemented");
   });
 
@@ -224,6 +236,8 @@ function create() {
       e.keyCode == 80 || // p 
       e.keyCode == 89 || // y
       e.keyCode == 78 || // n
+      e.keyCode == 83 || // s
+      e.keyCode == 73 || // i
       e.keyCode == 27 || // esc
       e.keyCode == 9 || // tab
       e.keyCode == 13 // enter
@@ -307,39 +321,111 @@ function update(time, delta) {
 }
 
 function tileInteraction(itemType) {
+  if (collidedInteractable) {
+    return; // the menu is open. so don't open new interactions... stop here.
+  }
+
+  console.log("interactions...");
+
+  let player = JSON.parse(localStorage.getItem("player"));
   let message;
+  let cost;
+  let benefit;
   if (itemType == "door") {
     message = "Enter building?<br><br>[Y] Yes &nbsp;&nbsp;&nbsp;&nbsp; [N] No";
   } else if (itemType == "cashForCredit") {
     message = "Buy 1 credit for $200?<br><br>[Y] Yes &nbsp;&nbsp;&nbsp;&nbsp; [N] No";
+    cost = 200; // cash
+    benefit = 1; // credit
   } else {
     message = "UNKNOWN INTERACTION @function tileInteract(itemType):";
   }
 
+  if ($("#prompt").is(":visible")) {
+    collidedInteractable = true;
+  } else {
+    $("#prompt").show();
+    collidedInteractable = true;
+    $("#prompt").html(
+      "<center>"+message+"</center>"
+    );
 
-  if (!collidedInteractable) {
-    if ($("#prompt").is(":visible")) {
-      collidedInteractable = true;
-    } else {
-      $("#prompt").show();
-      collidedInteractable = true;
-      $("#prompt").html(
-        "<center>"+message+"</center>"
-      );
-
-      act.input.keyboard.on("keydown-" + "Y", event => {
-        console.log("interact thing");
-        $("#prompt").hide();
-        collidedInteractable = false;
-        return;
-      });
-    
-      act.input.keyboard.on("keydown-" + "N", event => {
-        console.log("dont interact thing");
-        $("#prompt").hide();
-        collidedInteractable = false;
-        return;
-      });
-    }
+    act.input.keyboard.on("keydown-" + "Y", event => {
+      if (itemType == "cashForCredit") {
+        $("#toastNotification").show();
+        if (player.cash - cost < 0) {
+          $("#toastNotification").html(
+            "<center style='color:red'>Not enough cash!</center>"
+          ).fadeOut(3000);
+        } else {
+          $("#toastNotification").html(
+            "<center style='color:green'>Purchased successfuly!</center>"
+          ).fadeOut(3000);
+          player.cash -= cost;
+          player.credits += benefit;
+          updateStats(player);
+        }
+      } else {
+        console.log("unimplemented process!");
+      }
+      $("#prompt").hide();
+      collidedInteractable = false;
+      return;
+    });
+  
+    act.input.keyboard.on("keydown-" + "N", event => {
+      console.log("dont interact thing");
+      $("#prompt").hide();
+      collidedInteractable = false;
+      return;
+    });
   }
 }
+
+function updateStats(player) {
+  let playerString = JSON.stringify(player);
+  localStorage.setItem("player", playerString);
+
+  $.ajax({
+    url: "../CServer/index.php?method=save_user&username="+encodeURI(player.name),
+    type: 'post',
+    dataType: 'json',
+    contentType: 'application/json',
+    success: function (data) {
+      console.log("success");
+    },
+    data: playerString
+  });
+
+  $("#player-name").html(player.name);
+  $("#player-idn").html("ID: "+player.idn);
+  $("#player-year").html("Year: "+player.year);
+  $("#player-credits").html("Credits: "+player.credits + "/120");
+  $("#player-cash").html("$"+player.cash);
+  player.day = 22;
+  let classes = "";
+  let i = 0;
+  player.classes.forEach(function (value) {
+    if (i == 0) {
+      classes += value;
+    } else {
+      classes += ", " + value;
+    }
+    i++;
+  });
+  $("#player-stats-all").html(
+    "" + player.name + "\n<br>Day [" + player.day + "] - Week ["+ Math.ceil(player.day / 7) +"]<br><hr style='border:1px solid white'>" +
+    "GPA: " + player.gpa + ", " + player.year + "<br>" +
+    "" + player.credits + "/120 Credits <br><hr style='border:1px solid white'>" +
+    "Cash: <b>$" + player.cash + "</b><br>"+
+    "Energy: " + player.sleep + "%<br>"+
+    "Hunger: " + player.hunger + "%<br>"+
+    "Thirst: " + player.thirst + "%<br>"+
+    "Happiness: " + player.happiness + "%<br><hr style='border:1px solid white'>"+
+    "Classes: " + classes
+  );
+}
+
+$(document).ready(function() {
+  updateStats(JSON.parse(localStorage.getItem("player")));
+});

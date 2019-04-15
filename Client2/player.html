@@ -42,14 +42,31 @@
       }
 
       #player-stats {
+        box-sizing: border-box;
         position: fixed;
         bottom: 0px;
         left: 10px;
         background-color: rgba(255, 0, 0, 1.0);
         color: rgba(255, 255, 255, 1.0);
+        border-top: 2px solid white;
         width: 800px;
         height: 55px;
         z-index: 3;
+      }
+
+      #player-stats-all {
+        box-sizing: border-box;
+        position: fixed;
+        top: 20px;
+        left: 600px;
+        background-color: rgba(255, 0, 0, 1.0);
+        color: rgba(255, 255, 255, 1.0);
+        border: 2px solid white;
+        padding: 15px;
+        width: 200px;
+        height: 500px;
+        z-index: 3;
+        display: none;
       }
 
       #prompt {
@@ -66,11 +83,28 @@
         display: none;
         z-index: 4;
       }
+
+      #toastNotification {
+        box-sizing: border-box;
+        padding: 20px;
+        position: fixed;
+        bottom: 100px;
+        left: 200px;
+        height: 70px;
+        width: 400px;
+        background-color: rgba(255, 255, 255, 0.8);
+        border: 2px solid red;
+        color: black;
+        display: none;
+        z-index: 4;
+      }
     </style>
   </head>
 
   <body>
+    <div id="toastNotification"></div>
     <div id="prompt"></div>
+    <div id="player-stats-all"></div>
     <div id="player-stats">
       <table style='width:100%'>
         <tr><td id='player-name'>--- ---</td><td id='player-idn'>ID: ---</td><td id='player-year'>Year: </td></tr>
@@ -82,15 +116,5 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/phaser@3.16.2/dist/phaser.js"></script>
     <script src="./js/index.js" type="module"></script>
-    <script defer type="text/javascript">
-      const player = JSON.parse(localStorage.getItem("player"));
-      $(document).ready(function() {
-        $("#player-name").html(player.name);
-        $("#player-idn").html("ID: "+player.idn);
-        $("#player-year").html("Year: "+player.year);
-        $("#player-credits").html("Credits: "+player.credits + "/120");
-        $("#player-cash").html("$"+player.cash);
-      });
-    </script>
   </body>
 </html>
