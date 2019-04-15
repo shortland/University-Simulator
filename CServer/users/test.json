@@ -1,0 +1,26 @@
+{
+    "name": "Test Test",
+    "idn": "111222333",
+    "cash": "5950",
+    "credits": 107,
+    "sleep": 90,
+    "hunger": 90,
+    "happiness": 90,
+    "thirst": 90,
+    "gpa": 2.59,
+    "classes": [
+        "cse 380",
+        "cse 320",
+        "cse 310",
+        "cse 373"
+    ],
+    "inventory": [
+        "Ice Cream",
+        "Coffee",
+        "Coffee",
+        "Pizza"
+    ],
+    "social": {
+        "followers": 100
+    }
+}

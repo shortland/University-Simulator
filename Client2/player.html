@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>University Simulator - Login</title>
+
+    <style>
+      #player-stats {
+        position: fixed;
+        bottom: 10px;
+        left: 10px;
+        background-color: rgba(255, 0, 0, 1.0);
+        color: rgba(255, 255, 255, 1.0);
+        width: 800px;
+        height: 55px;
+        z-index: 3;
+        font-family: "Comic Sans MS", cursive, sans-serif;
+      }
+    </style>
+  </head>
+
+  <body>
+    <center>
+      <h3>Login</h3>
+      <input type='text' placeholder='username' id='username'/>
+      <br>
+      <input type='password' placeholder='password' id='password'/>
+      <br>
+      <button type='button' onClick='login()'>Login</button>
+    </center>
+    <script type='text/javascript'>
+      function login() {
+        $.getJSON("../CServer/index.php?method=get_user&username=" + $("#username").val(), function(data) {
+          localStorage.setItem("player", JSON.stringify(data));
+          window.location = "player.html";
+        }).fail(() => {
+          alert("Invalid login");
+        });
+      }
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  </body>
+</html>
