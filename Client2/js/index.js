@@ -43,7 +43,7 @@ function preload() {
   //  https://labs.phaser.io/view.html?src=src/animation/texture%20atlas%20animation.js
   // If you don't use an atlas, you can do the same thing with a spritesheet, see:
   //  https://labs.phaser.io/view.html?src=src/animation/single%20sprite%20sheet.js
-  this.load.atlas("atlas", "assets/atlas/atlas.png", "assets/atlas/atlas.json");
+  this.load.atlas("Brown", "assets/atlas/Brown.png", "assets/atlas/Brown.json");
 }
 
 function create() {
@@ -96,11 +96,11 @@ function create() {
   const spawnPoint = map.findObject("Objects", obj => obj.name === "Spawn Point");
 
   player = this.physics.add
-    .sprite(spawnPoint.x, spawnPoint.y, "atlas", "misa-front")
+    .sprite(spawnPoint.x, spawnPoint.y, "Brown", "Brown-Standing.000")
     .setSize(30, 40)
-    .setOffset(0, 30);
+    .setOffset(49, 24); // x then y
   
-  player.setScale( .5 );
+  player.setScale( 0.8 );
 
   // Watch the player and worldLayer for collisions, for the duration of the scene:
   this.physics.add.collider(player, worldLayer);
@@ -111,9 +111,9 @@ function create() {
   // animation manager so any sprite can access them.
   const anims = this.anims;
   anims.create({
-    key: "misa-left-walk",
-    frames: anims.generateFrameNames("atlas", {
-      prefix: "misa-left-walk.",
+    key: "Brown-Walking-Left",
+    frames: anims.generateFrameNames("Brown", {
+      prefix: "Brown-Walking-Left.",
       start: 0,
       end: 3,
       zeroPad: 3
@@ -122,9 +122,9 @@ function create() {
     repeat: -1
   });
   anims.create({
-    key: "misa-right-walk",
-    frames: anims.generateFrameNames("atlas", {
-      prefix: "misa-right-walk.",
+    key: "Brown-Walking-Right",
+    frames: anims.generateFrameNames("Brown", {
+      prefix: "Brown-Walking-Right.",
       start: 0,
       end: 3,
       zeroPad: 3
@@ -133,9 +133,9 @@ function create() {
     repeat: -1
   });
   anims.create({
-    key: "misa-front-walk",
-    frames: anims.generateFrameNames("atlas", {
-      prefix: "misa-front-walk.",
+    key: "Brown-Walking-Up",
+    frames: anims.generateFrameNames("Brown", {
+      prefix: "Brown-Walking-Up.",
       start: 0,
       end: 3,
       zeroPad: 3
@@ -144,9 +144,9 @@ function create() {
     repeat: -1
   });
   anims.create({
-    key: "misa-back-walk",
-    frames: anims.generateFrameNames("atlas", {
-      prefix: "misa-back-walk.",
+    key: "Brown-Walking-Down",
+    frames: anims.generateFrameNames("Brown", {
+      prefix: "Brown-Walking-Down.",
       start: 0,
       end: 3,
       zeroPad: 3
@@ -302,21 +302,21 @@ function update(time, delta) {
 
   // Update the animation last and give left/right animations precedence over up/down animations
   if (cursors.left.isDown) {
-    player.anims.play("misa-left-walk", true);
+    player.anims.play("Brown-Walking-Left", true);
   } else if (cursors.right.isDown) {
-    player.anims.play("misa-right-walk", true);
+    player.anims.play("Brown-Walking-Right", true);
   } else if (cursors.up.isDown) {
-    player.anims.play("misa-back-walk", true);
+    player.anims.play("Brown-Walking-Up", true);
   } else if (cursors.down.isDown) {
-    player.anims.play("misa-front-walk", true);
+    player.anims.play("Brown-Walking-Down", true);
   } else {
     player.anims.stop();
 
     // If we were moving, pick and idle frame to use
-    if (prevVelocity.x < 0) player.setTexture("atlas", "misa-left");
-    else if (prevVelocity.x > 0) player.setTexture("atlas", "misa-right");
-    else if (prevVelocity.y < 0) player.setTexture("atlas", "misa-back");
-    else if (prevVelocity.y > 0) player.setTexture("atlas", "misa-front");
+    if (prevVelocity.x < 0) player.setTexture("Brown", "Brown-Walking-Left.000");
+    else if (prevVelocity.x > 0) player.setTexture("Brown", "Brown-Walking-Right.000");
+    else if (prevVelocity.y < 0) player.setTexture("Brown", "Brown-Walking-Up.000");
+    else if (prevVelocity.y > 0) player.setTexture("Brown", "Brown-Walking-Down.000");
   }
 }
 
@@ -422,7 +422,7 @@ function updateStats(player) {
     "Hunger: " + player.hunger + "%<br>"+
     "Thirst: " + player.thirst + "%<br>"+
     "Happiness: " + player.happiness + "%<br><hr style='border:1px solid white'>"+
-    "Classes: " + classes
+    "Classes: " + classes + "<br><hr style='border:1px solid white'>"
   );
 }
 
