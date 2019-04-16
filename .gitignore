@@ -1,9 +1,0 @@
-vendor/
-logs/
-tests/
-templates/
-# composer files
-composer.json
-composer.lock
-docker-compose.yml
-phpunit.xml

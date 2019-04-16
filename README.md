@@ -1,8 +1,10 @@
 # Stony Brook Sim
 
+View our firebase site to read about the game.
+
 Firebase: https://stony-brook-sim.firebaseapp.com/
 
-Description coming soon!
+Game: http://138.197.50.244/StonyBrookSimu/Client2/index.html
 
 ## Project Members
 
