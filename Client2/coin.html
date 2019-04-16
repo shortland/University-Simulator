@@ -23,18 +23,18 @@
 <body>
 <div id="countdown">9 seconds remaining</div>
 <script type="text/javascript">
+var game = new Phaser.Game(800, 640, Phaser.AUTO, '', { preload: preload, create: create, update: update });
 
 var timeleft = 8;
 var downloadTimer = setInterval(function(){
   document.getElementById("countdown").innerHTML = timeleft + " seconds remaining";
   timeleft -= 1;
-  if(timeleft <= 0){
+  if (timeleft <= 0){
     clearInterval(downloadTimer);
-    document.getElementById("countdown").innerHTML = "Game over!";
+    document.getElementById("countdown").innerHTML = "Time's up!";
+    game.destroy();
   }
 }, 1000);
-
-var game = new Phaser.Game(1920, 640, Phaser.AUTO, '', { preload: preload, create: create, update: update });
 
 function preload() {
 
@@ -110,8 +110,9 @@ function create() {
 
     scoreText = game.add.text(12, 12, 'Score: 0', { fontSize: '24px', fill: '#000' });
 
+    game.camera.follow(player);
+
     cursors = game.input.keyboard.createCursorKeys();
-    
 }
 
 function update() {

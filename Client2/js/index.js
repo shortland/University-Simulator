@@ -40,12 +40,6 @@ function preload() {
   this.load.image("beds", "assets/tilesets/Beds.png");
   this.load.image("foods", "assets/tilesets/food.png");
   this.load.tilemapTiledJSON("map", "assets/tilemaps/mainMap.json");
-
-  // An atlas is a way to pack multiple images together into one texture. I'm using it to load all
-  // the player animations (walking left, walking right, etc.) in one image. For more info see:
-  //  https://labs.phaser.io/view.html?src=src/animation/texture%20atlas%20animation.js
-  // If you don't use an atlas, you can do the same thing with a spritesheet, see:
-  //  https://labs.phaser.io/view.html?src=src/animation/single%20sprite%20sheet.js
   this.load.atlas("Brown", "assets/atlas/Brown.png", "assets/atlas/Brown.json");
 }
 
@@ -53,8 +47,6 @@ function create() {
   some = this;
   map = this.make.tilemap({ key: "map" });
 
-  // Parameters are the name you gave the tileset in Tiled and then the key of the tileset image in
-  // Phaser's cache (i.e. the name you used in preload)
   const tileset = map.addTilesetImage("SBU", "tiles");
   const tileset2 = map.addTilesetImage("SBU RD (1)", "tiles2");
   const tileset3 = map.addTilesetImage("Maze Tile", "tiles3");
@@ -86,33 +78,9 @@ function create() {
 
   /**
    * INTERACTIONS WITH TILES
+   * 
+   * Welcoming signs 198 [42 long]
    */
-
-  // let doors = [
-  //   "door-west",
-  //   "door-east",
-  //   "door-roth",
-  //   "door-javitz",
-  //   "door-new-cs",
-  //   "door-the-sac",
-  //   "door-humanities",
-  //   "door-rec-center",
-  //   "door-staller",
-  //   "door-wang",
-  //   "door-library",
-  //   "door-frey-hall",
-  //   "door-chemistry",
-  //   "door-physics",
-  //   "door-ess",
-  //   "door-engineering",
-  //   "door-light-engineering",
-  //   "door-heavy-engineering",
-  //   "door-harriman-hall",
-  //   "door-psychology"
-  // ];
-
-  // welcoming signs 198 [42 long]
-  //let signsArr = Array.from({length: 42}, (v, k) => k+198); 
   interactableLayer.setTileIndexCallback([198], () => {
     tileInteraction("sign-west");
   });
@@ -251,13 +219,12 @@ function create() {
 
   player = this.physics.add
     .sprite(spawnPoint.x, spawnPoint.y, "Brown", "Brown-Standing.000")
-    .setSize(30, 40)
-    .setOffset(49, 24); // x then y
+    .setSize(30, 20)
+    .setOffset(49, 44); // x then y
   player.setScale( 0.8 );
 
   // Watch the player and worldLayer for collisions, for the duration of the scene:
   this.physics.add.collider(player, worldLayer);
-  //this.physics.add.collider(player, dynamicLayer);
   this.physics.add.collider(player, interactableLayer);
 
   // Create the player's walking animations from the texture atlas. These are stored in the global
@@ -402,11 +369,29 @@ function create() {
   });
 
   this.input.keyboard.on("keydown-" + "P", event => {
-    alert("Not yet implemented");
+    if ($("#player-phone").is(":visible")) {
+      $("#player-phone").hide();
+    } else {
+      $("#player-phone").show();
+    }
   });
 
   this.input.keyboard.on("keydown-" + "I", event => {
     alert("Not yet implemented");
+  });
+
+  // Debug graphics
+  this.input.keyboard.once("keydown_D", event => {
+    this.physics.world.createDebugGraphic();
+    const graphics = this.add
+      .graphics()
+      .setAlpha(0.75)
+      .setDepth(20);
+    interactableLayer.renderDebug(graphics, {
+      tileColor: null,
+      collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
+      faceColor: new Phaser.Display.Color(40, 39, 37, 255)
+    });
   });
 
   $("#chat-box").on("keydown", function (e) {
@@ -591,7 +576,7 @@ function tileInteraction(itemType) {
       "<center>"+message+"</center>"
     );
 
-    act.input.keyboard.on("keydown-" + "Y", event => {
+    act.input.keyboard.once("keydown-" + "Y", event => {
       if (itemType == "cashForCredit") {
         $("#toastNotification").show();
         if (player.cash - cost < 0) {
@@ -612,19 +597,16 @@ function tileInteraction(itemType) {
       }
       $("#prompt").hide();
       collidedInteractable = false;
+      delete act.input.keyboard._events['keydown-N']
       return;
     });
   
-    act.input.keyboard.on("keydown-" + "N", event => {
+    act.input.keyboard.once("keydown-" + "N", event => {
       console.log("dont interact thing");
       $("#prompt").hide();
       collidedInteractable = false;
+      delete act.input.keyboard._events['keydown-Y']
       return;
-    });
-
-    act.input.keyboard.on("keydown-" + "Y", event => {
-    });
-    act.input.keyboard.on("keydown-" + "N", event => {
     });
   }
 }
