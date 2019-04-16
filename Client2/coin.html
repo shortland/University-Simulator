@@ -1,0 +1,158 @@
+<!doctype html> 
+<html lang="en"> 
+<head> 
+	<meta charset="UTF-8" />
+    <title>Coin Game</title>
+    <script src="//cdn.jsdelivr.net/phaser/2.2.2/phaser.min.js"></script>
+    <style type="text/css">
+        * {
+            font-family: "Comic Sans MS", cursive, sans-serif;
+            font-weight: bold;
+        }
+        body {
+            margin: 0;
+        }
+        #countdown {
+            position: fixed;
+            top: 50px;
+            left: 20px;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+<div id="countdown">9 seconds remaining</div>
+<script type="text/javascript">
+
+var timeleft = 8;
+var downloadTimer = setInterval(function(){
+  document.getElementById("countdown").innerHTML = timeleft + " seconds remaining";
+  timeleft -= 1;
+  if(timeleft <= 0){
+    clearInterval(downloadTimer);
+    document.getElementById("countdown").innerHTML = "Game over!";
+  }
+}, 1000);
+
+var game = new Phaser.Game(1920, 640, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+
+function preload() {
+
+    game.load.image('background', 'coin_assets/background.png');
+    game.load.image('ground', 'coin_assets/platform.png');
+    game.load.image('coin', 'coin_assets/coin.png');
+    game.load.spritesheet('player', 'coin_assets/dude1.png', 32, 70);
+
+}
+
+var player;
+var platforms;
+var cursors;
+
+var coins;
+var score = 0;
+var scoreText;
+
+function create() {
+
+    game.physics.startSystem(Phaser.Physics.ARCADE);
+
+    game.add.sprite(0, 0, 'background');
+
+    platforms = game.add.group();
+
+    platforms.enableBody = true;
+
+    var ground = platforms.create(0, game.world.height - 64, 'ground');
+    ground.scale.setTo(4.8, 2);
+
+    ground.body.immovable = true;
+
+    var platform = platforms.create(400, 400, 'ground');
+    platform.body.immovable = true;
+
+    platform = platforms.create(-150, 300, 'ground');
+    platform.body.immovable = true;
+
+    platform = platforms.create(900, 300, 'ground');
+    platform.body.immovable = true;
+
+    platform = platforms.create(1200, 500, 'ground');
+    platform.body.immovable = true;
+
+    platform = platforms.create(400, 100, 'ground');
+    platform.body.immovable = true;
+
+    player = game.add.sprite(32, game.world.height - 150, 'player');
+
+    game.physics.arcade.enable(player);
+
+    player.body.bounce.y = 0.1;
+    player.body.gravity.y = 300;
+    player.body.collideWorldBounds = true;
+
+    player.animations.add('right', [10, 11, 12, 13, 14], 10, true);
+    player.animations.add('left', [15, 16, 17, 18, 19], 10, true);
+    player.animations.add('idle', [0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4], 4, true);
+    player.animations.add('jumpLeft', [30, 31, 32, 33, 34], 10, true);
+    player.animations.add('jumpRight', [25, 26, 27, 28, 29], 10, true);
+
+    coins = game.add.group();
+
+    coins.enableBody = true;
+
+    for (var i = 0; i < 25; i++)
+    {
+        var coin = coins.create(i * 70, 0, 'coin');
+        coin.body.gravity.y = 300;
+        coin.body.bounce.y = 0.2 + Math.random() * 0.2;
+    }
+
+    scoreText = game.add.text(12, 12, 'Score: 0', { fontSize: '24px', fill: '#000' });
+
+    cursors = game.input.keyboard.createCursorKeys();
+    
+}
+
+function update() {
+
+    var hitPlatform = game.physics.arcade.collide(player, platforms);
+    game.physics.arcade.collide(coins, platforms);
+
+    game.physics.arcade.overlap(player, coins, collectStar, null, this);
+    player.body.velocity.x = 0;
+
+    if (cursors.left.isDown)
+    {
+        player.body.velocity.x = -150;
+
+        player.animations.play('left');
+    }
+    else if (cursors.right.isDown)
+    {
+        player.body.velocity.x = 150;
+
+        player.animations.play('right');
+    }
+    else
+    {
+        player.animations.play('idle');
+    }
+    if (cursors.up.isDown && player.body.touching.down && hitPlatform)
+    {
+        player.body.velocity.y = -350;
+        
+    }
+}
+
+function collectStar (player, coin) {
+    coin.kill();
+    score += 10;
+    scoreText.text = 'Score: ' + score;
+    localStorage.setItem('coin_win', score);
+}
+
+</script>
+
+</body>
+</html>

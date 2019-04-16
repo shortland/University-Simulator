@@ -36,6 +36,9 @@ function preload() {
   this.load.image("tiles2", "assets/tilesets/SBU RD (1).png");
   this.load.image("tiles3", "assets/tilesets/Maze Tile.png");
   this.load.image("tiles4", "assets/tilesets/SBU house .png");
+  this.load.image("signs", "assets/tilesets/signs.png");
+  this.load.image("beds", "assets/tilesets/Beds.png");
+  this.load.image("foods", "assets/tilesets/food.png");
   this.load.tilemapTiledJSON("map", "assets/tilemaps/mainMap.json");
 
   // An atlas is a way to pack multiple images together into one texture. I'm using it to load all
@@ -56,20 +59,24 @@ function create() {
   const tileset2 = map.addTilesetImage("SBU RD (1)", "tiles2");
   const tileset3 = map.addTilesetImage("Maze Tile", "tiles3");
   const tileset4 = map.addTilesetImage("SBU house", "tiles4");
+  const signs = map.addTilesetImage("signs", "signs");
+  const beds = map.addTilesetImage("Beds", "beds");
+  //const foods = map.addTilesetImage("foods", "foods");
 
+  let allTileSets = [tileset, tileset2, tileset3, tileset4, signs, beds];
   // Parameters: layer name (or index) from Tiled, tileset, x, y
-  const belowLayer2 = map.createStaticLayer("Below Player2", [tileset, tileset2, tileset3, tileset4], 0, 0);
-  const belowLayer = map.createStaticLayer("Below Player", [tileset, tileset2, tileset3, tileset4], 0, 0);
-  const worldLayer = map.createStaticLayer("World", [tileset, tileset2, tileset3, tileset4], 0, 0);
-  aboveLayer = map.createStaticLayer("Above Player", [tileset, tileset2, tileset3, tileset4], 0, 0);
-  const interactableLayer = map.createStaticLayer("Interactables", [tileset3, tileset4], 0, 0);
-  const dynamicLayer = map.createBlankDynamicLayer("DynamicItems", tileset4, 0, 0);
+  const belowLayer2 = map.createStaticLayer("Below Player2", allTileSets, 0, 0);
+  const belowLayer = map.createStaticLayer("Below Player", allTileSets, 0, 0);
+  const worldLayer = map.createStaticLayer("World", allTileSets, 0, 0);
+  aboveLayer = map.createStaticLayer("Above Player", allTileSets, 0, 0);
+  const interactableLayer = map.createStaticLayer("Interactables", allTileSets, 0, 0);
+  //const dynamicLayer = map.createBlankDynamicLayer("DynamicItems", tileset4, 0, 0);
 
   belowLayer2.setScale( 0.25 );
   belowLayer.setScale( 0.25 );
   worldLayer.setScale( 0.25 );
   aboveLayer.setScale( 0.25 );
-  dynamicLayer.setScale( 0.25 );
+  //dynamicLayer.setScale( 0.25 );
   interactableLayer.setScale( 0.25 );
 
   // set collisions with player and world tiles
@@ -80,6 +87,153 @@ function create() {
   /**
    * INTERACTIONS WITH TILES
    */
+
+  // let doors = [
+  //   "door-west",
+  //   "door-east",
+  //   "door-roth",
+  //   "door-javitz",
+  //   "door-new-cs",
+  //   "door-the-sac",
+  //   "door-humanities",
+  //   "door-rec-center",
+  //   "door-staller",
+  //   "door-wang",
+  //   "door-library",
+  //   "door-frey-hall",
+  //   "door-chemistry",
+  //   "door-physics",
+  //   "door-ess",
+  //   "door-engineering",
+  //   "door-light-engineering",
+  //   "door-heavy-engineering",
+  //   "door-harriman-hall",
+  //   "door-psychology"
+  // ];
+
+  // welcoming signs 198 [42 long]
+  //let signsArr = Array.from({length: 42}, (v, k) => k+198); 
+  interactableLayer.setTileIndexCallback([198], () => {
+    tileInteraction("sign-west");
+  });
+  interactableLayer.setTileIndexCallback([199], () => {
+    tileInteraction("door-west");
+  });
+  interactableLayer.setTileIndexCallback([200], () => {
+    tileInteraction("sign-east");
+  });
+  interactableLayer.setTileIndexCallback([201], () => {
+    tileInteraction("door-east");
+  });
+  interactableLayer.setTileIndexCallback([202], () => {
+    tileInteraction("sign-roth");
+  });
+  interactableLayer.setTileIndexCallback([203], () => {
+    tileInteraction("door-roth");
+  });
+  interactableLayer.setTileIndexCallback([204], () => {
+    tileInteraction("sign-javitz");
+  });
+  interactableLayer.setTileIndexCallback([205], () => {
+    tileInteraction("door-javitz");
+  });
+  interactableLayer.setTileIndexCallback([206], () => {
+    tileInteraction("sign-new-cs");
+  });
+  interactableLayer.setTileIndexCallback([207], () => {
+    tileInteraction("door-new-cs");
+  });
+  interactableLayer.setTileIndexCallback([208], () => {
+    tileInteraction("sign-the-sac");
+  });
+  interactableLayer.setTileIndexCallback([209], () => {
+    tileInteraction("door-the-sac");
+  });
+  interactableLayer.setTileIndexCallback([210], () => {
+    tileInteraction("sign-humanities");
+  });
+  interactableLayer.setTileIndexCallback([211], () => {
+    tileInteraction("door-humanities");
+  });
+  interactableLayer.setTileIndexCallback([212], () => {
+    tileInteraction("sign-rec-center");
+  });
+  interactableLayer.setTileIndexCallback([213], () => {
+    tileInteraction("door-rec-center");
+  });
+  interactableLayer.setTileIndexCallback([214], () => {
+    tileInteraction("sign-staller");
+  });
+  interactableLayer.setTileIndexCallback([215], () => {
+    tileInteraction("door-staller");
+  });
+  interactableLayer.setTileIndexCallback([216], () => {
+    tileInteraction("sign-wang");
+  });
+  interactableLayer.setTileIndexCallback([217], () => {
+    tileInteraction("door-wang");
+  });
+  interactableLayer.setTileIndexCallback([218], () => {
+    tileInteraction("sign-library");
+  });
+  interactableLayer.setTileIndexCallback([219], () => {
+    tileInteraction("door-library");
+  });
+  interactableLayer.setTileIndexCallback([220], () => {
+    tileInteraction("sign-frey-hall");
+  });
+  interactableLayer.setTileIndexCallback([221], () => {
+    tileInteraction("door-frey-hall");
+  });
+  interactableLayer.setTileIndexCallback([222], () => {
+    tileInteraction("sign-chemistry");
+  });
+  interactableLayer.setTileIndexCallback([223], () => {
+    tileInteraction("door-chemistry");
+  });
+  interactableLayer.setTileIndexCallback([224], () => {
+    tileInteraction("sign-physics");
+  });
+  interactableLayer.setTileIndexCallback([225], () => {
+    tileInteraction("door-physics");
+  });
+  interactableLayer.setTileIndexCallback([226], () => {
+    tileInteraction("sign-ess");
+  });
+  interactableLayer.setTileIndexCallback([227], () => {
+    tileInteraction("door-ess");
+  });
+  interactableLayer.setTileIndexCallback([228], () => {
+    tileInteraction("sign-engineering");
+  });
+  interactableLayer.setTileIndexCallback([229], () => {
+    tileInteraction("door-engineering");
+  });
+  interactableLayer.setTileIndexCallback([230], () => {
+    tileInteraction("sign-light-engineering");
+  });
+  interactableLayer.setTileIndexCallback([231], () => {
+    tileInteraction("door-light-engineering");
+  });
+  interactableLayer.setTileIndexCallback([232], () => {
+    tileInteraction("sign-heavy-engineering");
+  });
+  interactableLayer.setTileIndexCallback([233], () => {
+    tileInteraction("door-heavy-engineering");
+  });
+  interactableLayer.setTileIndexCallback([234], () => {
+    tileInteraction("sign-harriman-hall");
+  });
+  interactableLayer.setTileIndexCallback([235], () => {
+    tileInteraction("door-harriman-hall");
+  });
+  interactableLayer.setTileIndexCallback([236], () => {
+    tileInteraction("sign-psychology");
+  });
+  interactableLayer.setTileIndexCallback([237], () => {
+    tileInteraction("door-psychology");
+  });
+
 
   // doors! // 195 is invisible doormat
   interactableLayer.setTileIndexCallback([193, 194, 195], () => {
@@ -99,12 +253,11 @@ function create() {
     .sprite(spawnPoint.x, spawnPoint.y, "Brown", "Brown-Standing.000")
     .setSize(30, 40)
     .setOffset(49, 24); // x then y
-  
   player.setScale( 0.8 );
 
   // Watch the player and worldLayer for collisions, for the duration of the scene:
   this.physics.add.collider(player, worldLayer);
-  this.physics.add.collider(player, dynamicLayer);
+  //this.physics.add.collider(player, dynamicLayer);
   this.physics.add.collider(player, interactableLayer);
 
   // Create the player's walking animations from the texture atlas. These are stored in the global
@@ -115,7 +268,7 @@ function create() {
     frames: anims.generateFrameNames("Brown", {
       prefix: "Brown-Walking-Left.",
       start: 0,
-      end: 3,
+      end: 4,
       zeroPad: 3
     }),
     frameRate: 10,
@@ -126,7 +279,7 @@ function create() {
     frames: anims.generateFrameNames("Brown", {
       prefix: "Brown-Walking-Right.",
       start: 0,
-      end: 3,
+      end: 4,
       zeroPad: 3
     }),
     frameRate: 10,
@@ -137,7 +290,7 @@ function create() {
     frames: anims.generateFrameNames("Brown", {
       prefix: "Brown-Walking-Up.",
       start: 0,
-      end: 3,
+      end: 4,
       zeroPad: 3
     }),
     frameRate: 10,
@@ -148,7 +301,7 @@ function create() {
     frames: anims.generateFrameNames("Brown", {
       prefix: "Brown-Walking-Down.",
       start: 0,
-      end: 3,
+      end: 4,
       zeroPad: 3
     }),
     frameRate: 10,
@@ -173,7 +326,7 @@ function create() {
   let helpMenuLeft = new ToolTip({
     game: this,
     // \nShift+⬅️: Scroll left\nShift+➡️: Scroll right\nShift+⬆️: Scroll up\nShift+⬇️: Scroll down
-    text: "⬅️: Move left\n➡️: Move right\n⬆️: Move up\n⬇️: Move down\n\n[H] Show/hide this help menu\n\n[S] Show all player stats\n\n[Z] Toggle running (devmode)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n_______________________________",
+    text: "⬅️: Move left\n➡️: Move right\n⬆️: Move up\n⬇️: Move down\n\n[H] Show/hide this help menu\n\n[S] Show all player stats\n\n[Z] Toggle running (devmode)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n_______________________________",
     align: "left",
     clickDestroy: false,
     depth: 100,
@@ -182,14 +335,42 @@ function create() {
     x: 16,
   });
   let helpMenuRight = new ToolTip({
-    game: this,
-    text: "[P] Turn on/off phone\n[Y] Accept transaction\n[N] Reject transaction\n[I] Open/close inventory\n[T] Toggle chat\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n_______________________________",
+    game: this,//[P] Turn on/off phone //[I] Open/close inventory
+    text: "[M] Show Minigames\n\n[Y] Accept transaction\n[N] Reject transaction\n\n[T] Toggle chat\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n_______________________________",
     align: "left",
     clickDestroy: false,
     depth: 100,
     visible: true,
     y: 90,
     x: 416
+  });
+
+  this.input.keyboard.on("keydown-" + "M", event => {
+    if ($(".minigames").is(":visible")) {
+      $(".minigames").hide();
+    } else {
+      $(".minigames").show();
+      $(".minigames").html(
+        "<center>"+
+        "<h3>More games coming soon!</h3>" +
+        "Click <b id='play_coin' style='text-decoration:underline;cursor:pointer;'>[here]</b> to play the minigame: 'Coin Game'"+
+        "<br>You'll have 10 seconds to win cash for your player!" +
+        "</center>"
+      );
+      $("#play_coin").click(function(event)  {
+        localStorage.setItem("coin_win", 0);
+        $(".minigames").html("<iframe id='minigame_frame' src='coin.html' frameBorder='0px'></iframe>");
+        $("#minigame_frame").focus();
+        setTimeout(() => {
+          $(".minigames").html("");
+          $(".minigames").hide();
+          alert("Time's up! You won " + localStorage.getItem("coin_win"));
+          let player = JSON.parse(localStorage.getItem("player"));
+          player.cash = parseInt(player.cash) + parseInt(localStorage.getItem("coin_win"));
+          updateStats(player);
+        }, 10000);
+      });
+    }
   });
   
   this.input.keyboard.on("keydown-" + "H", event => {
@@ -238,6 +419,7 @@ function create() {
       e.keyCode == 78 || // n
       e.keyCode == 83 || // s
       e.keyCode == 73 || // i
+      e.keyCode == 77 ||
       e.keyCode == 27 || // esc
       e.keyCode == 9 || // tab
       e.keyCode == 13 // enter
@@ -331,14 +513,73 @@ function tileInteraction(itemType) {
   let message;
   let cost;
   let benefit;
-  if (itemType == "door") {
-    message = "Enter building?<br><br>[Y] Yes &nbsp;&nbsp;&nbsp;&nbsp; [N] No";
-  } else if (itemType == "cashForCredit") {
+
+  let signs = [
+    "sign-west",
+    "sign-east",
+    "sign-roth",
+    "sign-javitz",
+    "sign-new-cs",
+    "sign-the-sac",
+    "sign-humanities",
+    "sign-rec-center",
+    "sign-staller",
+    "sign-wang",
+    "sign-library",
+    "sign-frey-hall",
+    "sign-chemistry",
+    "sign-physics",
+    "sign-ess",
+    "sign-engineering",
+    "sign-light-engineering",
+    "sign-heavy-engineering",
+    "sign-harriman-hall",
+    "sign-psychology"
+  ];
+
+  let doors = [
+    "door-west",
+    "door-east",
+    "door-roth",
+    "door-javitz",
+    "door-new-cs",
+    "door-the-sac",
+    "door-humanities",
+    "door-rec-center",
+    "door-staller",
+    "door-wang",
+    "door-library",
+    "door-frey-hall",
+    "door-chemistry",
+    "door-physics",
+    "door-ess",
+    "door-engineering",
+    "door-light-engineering",
+    "door-heavy-engineering",
+    "door-harriman-hall",
+    "door-psychology"
+  ];
+
+  if (itemType == "cashForCredit") {
     message = "Buy 1 credit for $200?<br><br>[Y] Yes &nbsp;&nbsp;&nbsp;&nbsp; [N] No";
     cost = 200; // cash
     benefit = 1; // credit
-  } else {
-    message = "UNKNOWN INTERACTION @function tileInteract(itemType):";
+  } else if (signs.includes(itemType)) {
+    let location = itemType.substring(5);
+    $("#toastNotification").show();
+    $("#toastNotification").html(
+      "<center style='color:blue'>Welcome to "+location.toUpperCase()+"!</center>"
+    ).fadeOut(3000);
+    return;
+  } else if (doors.includes(itemType)) {
+    let location = itemType.substring(5);
+    message = "Enter "+location.toUpperCase()+"?<br><br>[Y] Yes &nbsp;&nbsp;&nbsp;&nbsp; [N] No";
+  } else if (itemType == 'door') {
+    console.log("There's a hidden doormat here. Devs need to remove it - as it's now deprecated...");
+    return;
+  }
+  else {
+    message = "UNKNOWN INTERACTION @function tileInteract(itemType:"+itemType+")";
   }
 
   if ($("#prompt").is(":visible")) {
@@ -366,6 +607,7 @@ function tileInteraction(itemType) {
           updateStats(player);
         }
       } else {
+        alert("Not yet implemented!");
         console.log("unimplemented process!");
       }
       $("#prompt").hide();
@@ -379,6 +621,11 @@ function tileInteraction(itemType) {
       collidedInteractable = false;
       return;
     });
+
+    act.input.keyboard.on("keydown-" + "Y", event => {
+    });
+    act.input.keyboard.on("keydown-" + "N", event => {
+    });
   }
 }
 
@@ -387,7 +634,7 @@ function updateStats(player) {
   localStorage.setItem("player", playerString);
 
   $.ajax({
-    url: "../CServer/index.php?method=save_user&username="+encodeURI(player.name),
+    url: "http://ilankleiman.com/StonyBrookSimu/CServer/index.php?method=save_user&username="+encodeURI(player.name),
     type: 'post',
     dataType: 'json',
     contentType: 'application/json',
