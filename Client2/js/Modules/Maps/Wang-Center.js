@@ -1,9 +1,9 @@
-import { ToolTip, APIHandler, JSLoader } from './Modules/ModuleLoader.js';
+import { ToolTip, InteractableTileMapping } from '../ModuleLoader.js';
 
 const config = {
   type: Phaser.AUTO,
   width: 800,
-  // height: 600,
+
   parent: "game-container",
   pixelArt: true,
   physics: {
@@ -18,7 +18,7 @@ const config = {
     update: update
   }
 };
-
+  
 const game = new Phaser.Game(config);
 let cursors;
 let player;
@@ -31,191 +31,77 @@ var speed = 200;
 var collidedInteractable = false;
 
 function preload() {
-  this.load.image("tiles2", "assets/tilesets/SBU RD (1).png");
-  this.load.image("tiles4", "assets/tilesets/SBU house .png");
-  this.load.image("beds", "assets/tilesets/Beds.png");
-
   this.load.image("tiles3", "assets/tilesets/Maze Tile.png");
   this.load.image("foods", "assets/tilesets/food.png");
   this.load.image("chair_tables", "assets/tilesets/ChairTables.png");
   this.load.image("tiles", "assets/tilesets/SBU.png");
   this.load.image("signs", "assets/tilesets/signs.png");
   this.load.image("solids", "assets/tilesets/Solids.png");
-
-  this.load.tilemapTiledJSON("map", "assets/tilemaps/mainMap.json");
+  
+  this.load.tilemapTiledJSON("map_wang-center", "assets/tilemaps/Wang-Center.json");
   this.load.atlas("Brown", "assets/atlas/Brown.png", "assets/atlas/Brown.json");
 }
 
 function create() {
-  map = this.make.tilemap({ key: "map" });
+  map = this.make.tilemap({ key: "map_wang-center" });
 
-  const tileset = map.addTilesetImage("SBU", "tiles");
-  const tileset2 = map.addTilesetImage("SBU RD (1)", "tiles2");
-  const tileset3 = map.addTilesetImage("Maze Tile", "tiles3");
-  const tileset4 = map.addTilesetImage("SBU house", "tiles4");
-  const signs = map.addTilesetImage("signs", "signs");
-  const beds = map.addTilesetImage("Beds", "beds");
-  //const foods = map.addTilesetImage("foods", "foods");
+  const mazeSet = map.addTilesetImage("Maze Tile", "tiles3");
+  const foodSet = map.addTilesetImage("food", "foods");
+  const chairTableSet = map.addTilesetImage("ChairTables", "chair_tables");
+  const tileSet = map.addTilesetImage("SBU", "tiles");
+  const signsSet = map.addTilesetImage("signs", "signs");
+  const solidsSet = map.addTilesetImage("Solids", "solids");
 
-  let allTileSets = [tileset, tileset2, tileset3, tileset4, signs, beds];
-  // Parameters: layer name (or index) from Tiled, tileset, x, y
+  let allTileSets = [mazeSet, foodSet, chairTableSet, tileSet, signsSet, solidsSet];
+
   const belowLayer2 = map.createStaticLayer("Below Player2", allTileSets, 0, 0);
   const belowLayer = map.createStaticLayer("Below Player", allTileSets, 0, 0);
   const worldLayer = map.createStaticLayer("World", allTileSets, 0, 0);
-  aboveLayer = map.createStaticLayer("Above Player", allTileSets, 0, 0);
-  const interactableLayer = map.createStaticLayer("Interactables", allTileSets, 0, 0);
-  //const dynamicLayer = map.createBlankDynamicLayer("DynamicItems", tileset4, 0, 0);
+  const interactableLayer = map.createStaticLayer("Interactables", [signsSet, foodSet], 0, 0);
 
   belowLayer2.setScale( 0.25 );
   belowLayer.setScale( 0.25 );
   worldLayer.setScale( 0.25 );
-  aboveLayer.setScale( 0.25 );
-  //dynamicLayer.setScale( 0.25 );
   interactableLayer.setScale( 0.25 );
 
-  // set collisions with player and world tiles
   interactableLayer.setCollisionBetween(1, 10000, true, 'Interactables');
   worldLayer.setCollisionBetween(1, 10000, true, 'World');
+
   act = this;
+
+  console.log(interactableLayer);
+  // for (let i = 0; i < 20; ++i) {
+  //   act.interactableLayer.putTileAt(i, i*10, i*10);
+  // }
 
   /**
    * INTERACTIONS WITH TILES
-   * 
-   * Welcoming signs 198 [42 long]
    */
-  interactableLayer.setTileIndexCallback([198], () => {
-    tileInteraction("sign-west");
-  });
-  interactableLayer.setTileIndexCallback([199], () => {
-    tileInteraction("door-west");
-  });
-  interactableLayer.setTileIndexCallback([200], () => {
-    tileInteraction("sign-east");
-  });
-  interactableLayer.setTileIndexCallback([201], () => {
-    tileInteraction("door-east");
-  });
-  interactableLayer.setTileIndexCallback([202], () => {
-    tileInteraction("sign-roth");
-  });
-  interactableLayer.setTileIndexCallback([203], () => {
-    tileInteraction("door-roth");
-  });
-  interactableLayer.setTileIndexCallback([204], () => {
-    tileInteraction("sign-javitz");
-  });
-  interactableLayer.setTileIndexCallback([205], () => {
-    tileInteraction("door-javitz");
-  });
-  interactableLayer.setTileIndexCallback([206], () => {
-    tileInteraction("sign-new-cs");
-  });
-  interactableLayer.setTileIndexCallback([207], () => {
-    tileInteraction("door-new-cs");
-  });
-  interactableLayer.setTileIndexCallback([208], () => {
-    tileInteraction("sign-the-sac");
-  });
-  interactableLayer.setTileIndexCallback([209], () => {
-    tileInteraction("door-the-sac");
-  });
-  interactableLayer.setTileIndexCallback([210], () => {
-    tileInteraction("sign-humanities");
-  });
-  interactableLayer.setTileIndexCallback([211], () => {
-    tileInteraction("door-humanities");
-  });
-  interactableLayer.setTileIndexCallback([212], () => {
-    tileInteraction("sign-rec-center");
-  });
-  interactableLayer.setTileIndexCallback([213], () => {
-    tileInteraction("door-rec-center");
-  });
-  interactableLayer.setTileIndexCallback([214], () => {
-    tileInteraction("sign-staller");
-  });
-  interactableLayer.setTileIndexCallback([215], () => {
-    tileInteraction("door-staller");
-  });
-  interactableLayer.setTileIndexCallback([216], () => {
-    tileInteraction("sign-wang");
-  });
-  interactableLayer.setTileIndexCallback([217], () => {
+  //let all = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20];
+  interactableLayer.setTileIndexCallback([26], () => {
     tileInteraction("door-wang");
   });
-  interactableLayer.setTileIndexCallback([218], () => {
-    tileInteraction("sign-library");
+  interactableLayer.setTileIndexCallback([25], () => {
+    tileInteraction("sign-wang");
   });
-  interactableLayer.setTileIndexCallback([219], () => {
-    tileInteraction("door-library");
+  interactableLayer.setTileIndexCallback([1], () => {
+    tileInteraction("food-pizza");
   });
-  interactableLayer.setTileIndexCallback([220], () => {
-    tileInteraction("sign-frey-hall");
+  interactableLayer.setTileIndexCallback([2], () => {
+    tileInteraction("food-pizza-pepperoni"); 
   });
-  interactableLayer.setTileIndexCallback([221], () => {
-    tileInteraction("door-frey-hall");
+  interactableLayer.setTileIndexCallback([3], () => {
+    tileInteraction("food-rice-cake"); // Yes
   });
-  interactableLayer.setTileIndexCallback([222], () => {
-    tileInteraction("sign-chemistry");
+  interactableLayer.setTileIndexCallback([4], () => {
+    tileInteraction("food-steak");
   });
-  interactableLayer.setTileIndexCallback([223], () => {
-    tileInteraction("door-chemistry");
+  interactableLayer.setTileIndexCallback([5], () => {
+    tileInteraction("food-cola"); // Yes
   });
-  interactableLayer.setTileIndexCallback([224], () => {
-    tileInteraction("sign-physics");
+  interactableLayer.setTileIndexCallback([6], () => {
+    tileInteraction("food-water");
   });
-  interactableLayer.setTileIndexCallback([225], () => {
-    tileInteraction("door-physics");
-  });
-  interactableLayer.setTileIndexCallback([226], () => {
-    tileInteraction("sign-ess");
-  });
-  interactableLayer.setTileIndexCallback([227], () => {
-    tileInteraction("door-ess");
-  });
-  interactableLayer.setTileIndexCallback([228], () => {
-    tileInteraction("sign-engineering");
-  });
-  interactableLayer.setTileIndexCallback([229], () => {
-    tileInteraction("door-engineering");
-  });
-  interactableLayer.setTileIndexCallback([230], () => {
-    tileInteraction("sign-light-engineering");
-  });
-  interactableLayer.setTileIndexCallback([231], () => {
-    tileInteraction("door-light-engineering");
-  });
-  interactableLayer.setTileIndexCallback([232], () => {
-    tileInteraction("sign-heavy-engineering");
-  });
-  interactableLayer.setTileIndexCallback([233], () => {
-    tileInteraction("door-heavy-engineering");
-  });
-  interactableLayer.setTileIndexCallback([234], () => {
-    tileInteraction("sign-harriman-hall");
-  });
-  interactableLayer.setTileIndexCallback([235], () => {
-    tileInteraction("door-harriman-hall");
-  });
-  interactableLayer.setTileIndexCallback([236], () => {
-    tileInteraction("sign-psychology");
-  });
-  interactableLayer.setTileIndexCallback([237], () => {
-    tileInteraction("door-psychology");
-  });
-
-
-  // doors! // 195 is invisible doormat
-  interactableLayer.setTileIndexCallback([193, 194, 195], () => {
-    tileInteraction("door");
-  });
-
-  // crappy chest credit
-  interactableLayer.setTileIndexCallback(135, function() {
-    tileInteraction("cashForCredit");
-  });
-
-  aboveLayer.setDepth(10);
 
   const spawnPoint = map.findObject("Objects", obj => obj.name === "Spawn Point");
 
@@ -279,7 +165,7 @@ function create() {
 
   const camera = this.cameras.main;
   camera.startFollow(player);
-  camera.setBounds(0, 0, 3200, 3200);
+  camera.setBounds(0, 0, 320, 320);
   cursors = this.input.keyboard.createCursorKeys();
 
   let helpMenuTitle = new ToolTip({
@@ -288,7 +174,7 @@ function create() {
     align: "center",
     clickDestroy: false,
     depth: 100,
-    visible: true,
+    visible: false,
     x: 330,
     y: 16,
   });
@@ -299,7 +185,7 @@ function create() {
     align: "left",
     clickDestroy: false,
     depth: 100,
-    visible: true,
+    visible: false,
     y: 90,
     x: 16,
   });
@@ -309,7 +195,7 @@ function create() {
     align: "left",
     clickDestroy: false,
     depth: 100,
-    visible: true,
+    visible: false,
     y: 90,
     x: 416
   });
@@ -393,7 +279,7 @@ function create() {
       tileColor: null,
       collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
       faceColor: new Phaser.Display.Color(40, 39, 37, 255)
-    });
+    }); 
   });
 
   $("#chat-box").on("keydown", function (e) {
@@ -501,81 +387,30 @@ function tileInteraction(itemType) {
   let cost;
   let benefit;
 
-  let signs = [
-    "sign-west",
-    "sign-east",
-    "sign-roth",
-    "sign-javitz",
-    "sign-new-cs",
-    "sign-the-sac",
-    "sign-humanities",
-    "sign-rec-center",
-    "sign-staller",
-    "sign-wang",
-    "sign-library",
-    "sign-frey-hall",
-    "sign-chemistry",
-    "sign-physics",
-    "sign-ess",
-    "sign-engineering",
-    "sign-light-engineering",
-    "sign-heavy-engineering",
-    "sign-harriman-hall",
-    "sign-psychology"
-  ];
+  const ITM = new InteractableTileMapping;
 
-  let doors = [
-    "door-west",
-    "door-east",
-    "door-roth",
-    "door-javitz",
-    "door-new-cs",
-    "door-the-sac",
-    "door-humanities",
-    "door-rec-center",
-    "door-staller",
-    "door-wang",
-    "door-library",
-    "door-frey-hall",
-    "door-chemistry",
-    "door-physics",
-    "door-ess",
-    "door-engineering",
-    "door-light-engineering",
-    "door-heavy-engineering",
-    "door-harriman-hall",
-    "door-psychology"
-  ];
-
-  if (itemType == "cashForCredit") {
-    message = "Buy 1 credit for $200?<br><br>[Y] Yes &nbsp;&nbsp;&nbsp;&nbsp; [N] No";
-    cost = 200; // cash
-    benefit = 1; // credit
-  } else if (signs.includes(itemType)) {
+  if (ITM.sign_ids.includes(itemType)) {
     let location = itemType.substring(5);
     $("#toastNotification").show();
     $("#toastNotification").html(
-      "<center style='color:blue'>Welcome to "+location.toUpperCase()+"!</center>"
+      "<center style='color:blue'>Welcome to " + location.toUpperCase() + "!</center>"
     ).fadeOut(3000);
+    noInteractionsForDelay(1000);
     return;
-  } else if (doors.includes(itemType)) {
+  } else if (ITM.door_ids.includes(itemType)) {
     let location = itemType.substring(5);
-    message = "Enter "+location.toUpperCase()+"?<br><br>[Y] Yes &nbsp;&nbsp;&nbsp;&nbsp; [N] No";
-  } else if (itemType == 'door') {
-    console.log("There's a hidden doormat here. Devs need to remove it - as it's now deprecated...");
-    return;
-  }
-  else {
+    message = "Exit " + location.toUpperCase() + "?<br><br>[Y] Yes &nbsp;&nbsp;&nbsp;&nbsp; [N] No";
+  } else if (Object.keys(ITM.FOODS).includes(itemType)) {
+    message = "Purchase <span style='font-style: oblique;'>" + ITM.FOODS[itemType]["name"] + "</span> for <span style='font-weight: heavy;'>$" + Math.abs(ITM.FOODS[itemType]["stats"]["cash"]) + "</span>?<br><br>[Y] Yes &nbsp;&nbsp;&nbsp;&nbsp; [N] No";
+  } else {
     message = "UNKNOWN INTERACTION @function tileInteract(itemType:"+itemType+")";
   }
 
-  if ($("#prompt").is(":visible")) {
-    collidedInteractable = true;
-  } else {
+  collidedInteractable = true;
+  if (!$("#prompt").is(":visible")) {
     $("#prompt").show();
-    collidedInteractable = true;
     $("#prompt").html(
-      "<center>"+message+"</center>"
+      "<center>" + message + "</center>"
     );
 
     act.input.keyboard.once("keydown-" + "Y", event => {
@@ -595,9 +430,6 @@ function tileInteraction(itemType) {
         }
       } else if (itemType == "door-wang") {
         console.log("Loading wang");
-        act.game.destroy();
-        const loader = new JSLoader();
-        loader.loadMap({map: "Wang-Center.js"});
       } else {
         alert("Not yet implemented!");
         console.log("unimplemented process!");
@@ -660,6 +492,13 @@ function updateStats(player) {
     "Happiness: " + player.happiness + "%<br><hr style='border:1px solid white'>"+
     "Classes: " + classes + "<br><hr style='border:1px solid white'>"
   );
+}
+
+function noInteractionsForDelay(millisec) {
+  collidedInteractable = true;
+  setTimeout(() => {
+    collidedInteractable = false;
+  }, millisec);
 }
 
 $(document).ready(function() {

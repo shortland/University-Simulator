@@ -1,5 +1,6 @@
 <?php
     header("Access-Control-Allow-Origin: *");
+
     if ($_GET['method'] == 'get_user') {
         try {
             $trimmed = stripslashes(json_encode(utf8_encode(file_get_contents("users/" . $_GET['username'] . ".json"))));
