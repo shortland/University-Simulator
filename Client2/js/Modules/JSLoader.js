@@ -3,22 +3,34 @@ export class JSLoader {
     this.baseURL = baseURL;
   }
 
-  loadMap({map} = {}) {
+  loadMap({map, prevMapLoc} = {}) {
+    let noCache = "?nocache=" + Math.random();
+    let map_url = "js/Modules/Maps/" + map + noCache;
+    if (map == "MAIN") {
+      map_url = "js/index.js" + noCache;
+    }
+
     // remove other canvases in game-container div
     let game = document.getElementById("game-container");
     game.removeChild(game.childNodes[0]);
 
     // remove the game src before creating the new one
-    document.getElementById("map").remove();
+    let domMap = document.getElementById("map");
+    domMap.remove();
+
+    let newMapLoc = domMap.getAttribute("prevmaploc");
+    if (newMapLoc != null && newMapLoc != undefined) {
+      prevMapLoc = newMapLoc;
+    }
 
     this.loadJS({
-      url: "js/Modules/Maps/" + map
+      url: map_url,
+      attrPrevMaploc: prevMapLoc
     });
   }
 
-  loadJS({url, callback = null, location = document.body} = {}) {
+  loadJS({url, attrPrevMaploc = null, callback = null, location = document.body} = {}) {
     // url: is URL of external file 
-    // callback: is the code to be called from the file 
     // location: is the location to insert the <script> element
 
     let scriptTag = document.createElement("script");
@@ -31,6 +43,16 @@ export class JSLoader {
     let attrId = document.createAttribute("id");
     attrId.value = "map"; 
     scriptTag.setAttributeNode(attrId);
+
+    if (attrPrevMaploc !== null) {
+      let attrId = document.createAttribute("prevmaploc");
+      if ((attrPrevMaploc + "".indexOf(',') !== -1) && (typeof attrPrevMaploc == "string")) {
+        attrId.value = attrPrevMaploc;
+      } else {
+        attrId.value = attrPrevMaploc.x + "," + attrPrevMaploc.y; 
+      }
+      scriptTag.setAttributeNode(attrId);
+    }
 
     location.appendChild(scriptTag);
   }

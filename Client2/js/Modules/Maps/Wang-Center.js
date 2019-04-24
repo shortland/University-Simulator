@@ -1,9 +1,8 @@
-import { ToolTip, InteractableTileMapping } from '../ModuleLoader.js';
+import { ToolTip, JSLoader, InteractableTileMapping, Animations, Physics, GlobalListeners } from '../ModuleLoader.js';
 
 const config = {
   type: Phaser.AUTO,
   width: 800,
-
   parent: "game-container",
   pixelArt: true,
   physics: {
@@ -69,15 +68,9 @@ function create() {
 
   act = this;
 
-  console.log(interactableLayer);
-  // for (let i = 0; i < 20; ++i) {
-  //   act.interactableLayer.putTileAt(i, i*10, i*10);
-  // }
-
   /**
    * INTERACTIONS WITH TILES
    */
-  //let all = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20];
   interactableLayer.setTileIndexCallback([26], () => {
     tileInteraction("door-wang");
   });
@@ -103,69 +96,23 @@ function create() {
     tileInteraction("food-water");
   });
 
-  const spawnPoint = map.findObject("Objects", obj => obj.name === "Spawn Point");
-
-  player = this.physics.add
-    .sprite(spawnPoint.x, spawnPoint.y, "Brown", "Brown-Standing.000")
-    .setSize(30, 20)
-    .setOffset(49, 44); // x then y
-  player.setScale( 0.8 );
-
-  // Watch the player and worldLayer for collisions, for the duration of the scene:
-  this.physics.add.collider(player, worldLayer);
-  this.physics.add.collider(player, interactableLayer);
-
-  // Create the player's walking animations from the texture atlas. These are stored in the global
-  // animation manager so any sprite can access them.
-  const anims = this.anims;
-  anims.create({
-    key: "Brown-Walking-Left",
-    frames: anims.generateFrameNames("Brown", {
-      prefix: "Brown-Walking-Left.",
-      start: 0,
-      end: 4,
-      zeroPad: 3
-    }),
-    frameRate: 10,
-    repeat: -1
+  const physics = new Physics({physics: this.physics});
+  player = physics.add_player({
+    prefix: "Brown", 
+    scale: 0.8, 
+    spawn: map.findObject("Objects", obj => obj.name === "Spawn Point")
   });
-  anims.create({
-    key: "Brown-Walking-Right",
-    frames: anims.generateFrameNames("Brown", {
-      prefix: "Brown-Walking-Right.",
-      start: 0,
-      end: 4,
-      zeroPad: 3
-    }),
-    frameRate: 10,
-    repeat: -1
-  });
-  anims.create({
-    key: "Brown-Walking-Up",
-    frames: anims.generateFrameNames("Brown", {
-      prefix: "Brown-Walking-Up.",
-      start: 0,
-      end: 4,
-      zeroPad: 3
-    }),
-    frameRate: 10,
-    repeat: -1
-  });
-  anims.create({
-    key: "Brown-Walking-Down",
-    frames: anims.generateFrameNames("Brown", {
-      prefix: "Brown-Walking-Down.",
-      start: 0,
-      end: 4,
-      zeroPad: 3
-    }),
-    frameRate: 10,
-    repeat: -1
+  physics.add_player_layer_collisions({layers: [worldLayer, interactableLayer]});
+  physics.add_camera_follow({
+    camera: this.cameras.main,
+    object: player
   });
 
-  const camera = this.cameras.main;
-  camera.startFollow(player);
-  camera.setBounds(0, 0, 320, 320);
+  const anims = new Animations({animations: this.anims});
+  anims.create_player({prefix: "Brown"});
+  
+
+
   cursors = this.input.keyboard.createCursorKeys();
 
   let helpMenuTitle = new ToolTip({
@@ -382,7 +329,7 @@ function tileInteraction(itemType) {
 
   console.log("interactions...");
 
-  let player = JSON.parse(localStorage.getItem("player"));
+  let playerData = JSON.parse(localStorage.getItem("player"));
   let message;
   let cost;
   let benefit;
@@ -403,7 +350,7 @@ function tileInteraction(itemType) {
   } else if (Object.keys(ITM.FOODS).includes(itemType)) {
     message = "Purchase <span style='font-style: oblique;'>" + ITM.FOODS[itemType]["name"] + "</span> for <span style='font-weight: heavy;'>$" + Math.abs(ITM.FOODS[itemType]["stats"]["cash"]) + "</span>?<br><br>[Y] Yes &nbsp;&nbsp;&nbsp;&nbsp; [N] No";
   } else {
-    message = "UNKNOWN INTERACTION @function tileInteract(itemType:"+itemType+")";
+    message = "UNKNOWN INTERACTION @function tileInteract(itemType:" + itemType + ")";
   }
 
   collidedInteractable = true;
@@ -416,7 +363,7 @@ function tileInteraction(itemType) {
     act.input.keyboard.once("keydown-" + "Y", event => {
       if (itemType == "cashForCredit") {
         $("#toastNotification").show();
-        if (player.cash - cost < 0) {
+        if (playerData.cash - cost < 0) {
           $("#toastNotification").html(
             "<center style='color:red'>Not enough cash!</center>"
           ).fadeOut(3000);
@@ -424,16 +371,24 @@ function tileInteraction(itemType) {
           $("#toastNotification").html(
             "<center style='color:green'>Purchased successfuly!</center>"
           ).fadeOut(3000);
-          player.cash -= cost;
-          player.credits += benefit;
-          updateStats(player);
+          playerData.cash -= cost;
+          playerData.credits += benefit;
+          updateStats(playerData);
         }
-      } else if (itemType == "door-wang") {
-        console.log("Loading wang");
-      } else {
-        alert("Not yet implemented!");
-        console.log("unimplemented process!");
+      } else if (ITM.door_ids.includes(itemType)) {
+        act.game.destroy();
+        const loader = new JSLoader();
+        loader.loadMap({map: "MAIN"});
+      } else if (Object.keys(ITM.FOODS).includes(itemType)) {
+        // This makes the player auto-eat the food...
+        // We want to place it in their inventory so they can eat it later.
+        playerData["inventory"].push(itemType);
+        // Object.keys(ITM.FOODS[itemType]["stats"]).forEach(stat => {
+        //   playerData[stat] += parseInt(ITM.FOODS[itemType]["stats"][stat]);
+        // });
+        updateStats(playerData);
       }
+
       $("#prompt").hide();
       collidedInteractable = false;
       delete act.input.keyboard._events['keydown-N']
@@ -450,30 +405,29 @@ function tileInteraction(itemType) {
   }
 }
 
-function updateStats(player) {
-  let playerString = JSON.stringify(player);
+function updateStats(playerData) {
+  let playerString = JSON.stringify(playerData);
   localStorage.setItem("player", playerString);
 
   $.ajax({
-    url: "http://ilankleiman.com/StonyBrookSimu/CServer/index.php?method=save_user&username="+encodeURI(player.name),
+    url: "http://ilankleiman.com/StonyBrookSimu/CServer/index.php?method=save_user&username=" + encodeURI(playerData.name),
     type: 'post',
     dataType: 'json',
-    //contentType: 'application/json', // ????
     success: function (data) {
       console.log("success");
     },
     data: playerString
   });
 
-  $("#player-name").html(player.name);
-  $("#player-idn").html("ID: "+player.idn);
-  $("#player-year").html("Year: "+player.year);
-  $("#player-credits").html("Credits: "+player.credits + "/120");
-  $("#player-cash").html("$"+player.cash);
-  player.day = 22;
+  $("#player-name").html(playerData.name);
+  $("#player-idn").html("ID: "+playerData.idn);
+  $("#player-year").html("Year: "+playerData.year);
+  $("#player-credits").html("Credits: "+playerData.credits + "/120");
+  $("#player-cash").html("$"+playerData.cash);
+  playerData.day = 22;
   let classes = "";
   let i = 0;
-  player.classes.forEach(function (value) {
+  playerData.classes.forEach(function (value) {
     if (i == 0) {
       classes += value;
     } else {
@@ -482,14 +436,14 @@ function updateStats(player) {
     i++;
   });
   $("#player-stats-all").html(
-    "" + player.name + "\n<br>Day [" + player.day + "] - Week ["+ Math.ceil(player.day / 7) +"]<br><hr style='border:1px solid white'>" +
-    "GPA: " + player.gpa + ", " + player.year + "<br>" +
-    "" + player.credits + "/120 Credits <br><hr style='border:1px solid white'>" +
-    "Cash: <b>$" + player.cash + "</b><br>"+
-    "Energy: " + player.sleep + "%<br>"+
-    "Hunger: " + player.hunger + "%<br>"+
-    "Thirst: " + player.thirst + "%<br>"+
-    "Happiness: " + player.happiness + "%<br><hr style='border:1px solid white'>"+
+    "" + playerData.name + "\n<br>Day [" + playerData.day + "] - Week ["+ Math.ceil(playerData.day / 7) +"]<br><hr style='border:1px solid white'>" +
+    "GPA: " + playerData.gpa + ", " + playerData.year + "<br>" +
+    "" + playerData.credits + "/120 Credits <br><hr style='border:1px solid white'>" +
+    "Cash: <b>$" + playerData.cash + "</b><br>"+
+    "Energy: " + playerData.sleep + "%<br>"+
+    "Hunger: " + playerData.hunger + "%<br>"+
+    "Thirst: " + playerData.thirst + "%<br>"+
+    "Happiness: " + playerData.happiness + "%<br><hr style='border:1px solid white'>"+
     "Classes: " + classes + "<br><hr style='border:1px solid white'>"
   );
 }
@@ -503,4 +457,5 @@ function noInteractionsForDelay(millisec) {
 
 $(document).ready(function() {
   updateStats(JSON.parse(localStorage.getItem("player")));
+  $(document).add('*').off();
 });

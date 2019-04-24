@@ -217,7 +217,15 @@ function create() {
 
   aboveLayer.setDepth(10);
 
-  const spawnPoint = map.findObject("Objects", obj => obj.name === "Spawn Point");
+  // this code snippet only for main map... not for submaps
+  let spawnData = document.getElementById("map").getAttribute("prevmaploc");
+  let spawnPoint = {};
+  if (spawnData === null || spawnData === undefined) {
+    spawnPoint = map.findObject("Objects", obj => obj.name === "Spawn Point");
+  } else {
+    spawnPoint.x = parseFloat(spawnData.split(",")[0]);
+    spawnPoint.y = parseFloat(spawnData.split(",")[1]);
+  }
 
   player = this.physics.add
     .sprite(spawnPoint.x, spawnPoint.y, "Brown", "Brown-Standing.000")
@@ -282,13 +290,19 @@ function create() {
   camera.setBounds(0, 0, 3200, 3200);
   cursors = this.input.keyboard.createCursorKeys();
 
+  // for hiding the help menu on future visits
+  let showHelp = JSON.parse(localStorage.getItem("showHelp"));
+  if (typeof showHelp != "boolean") {
+    localStorage.setItem("showHelp", false); // for next time
+    showHelp = true; // for this time
+  }
   let helpMenuTitle = new ToolTip({
     game: this,
     text: "Help Menu\n",
     align: "center",
     clickDestroy: false,
     depth: 100,
-    visible: true,
+    visible: showHelp,
     x: 330,
     y: 16,
   });
@@ -299,7 +313,7 @@ function create() {
     align: "left",
     clickDestroy: false,
     depth: 100,
-    visible: true,
+    visible: showHelp,
     y: 90,
     x: 16,
   });
@@ -309,7 +323,7 @@ function create() {
     align: "left",
     clickDestroy: false,
     depth: 100,
-    visible: true,
+    visible: showHelp,
     y: 90,
     x: 416
   });
@@ -496,7 +510,7 @@ function tileInteraction(itemType) {
 
   console.log("interactions...");
 
-  let player = JSON.parse(localStorage.getItem("player"));
+  let playerData = JSON.parse(localStorage.getItem("player"));
   let message;
   let cost;
   let benefit;
@@ -581,7 +595,7 @@ function tileInteraction(itemType) {
     act.input.keyboard.once("keydown-" + "Y", event => {
       if (itemType == "cashForCredit") {
         $("#toastNotification").show();
-        if (player.cash - cost < 0) {
+        if (playerData.cash - cost < 0) {
           $("#toastNotification").html(
             "<center style='color:red'>Not enough cash!</center>"
           ).fadeOut(3000);
@@ -589,15 +603,15 @@ function tileInteraction(itemType) {
           $("#toastNotification").html(
             "<center style='color:green'>Purchased successfuly!</center>"
           ).fadeOut(3000);
-          player.cash -= cost;
-          player.credits += benefit;
-          updateStats(player);
+          playerData.cash -= cost;
+          playerData.credits += benefit;
+          updateStats(playerData);
         }
       } else if (itemType == "door-wang") {
         console.log("Loading wang");
         act.game.destroy();
         const loader = new JSLoader();
-        loader.loadMap({map: "Wang-Center.js"});
+        loader.loadMap({map: "Wang-Center.js", prevMapLoc: {x: player.x, y: player.y}});
       } else {
         alert("Not yet implemented!");
         console.log("unimplemented process!");
@@ -618,12 +632,12 @@ function tileInteraction(itemType) {
   }
 }
 
-function updateStats(player) {
-  let playerString = JSON.stringify(player);
+function updateStats(playerData) {
+  let playerString = JSON.stringify(playerData);
   localStorage.setItem("player", playerString);
 
   $.ajax({
-    url: "http://ilankleiman.com/StonyBrookSimu/CServer/index.php?method=save_user&username="+encodeURI(player.name),
+    url: "http://ilankleiman.com/StonyBrookSimu/CServer/index.php?method=save_user&username="+encodeURI(playerData.name),
     type: 'post',
     dataType: 'json',
     //contentType: 'application/json', // ????
@@ -633,15 +647,15 @@ function updateStats(player) {
     data: playerString
   });
 
-  $("#player-name").html(player.name);
-  $("#player-idn").html("ID: "+player.idn);
-  $("#player-year").html("Year: "+player.year);
-  $("#player-credits").html("Credits: "+player.credits + "/120");
-  $("#player-cash").html("$"+player.cash);
-  player.day = 22;
+  $("#player-name").html(playerData.name);
+  $("#player-idn").html("ID: "+playerData.idn);
+  $("#player-year").html("Year: "+playerData.year);
+  $("#player-credits").html("Credits: "+playerData.credits + "/120");
+  $("#player-cash").html("$"+playerData.cash);
+  playerData.day = 22;
   let classes = "";
   let i = 0;
-  player.classes.forEach(function (value) {
+  playerData.classes.forEach(function (value) {
     if (i == 0) {
       classes += value;
     } else {
@@ -650,18 +664,19 @@ function updateStats(player) {
     i++;
   });
   $("#player-stats-all").html(
-    "" + player.name + "\n<br>Day [" + player.day + "] - Week ["+ Math.ceil(player.day / 7) +"]<br><hr style='border:1px solid white'>" +
-    "GPA: " + player.gpa + ", " + player.year + "<br>" +
-    "" + player.credits + "/120 Credits <br><hr style='border:1px solid white'>" +
-    "Cash: <b>$" + player.cash + "</b><br>"+
-    "Energy: " + player.sleep + "%<br>"+
-    "Hunger: " + player.hunger + "%<br>"+
-    "Thirst: " + player.thirst + "%<br>"+
-    "Happiness: " + player.happiness + "%<br><hr style='border:1px solid white'>"+
+    "" + playerData.name + "\n<br>Day [" + playerData.day + "] - Week ["+ Math.ceil(playerData.day / 7) +"]<br><hr style='border:1px solid white'>" +
+    "GPA: " + playerData.gpa + ", " + playerData.year + "<br>" +
+    "" + playerData.credits + "/120 Credits <br><hr style='border:1px solid white'>" +
+    "Cash: <b>$" + playerData.cash + "</b><br>"+
+    "Energy: " + playerData.sleep + "%<br>"+
+    "Hunger: " + playerData.hunger + "%<br>"+
+    "Thirst: " + playerData.thirst + "%<br>"+
+    "Happiness: " + playerData.happiness + "%<br><hr style='border:1px solid white'>"+
     "Classes: " + classes + "<br><hr style='border:1px solid white'>"
   );
 }
 
 $(document).ready(function() {
   updateStats(JSON.parse(localStorage.getItem("player")));
+  $(document).add('*').off();
 });
