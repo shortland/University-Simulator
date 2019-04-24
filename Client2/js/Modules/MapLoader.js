@@ -1,4 +1,4 @@
-export class JSLoader {
+export class MapLoader {
   constructor({baseURL = window.location.host} = {}) {
     this.baseURL = baseURL;
   }

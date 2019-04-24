@@ -38,7 +38,7 @@ export class Physics {
     object,
   } = {}) {
     camera.startFollow(object);
-    camera.setBounds(0, 0, widthBounds, heightBounds);
+    camera.setBounds(a, b, widthBounds, heightBounds);
   }
   
 }

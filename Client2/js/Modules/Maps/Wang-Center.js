@@ -1,4 +1,4 @@
-import { ToolTip, JSLoader, InteractableTileMapping, Animations, Physics, GlobalListeners } from '../ModuleLoader.js';
+import { ToolTip, MapLoader, InteractableTileMapping, Animations, Physics, PlayerDataHandler, SharedEventData, Chat, JNotify } from '../ModuleLoader.js';
 
 const config = {
   type: Phaser.AUTO,
@@ -8,7 +8,9 @@ const config = {
   physics: {
     default: "arcade",
     arcade: {
-      gravity: { y: 0 }
+      gravity: {
+        y: 0
+      }
     }
   },
   scene: {
@@ -19,14 +21,18 @@ const config = {
 };
   
 const game = new Phaser.Game(config);
+const PDHandler = new PlayerDataHandler;
+const JNotifier = new JNotify();
+const JSLoader = new MapLoader();
+const eventModifiableState = {
+  speed: 200
+};
+
 let cursors;
 let player;
-let showDebug = true;
 
-var aboveLayer;
 var act;
 var map;
-var speed = 200;
 var collidedInteractable = false;
 
 function preload() {
@@ -84,13 +90,13 @@ function create() {
     tileInteraction("food-pizza-pepperoni"); 
   });
   interactableLayer.setTileIndexCallback([3], () => {
-    tileInteraction("food-rice-cake"); // Yes
+    tileInteraction("food-rice-cake");
   });
   interactableLayer.setTileIndexCallback([4], () => {
     tileInteraction("food-steak");
   });
   interactableLayer.setTileIndexCallback([5], () => {
-    tileInteraction("food-cola"); // Yes
+    tileInteraction("food-cola");
   });
   interactableLayer.setTileIndexCallback([6], () => {
     tileInteraction("food-water");
@@ -107,112 +113,19 @@ function create() {
     camera: this.cameras.main,
     object: player
   });
-
-  const anims = new Animations({animations: this.anims});
-  anims.create_player({prefix: "Brown"});
+  const anims = new Animations({
+    animations: this.anims
+  });
+  anims.create_player({
+    prefix: "Brown"
+  });
   
-
-
   cursors = this.input.keyboard.createCursorKeys();
-
-  let helpMenuTitle = new ToolTip({
-    game: this,
-    text: "Help Menu\n",
-    align: "center",
-    clickDestroy: false,
-    depth: 100,
-    visible: false,
-    x: 330,
-    y: 16,
-  });
-  let helpMenuLeft = new ToolTip({
-    game: this,
-    // \nShift+⬅️: Scroll left\nShift+➡️: Scroll right\nShift+⬆️: Scroll up\nShift+⬇️: Scroll down
-    text: "⬅️: Move left\n➡️: Move right\n⬆️: Move up\n⬇️: Move down\n\n[H] Show/hide this help menu\n\n[S] Show all player stats\n\n[Z] Toggle running (devmode)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n_______________________________",
-    align: "left",
-    clickDestroy: false,
-    depth: 100,
-    visible: false,
-    y: 90,
-    x: 16,
-  });
-  let helpMenuRight = new ToolTip({
-    game: this,//[P] Turn on/off phone //[I] Open/close inventory
-    text: "[M] Show Minigames\n\n[Y] Accept transaction\n[N] Reject transaction\n\n[T] Toggle chat\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n_______________________________",
-    align: "left",
-    clickDestroy: false,
-    depth: 100,
-    visible: false,
-    y: 90,
-    x: 416
-  });
-
-  this.input.keyboard.on("keydown-" + "M", event => {
-    if ($(".minigames").is(":visible")) {
-      $(".minigames").hide();
-    } else {
-      $(".minigames").show();
-      $(".minigames").html(
-        "<center>"+
-        "<h3>More games coming soon!</h3>" +
-        "Click <b id='play_coin' style='text-decoration:underline;cursor:pointer;'>[here]</b> to play the minigame: 'Coin Game'"+
-        "<br>You'll have 10 seconds to win cash for your player!" +
-        "</center>"
-      );
-      $("#play_coin").click(function(event)  {
-        localStorage.setItem("coin_win", 0);
-        $(".minigames").html("<iframe id='minigame_frame' src='coin.html' frameBorder='0px'></iframe>");
-        $("#minigame_frame").focus();
-        setTimeout(() => {
-          $(".minigames").html("");
-          $(".minigames").hide();
-          alert("Time's up! You won " + localStorage.getItem("coin_win"));
-          let player = JSON.parse(localStorage.getItem("player"));
-          player.cash = parseInt(player.cash) + parseInt(localStorage.getItem("coin_win"));
-          updateStats(player);
-        }, 10000);
-      });
-    }
-  });
   
-  this.input.keyboard.on("keydown-" + "H", event => {
-    if (helpMenuTitle.visible) {
-      helpMenuTitle.setVisible(false);
-      helpMenuLeft.setVisible(false);
-      helpMenuRight.setVisible(false);
-    } else {
-      helpMenuTitle.setVisible(true);
-      helpMenuLeft.setVisible(true);
-      helpMenuRight.setVisible(true);
-    }
-  });
-
-  this.input.keyboard.on("keydown-" + "Z", event => {
-    if (speed == 200) {
-      speed = 1000;
-    } else {
-      speed = 200;
-    }
-  });
-
-  this.input.keyboard.on("keydown-" + "S", event => {
-    if ($("#player-stats-all").is(":visible")) {
-      $("#player-stats-all").hide();
-    } else {
-      $("#player-stats-all").show();
-    }
-  });
-
-  this.input.keyboard.on("keydown-" + "P", event => {
-    if ($("#player-phone").is(":visible")) {
-      $("#player-phone").hide();
-    } else {
-      $("#player-phone").show();
-    }
-  });
-
-  this.input.keyboard.on("keydown-" + "I", event => {
-    alert("Not yet implemented");
+  const sharedEventsDatas = new SharedEventData({
+    game: this,
+    keyboard: this.input.keyboard, 
+    state: eventModifiableState
   });
 
   // Debug graphics
@@ -229,59 +142,12 @@ function create() {
     }); 
   });
 
-  $("#chat-box").on("keydown", function (e) {
-    if (
-      e.keyCode == 72 || // h
-      e.keyCode == 84 || // t
-      e.keyCode == 32 || // SpaceBar
-      e.keyCode == 80 || // p 
-      e.keyCode == 89 || // y
-      e.keyCode == 78 || // n
-      e.keyCode == 83 || // s
-      e.keyCode == 73 || // i
-      e.keyCode == 77 ||
-      e.keyCode == 27 || // esc
-      e.keyCode == 9 || // tab
-      e.keyCode == 13 // enter
-    ) {
-      e.preventDefault();
-      e.stopPropagation();
-      if (e.keyCode == 27) {
-        $("#chat-box").hide();
-        $("#chat-box").val("");
-        $("#chat-box").blur();
-        return;
-      }
-      if (e.keyCode == 13) {
-        console.log($("#chat-box").val());
-        alert("Not yet implemented!");
-        $("#chat-box").hide();
-        $("#chat-box").val("");
-        $("#chat-box").blur();
-        return;
-      }
-      $("#chat-box").val($("#chat-box").val() + String.fromCharCode(e.keyCode).toLowerCase());
-    }
-  });
-
-  this.input.keyboard.on("keydown-" + "T", event => {
-    if ($("#chat-box").is(":visible")) {
-      $("#chat-box").hide();
-      $("#chat-box").val("");
-      $("#chat-box").blur();
-    } else {
-      $("#chat-box").show();
-      $("#chat-box").focus();
-      $("#chat-box").val("");
-    }
-    event.preventDefault();
-    event.stopPropagation();
-  });
+  const chat = new Chat();
 }
 
 function update(time, delta) {
   const prevVelocity = player.body.velocity.clone();
-
+  const speed = eventModifiableState["speed"];
   // Stop any previous movement from the last frame
   player.body.setVelocity(0);
 
@@ -329,12 +195,9 @@ function tileInteraction(itemType) {
 
   console.log("interactions...");
 
-  let playerData = JSON.parse(localStorage.getItem("player"));
-  let message;
-  let cost;
-  let benefit;
-
   const ITM = new InteractableTileMapping;
+  let playerData = PDHandler.getStats();
+  let message;
 
   if (ITM.sign_ids.includes(itemType)) {
     let location = itemType.substring(5);
@@ -354,98 +217,43 @@ function tileInteraction(itemType) {
   }
 
   collidedInteractable = true;
-  if (!$("#prompt").is(":visible")) {
-    $("#prompt").show();
-    $("#prompt").html(
-      "<center>" + message + "</center>"
-    );
 
-    act.input.keyboard.once("keydown-" + "Y", event => {
-      if (itemType == "cashForCredit") {
-        $("#toastNotification").show();
-        if (playerData.cash - cost < 0) {
-          $("#toastNotification").html(
-            "<center style='color:red'>Not enough cash!</center>"
-          ).fadeOut(3000);
-        } else {
-          $("#toastNotification").html(
-            "<center style='color:green'>Purchased successfuly!</center>"
-          ).fadeOut(3000);
-          playerData.cash -= cost;
-          playerData.credits += benefit;
-          updateStats(playerData);
-        }
-      } else if (ITM.door_ids.includes(itemType)) {
-        act.game.destroy();
-        const loader = new JSLoader();
-        loader.loadMap({map: "MAIN"});
-      } else if (Object.keys(ITM.FOODS).includes(itemType)) {
-        // This makes the player auto-eat the food...
-        // We want to place it in their inventory so they can eat it later.
-        playerData["inventory"].push(itemType);
-        // Object.keys(ITM.FOODS[itemType]["stats"]).forEach(stat => {
-        //   playerData[stat] += parseInt(ITM.FOODS[itemType]["stats"][stat]);
-        // });
-        updateStats(playerData);
-      }
-
-      $("#prompt").hide();
-      collidedInteractable = false;
-      delete act.input.keyboard._events['keydown-N']
-      return;
-    });
+  JNotifier.prompt({
+    html: message
+  });
   
-    act.input.keyboard.once("keydown-" + "N", event => {
-      console.log("dont interact thing");
-      $("#prompt").hide();
-      collidedInteractable = false;
-      delete act.input.keyboard._events['keydown-Y']
-      return;
-    });
-  }
-}
-
-function updateStats(playerData) {
-  let playerString = JSON.stringify(playerData);
-  localStorage.setItem("player", playerString);
-
-  $.ajax({
-    url: "http://ilankleiman.com/StonyBrookSimu/CServer/index.php?method=save_user&username=" + encodeURI(playerData.name),
-    type: 'post',
-    dataType: 'json',
-    success: function (data) {
-      console.log("success");
-    },
-    data: playerString
-  });
-
-  $("#player-name").html(playerData.name);
-  $("#player-idn").html("ID: "+playerData.idn);
-  $("#player-year").html("Year: "+playerData.year);
-  $("#player-credits").html("Credits: "+playerData.credits + "/120");
-  $("#player-cash").html("$"+playerData.cash);
-  playerData.day = 22;
-  let classes = "";
-  let i = 0;
-  playerData.classes.forEach(function (value) {
-    if (i == 0) {
-      classes += value;
-    } else {
-      classes += ", " + value;
+  act.input.keyboard.once("keydown-" + "Y", () => {
+    if (ITM.door_ids.includes(itemType)) {
+      /**
+       * Regardless of the door type/id we're going to make the user go back to the main world.
+       * It's assumed we're NOT in the main world, and the only place we can go is the main world.
+       * NO traveling to sub maps from a sub map. Only can go to main map from sub-maps.
+       */
+      act.game.destroy();
+      JSLoader.loadMap({map: "MAIN"});
+    } else if (Object.keys(ITM.FOODS).includes(itemType)) {
+      if (playerData["cash"] < Math.abs(ITM.FOODS[itemType]["stats"]["cash"])) {
+        JNotifier.toast({color: "red", html: "Not enough cash!"});
+      } else {
+        PDHandler.addStats({stats: {cash: ITM.FOODS[itemType]["stats"]["cash"]}});
+        PDHandler.addInventory({itemList: [itemType]});
+        JNotifier.toast({color: "green", html: "Purchased successfully!"});
+      }
     }
-    i++;
+
+    JNotifier.promptHide();
+    collidedInteractable = false;
+    delete act.input.keyboard._events['keydown-N'];
+    return;
   });
-  $("#player-stats-all").html(
-    "" + playerData.name + "\n<br>Day [" + playerData.day + "] - Week ["+ Math.ceil(playerData.day / 7) +"]<br><hr style='border:1px solid white'>" +
-    "GPA: " + playerData.gpa + ", " + playerData.year + "<br>" +
-    "" + playerData.credits + "/120 Credits <br><hr style='border:1px solid white'>" +
-    "Cash: <b>$" + playerData.cash + "</b><br>"+
-    "Energy: " + playerData.sleep + "%<br>"+
-    "Hunger: " + playerData.hunger + "%<br>"+
-    "Thirst: " + playerData.thirst + "%<br>"+
-    "Happiness: " + playerData.happiness + "%<br><hr style='border:1px solid white'>"+
-    "Classes: " + classes + "<br><hr style='border:1px solid white'>"
-  );
+
+  act.input.keyboard.once("keydown-" + "N", () => {
+    console.log("dont interact thing");
+    JNotifier.promptHide();
+    collidedInteractable = false;
+    delete act.input.keyboard._events['keydown-Y'];
+    return;
+  });
 }
 
 function noInteractionsForDelay(millisec) {
@@ -456,6 +264,6 @@ function noInteractionsForDelay(millisec) {
 }
 
 $(document).ready(function() {
-  updateStats(JSON.parse(localStorage.getItem("player")));
+  PDHandler.refresh();
   $(document).add('*').off();
 });

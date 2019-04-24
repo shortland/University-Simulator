@@ -1,4 +1,4 @@
-import { ToolTip, APIHandler, JSLoader } from './Modules/ModuleLoader.js';
+import { ToolTip, APIHandler, MapLoader } from './Modules/ModuleLoader.js';
 
 const config = {
   type: Phaser.AUTO,
@@ -225,6 +225,7 @@ function create() {
   } else {
     spawnPoint.x = parseFloat(spawnData.split(",")[0]);
     spawnPoint.y = parseFloat(spawnData.split(",")[1]);
+    document.getElementById("map").removeAttribute("prevmaploc");
   }
 
   player = this.physics.add
@@ -610,7 +611,7 @@ function tileInteraction(itemType) {
       } else if (itemType == "door-wang") {
         console.log("Loading wang");
         act.game.destroy();
-        const loader = new JSLoader();
+        const loader = new MapLoader();
         loader.loadMap({map: "Wang-Center.js", prevMapLoc: {x: player.x, y: player.y}});
       } else {
         alert("Not yet implemented!");
