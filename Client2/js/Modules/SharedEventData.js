@@ -116,10 +116,14 @@ export class SharedEventData {
         $("#chat-box").hide();
         $("#chat-box").val("");
         $("#chat-box").blur();
+        $("#pre-chat").removeClass("visible-box");
+        $(".child-comment").finish().hide();
       } else {
         $("#chat-box").show();
         $("#chat-box").focus();
         $("#chat-box").val("");
+        $("#pre-chat").addClass("visible-box");
+        $(".child-comment").finish().show();
       }
       event.preventDefault();
       event.stopPropagation();

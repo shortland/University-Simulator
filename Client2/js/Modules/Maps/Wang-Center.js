@@ -145,6 +145,9 @@ function create() {
   const chat = new Chat();
 }
 
+/**
+ * [2] Maybe move this into its own maps/dir type
+ */
 function update(time, delta) {
   const prevVelocity = player.body.velocity.clone();
   const speed = eventModifiableState["speed"];
@@ -188,6 +191,9 @@ function update(time, delta) {
   }
 }
 
+/**
+ * [1] Maybe move this into its own maps/dir type
+ */
 function tileInteraction(itemType) {
   if (collidedInteractable) {
     return; // the menu is open. so don't open new interactions... stop here.
