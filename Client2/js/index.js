@@ -429,7 +429,9 @@ function create() {
     event.stopPropagation();
   });
 
-  const chat = new Chat();
+  if (JSON.parse(localStorage.getItem("chat_loaded")) === false) {
+    const chat = new Chat();
+  }
 }
 
 function update(time, delta) {

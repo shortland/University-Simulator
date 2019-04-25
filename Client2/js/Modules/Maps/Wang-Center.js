@@ -103,16 +103,42 @@ function create() {
   });
 
   const physics = new Physics({physics: this.physics});
+  const collisionLayers = [worldLayer, interactableLayer];
+  /**
+   * Add NPCs
+   */
+  const npc1 = physics.add_npc({
+    spawn: {x: 180, y: 180},
+    name: "CulinArt Worker 1"
+  })
+  const npc2 = physics.add_npc({
+    spawn: {x: 160, y: 140},
+    motion: "Walking-Right", 
+    frame: "001",
+    name: "Friendly Student"
+  })
+  physics.add_player_layer_collisions({
+    layers: collisionLayers,
+    player: npc1
+  });
+  physics.add_player_layer_collisions({
+    layers: collisionLayers,
+    player: npc2
+  });
+  /**
+   * Add the player
+   */
   player = physics.add_player({
     prefix: "Brown", 
     scale: 0.8, 
     spawn: map.findObject("Objects", obj => obj.name === "Spawn Point")
   });
-  physics.add_player_layer_collisions({layers: [worldLayer, interactableLayer]});
+  physics.add_player_layer_collisions({layers: collisionLayers.concat([npc1, npc2])});
   physics.add_camera_follow({
     camera: this.cameras.main,
     object: player
   });
+
   const anims = new Animations({
     animations: this.anims
   });
@@ -142,7 +168,7 @@ function create() {
     }); 
   });
 
-  const chat = new Chat();
+  const chat = new Chat({initChat: true});
 }
 
 /**

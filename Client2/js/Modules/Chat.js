@@ -1,10 +1,15 @@
 export class Chat {
-  constructor({} = {}) {
-    this.baseURL = window.location.protocol + "//" + window.location.host + "/StonyBrookSimu/CServer/";
-    this.refreshRate = 1000; // ms
-    this.updateTimestamp = Math.floor(Date.now() / 1000);
-    this.initChat();
-    this.initPolling();
+  constructor({initChat = false} = {}) {
+    if (initChat) {
+      this.initChat();
+    } else {
+      localStorage.setItem("chat_loaded", true);
+      this.baseURL = window.location.protocol + "//" + window.location.host + "/StonyBrookSimu/CServer/";
+      this.refreshRate = 1000; // ms
+      this.updateTimestamp = Math.floor(Date.now() / 1000);
+      this.initChat();
+      this.initPolling();
+    }
   }
 
   postMessage({message: message} = {}) {
