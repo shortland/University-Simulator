@@ -16,7 +16,9 @@ export class Physics {
     frame = "000",
     maxVX = 1,
     maxVY = 1,
-    name = ""
+    name = "",
+    story = null,
+    immovable = true
   } = {}) {
     const npc = this.physics.add
       .sprite(spawn.x, spawn.y, prefix, prefix + "-" + motion + "." + frame)
@@ -25,6 +27,8 @@ export class Physics {
     npc.setScale(scale);
     npc.setMaxVelocity(maxVX, maxVY);
     npc.setName(name);
+    npc.setImmovable(immovable);
+    npc.story = story;
     return npc;
   }
 
@@ -47,9 +51,9 @@ export class Physics {
     return this.player;
   }
 
-  add_player_layer_collisions({layers, player = this.player} = {}) {
+  add_player_layer_collisions({layers, player = this.player, callback = null} = {}) {
     layers.forEach(layer => {
-      this.physics.add.collider(player, layer);
+      this.physics.add.collider(player, layer, callback);
     });
   }
 

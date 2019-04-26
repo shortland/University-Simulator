@@ -36,35 +36,29 @@ var map;
 var collidedInteractable = false;
 
 function preload() {
-  this.load.image("tiles3", "assets/tilesets/Maze Tile.png");
-  this.load.image("foods", "assets/tilesets/food.png");
-  this.load.image("chair_tables", "assets/tilesets/ChairTables.png");
-  this.load.image("tiles", "assets/tilesets/SBU.png");
+  this.load.image("indoor", "assets/tilesets/indoor.png");
+  this.load.image("Beds", "assets/tilesets/Beds.png");
   this.load.image("signs", "assets/tilesets/signs.png");
   this.load.image("solids", "assets/tilesets/Solids.png");
   
-  this.load.tilemapTiledJSON("map_wang-center", "assets/tilemaps/Wang-Center.json");
+  this.load.tilemapTiledJSON("Dorm", "assets/tilemaps/Dorm.json");
   this.load.atlas("Brown", "assets/atlas/Brown.png", "assets/atlas/Brown.json");
 }
 
 function create() {
-  map = this.make.tilemap({ key: "map_wang-center" });
+  map = this.make.tilemap({ key: "Dorm" });
 
-  const mazeSet = map.addTilesetImage("Maze Tile", "tiles3");
-  const foodSet = map.addTilesetImage("food", "foods");
-  const chairTableSet = map.addTilesetImage("ChairTables", "chair_tables");
-  const tileSet = map.addTilesetImage("SBU", "tiles");
+  const indoorSet = map.addTilesetImage("indoor", "indoor");
+  const bedsSet = map.addTilesetImage("Beds", "Beds");
   const signsSet = map.addTilesetImage("signs", "signs");
   const solidsSet = map.addTilesetImage("Solids", "solids");
 
-  let allTileSets = [mazeSet, foodSet, chairTableSet, tileSet, signsSet, solidsSet];
+  let allTileSets = [indoorSet, bedsSet, signsSet, solidsSet];
 
-  const belowLayer2 = map.createStaticLayer("Below Player2", allTileSets, 0, 0);
   const belowLayer = map.createStaticLayer("Below Player", allTileSets, 0, 0);
   const worldLayer = map.createStaticLayer("World", allTileSets, 0, 0);
-  const interactableLayer = map.createStaticLayer("Interactables", [signsSet, foodSet], 0, 0);
+  const interactableLayer = map.createStaticLayer("Interactables", [signsSet, bedsSet], 0, 0);
 
-  belowLayer2.setScale( 0.25 );
   belowLayer.setScale( 0.25 );
   worldLayer.setScale( 0.25 );
   interactableLayer.setScale( 0.25 );
@@ -73,33 +67,24 @@ function create() {
   worldLayer.setCollisionBetween(1, 10000, true, 'World');
 
   act = this;
+  console.log(interactableLayer); // get gids for collision
 
   /**
    * INTERACTIONS WITH TILES
    */
-  interactableLayer.setTileIndexCallback([26], () => {
+  const gidDoorSign = [];
+  for (let i = 44; i <= 87; ++i) {
+    gidDoorSign.push(i);
+  }
+  interactableLayer.setTileIndexCallback(gidDoorSign, () => {
     tileInteraction("door-wang");
   });
-  interactableLayer.setTileIndexCallback([25], () => {
-    tileInteraction("sign-wang");
-  });
-  interactableLayer.setTileIndexCallback([1], () => {
-    tileInteraction("food-pizza");
-  });
-  interactableLayer.setTileIndexCallback([2], () => {
-    tileInteraction("food-pizza-pepperoni"); 
-  });
-  interactableLayer.setTileIndexCallback([3], () => {
-    tileInteraction("food-rice-cake");
-  });
-  interactableLayer.setTileIndexCallback([4], () => {
-    tileInteraction("food-steak");
-  });
-  interactableLayer.setTileIndexCallback([5], () => {
-    tileInteraction("food-cola");
-  });
-  interactableLayer.setTileIndexCallback([6], () => {
-    tileInteraction("food-water");
+  const gidBeds = [];
+  for (let i = 1; i <= 9; ++i) {
+    gidBeds.push(i);
+  }
+  interactableLayer.setTileIndexCallback(gidBeds, () => {
+    tileInteraction("bed");
   });
 
   const physics = new Physics({physics: this.physics});
@@ -108,22 +93,47 @@ function create() {
    * Add NPCs
    */
   const npc1 = physics.add_npc({
-    spawn: {x: 180, y: 180},
-    name: "CulinArt Worker 1"
-  })
-  const npc2 = physics.add_npc({
-    spawn: {x: 160, y: 140},
-    motion: "Walking-Right", 
-    frame: "001",
-    name: "Friendly Student"
-  })
-  physics.add_player_layer_collisions({
-    layers: collisionLayers,
-    player: npc1
+    spawn: {x: 180, y: 130},
+    immovable: true,
+    name: "Jimmy",
+    story: {
+      next: {
+        line: "Hi! I'm Jimmy, a Political Science major. Want to hear my opinions on the world?",
+        Y: {
+          next: {
+            line: "A lot of people don't think PolySci majors are important. But we're just as important as other scientists. I think we should be considered scientists ourselves.",
+            N: {
+              next: {
+                line: "Your opinions are invalid. Do some research before you disagree with a PolySci major. <br>Bye."
+              }
+            },
+            Y: {
+              next: {
+                line: "I'm glad you agree with me. You should think about a PolySci minor. Your opinions align perfectly with how we think!"
+              }
+            }
+          }
+        },
+        N: {
+          next: {
+            line: "Hopefully next time you can hear me out!"
+          }
+        }
+      }
+    }
   });
-  physics.add_player_layer_collisions({
-    layers: collisionLayers,
-    player: npc2
+  const npc2 = physics.add_npc({
+    spawn: {x: 160, y: 90},
+    immovable: true,
+    motion: "Walking-Left", 
+    frame: "001",
+    name: "Billy",
+    story: {
+      next: {
+        line: "Hi " + JSON.parse(localStorage.getItem("player")).name + "! I'm Billy, a CSE student!",
+        timeout: 8000
+      }
+    }
   });
   /**
    * Add the player
@@ -131,8 +141,24 @@ function create() {
   player = physics.add_player({
     prefix: "Brown", 
     scale: 0.8, 
-    spawn: map.findObject("Objects", obj => obj.name === "Spawn Point")
+    spawn: {x: 160, y: 176}
   });
+  /**
+   * Add collisions for NPCs after the player has been added - so that we can add the player to the npc's collisions
+   */
+  physics.add_player_layer_collisions({
+    layers: collisionLayers.concat(player),
+    player: npc1,
+    callback: JNotifier.storyPlayerInteraction
+  });
+  physics.add_player_layer_collisions({
+    layers: collisionLayers.concat(player),
+    player: npc2,
+    callback: JNotifier.toastPlayerInteraction
+  });
+  /**
+   * Add collisions for the player
+   */
   physics.add_player_layer_collisions({layers: collisionLayers.concat([npc1, npc2])});
   physics.add_camera_follow({
     camera: this.cameras.main,
@@ -241,9 +267,11 @@ function tileInteraction(itemType) {
     return;
   } else if (ITM.door_ids.includes(itemType)) {
     let location = itemType.substring(5);
-    message = "Exit " + location.toUpperCase() + "?<br><br>[Y] Yes &nbsp;&nbsp;&nbsp;&nbsp; [N] No";
+    message = "Exit building?<br><br>[Y] Yes &nbsp;&nbsp;&nbsp;&nbsp; [N] No";
   } else if (Object.keys(ITM.FOODS).includes(itemType)) {
     message = "Purchase <span style='font-style: oblique;'>" + ITM.FOODS[itemType]["name"] + "</span> for <span style='font-weight: heavy;'>$" + Math.abs(ITM.FOODS[itemType]["stats"]["cash"]) + "</span>?<br><br>[Y] Yes &nbsp;&nbsp;&nbsp;&nbsp; [N] No";
+  } else if (itemType == "bed") {
+    message = "Sleep?";
   } else {
     message = "UNKNOWN INTERACTION @function tileInteract(itemType:" + itemType + ")";
   }
@@ -271,6 +299,8 @@ function tileInteraction(itemType) {
         PDHandler.addInventory({itemList: [itemType]});
         JNotifier.toast({color: "green", html: "Purchased successfully!"});
       }
+    } else if (itemType == "bed") {
+      JNotifier.toast({color: "green", html: "Sleep; and make player less tired but more hungry and thirsty..."});
     }
 
     JNotifier.promptHide();

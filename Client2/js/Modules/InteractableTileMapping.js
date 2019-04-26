@@ -60,11 +60,11 @@ export class InteractableTileMapping {
         "cash": -6,
       }
     },
-    "food-rice-cake": {
-      name: "Rice Cake",
+    "food-rice-curry": {
+      name: "Rice Curry",
       stats: {
         "hunger": 15,
-        "cash": -9,
+        "cash": -10,
       }
     },
     "food-steak": {
@@ -91,6 +91,4 @@ export class InteractableTileMapping {
       }
     }
   };
-
-
 }

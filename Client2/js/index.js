@@ -581,11 +581,16 @@ function tileInteraction(itemType) {
           playerData.credits += benefit;
           updateStats(playerData);
         }
-      } else if (itemType == "door-wang") {
-        console.log("Loading wang");
+      } else if (["door-east", "door-west", "door-the-sac", "door-wang"].includes(itemType)) {
+        console.log("Loading FoodCourt");
         act.game.destroy();
         const loader = new MapLoader();
-        loader.loadMap({map: "Wang-Center.js", prevMapLoc: {x: player.x, y: player.y}});
+        loader.loadMap({map: "FoodCourt.js", prevMapLoc: {x: player.x, y: player.y}});
+      } else if (["door-roth"].includes(itemType)) {
+        console.log("Loading Dorm");
+        act.game.destroy();
+        const loader = new MapLoader();
+        loader.loadMap({map: "Dorm.js", prevMapLoc: {x: player.x, y: player.y}});
       } else {
         alert("Not yet implemented!");
         console.log("unimplemented process!");
