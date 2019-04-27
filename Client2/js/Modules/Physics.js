@@ -6,6 +6,7 @@ export class Physics {
 
   add_npc({
     prefix = "Brown",
+    atlas = prefix,
     width = 20,
     height = 20,
     offsetX = 54,
@@ -18,17 +19,20 @@ export class Physics {
     maxVY = 1,
     name = "",
     story = null,
-    immovable = true
+    immovable = true,
+    price = null
   } = {}) {
     const npc = this.physics.add
-      .sprite(spawn.x, spawn.y, prefix, prefix + "-" + motion + "." + frame)
+      .sprite(spawn.x, spawn.y, atlas, prefix + "-" + motion + "." + frame)
       .setSize(width, height)
       .setOffset(offsetX, offsetY);
+
     npc.setScale(scale);
     npc.setMaxVelocity(maxVX, maxVY);
     npc.setName(name);
     npc.setImmovable(immovable);
     npc.story = story;
+    npc.price = parseInt(price);
     return npc;
   }
 

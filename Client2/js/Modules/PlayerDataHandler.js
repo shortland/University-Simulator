@@ -30,6 +30,7 @@ export class PlayerDataHandler {
   addStats({stats} = {}) {
     let data = this.getStats();
     Object.keys(stats).forEach(stat => {
+      console.log(stats[stat]);
       data[stat] += parseFloat(stats[stat]);
     });
     this.updateStats(data);

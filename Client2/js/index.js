@@ -552,8 +552,7 @@ function tileInteraction(itemType) {
   } else if (itemType == 'door') {
     console.log("There's a hidden doormat here. Devs need to remove it - as it's now deprecated...");
     return;
-  }
-  else {
+  } else {
     message = "UNKNOWN INTERACTION @function tileInteract(itemType:"+itemType+")";
   }
 
@@ -581,7 +580,7 @@ function tileInteraction(itemType) {
           playerData.credits += benefit;
           updateStats(playerData);
         }
-      } else if (["door-east", "door-west", "door-the-sac", "door-wang"].includes(itemType)) {
+      } else if (["door-east", "door-west", "door-wang"].includes(itemType)) {
         console.log("Loading FoodCourt");
         act.game.destroy();
         const loader = new MapLoader();
@@ -591,6 +590,11 @@ function tileInteraction(itemType) {
         act.game.destroy();
         const loader = new MapLoader();
         loader.loadMap({map: "Dorm.js", prevMapLoc: {x: player.x, y: player.y}});
+      } else if (["door-the-sac"].includes(itemType)) {
+        console.log("Loading SAC");
+        act.game.destroy();
+        const loader = new MapLoader();
+        loader.loadMap({map: "SAC.js", prevMapLoc: {x: player.x, y: player.y}});
       } else {
         alert("Not yet implemented!");
         console.log("unimplemented process!");

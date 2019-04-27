@@ -37,27 +37,26 @@ var collidedInteractable = false;
 
 function preload() {
   this.load.image("indoor", "assets/tilesets/indoor.png");
-  this.load.image("Beds", "assets/tilesets/Beds.png");
   this.load.image("signs", "assets/tilesets/signs.png");
   this.load.image("solids", "assets/tilesets/Solids.png");
   
-  this.load.tilemapTiledJSON("Dorm", "assets/tilemaps/Dorm.json");
+  this.load.tilemapTiledJSON("SAC", "assets/tilemaps/SAC.json");
   this.load.atlas("Brown", "assets/atlas/Brown.png", "assets/atlas/Brown.json");
+  this.load.atlas("Cars", "assets/atlas/Cars.png", "assets/atlas/Cars.json");
 }
 
 function create() {
-  map = this.make.tilemap({ key: "Dorm" });
+  map = this.make.tilemap({ key: "SAC" });
 
   const indoorSet = map.addTilesetImage("indoor", "indoor");
-  const bedsSet = map.addTilesetImage("Beds", "Beds");
   const signsSet = map.addTilesetImage("signs", "signs");
   const solidsSet = map.addTilesetImage("Solids", "solids");
 
-  let allTileSets = [indoorSet, bedsSet, signsSet, solidsSet];
+  let allTileSets = [indoorSet, signsSet, solidsSet];
 
   const belowLayer = map.createStaticLayer("Below Player", allTileSets, 0, 0);
   const worldLayer = map.createStaticLayer("World", allTileSets, 0, 0);
-  const interactableLayer = map.createStaticLayer("Interactables", [signsSet, bedsSet], 0, 0);
+  const interactableLayer = map.createStaticLayer("Interactables", [signsSet], 0, 0);
 
   belowLayer.setScale( 0.25 );
   worldLayer.setScale( 0.25 );
@@ -72,19 +71,11 @@ function create() {
   /**
    * INTERACTIONS WITH TILES
    */
-  const gidDoorSign = [];
-  for (let i = 44; i <= 87; ++i) {
-    gidDoorSign.push(i);
-  }
-  interactableLayer.setTileIndexCallback(gidDoorSign, () => {
-    tileInteraction("door-wang");
+  interactableLayer.setTileIndexCallback([36], () => {
+    tileInteraction("sign-the-sac");
   });
-  const gidBeds = [];
-  for (let i = 1; i <= 9; ++i) {
-    gidBeds.push(i);
-  }
-  interactableLayer.setTileIndexCallback(gidBeds, () => {
-    tileInteraction("bed");
+  interactableLayer.setTileIndexCallback([37], () => {
+    tileInteraction("door-the-sac");
   });
 
   const physics = new Physics({physics: this.physics});
@@ -92,46 +83,130 @@ function create() {
   /**
    * Add NPCs
    */
-  const npc1 = physics.add_npc({
-    spawn: {x: 180, y: 130},
+  const car1 = physics.add_npc({
+    prefix: "Car-Yellow",
+    motion: "Up",
+    offsetX: 30,
+    offsetY: 0,
+    width: 70,
+    height: 125,
+    atlas: "Cars",
+    spawn: {x: 320, y: 320},
     immovable: true,
-    name: "Jimmy",
+    name: "Car 1",
+    price: 2000,
     story: {
       next: {
-        line: "Hi! I'm Jimmy, a Political Science major. Want to hear my opinions on the world?",
+        line: "Buy skin for $2000?",
         Y: {
           next: {
-            line: "A lot of people don't think PolySci majors are important. But we're just as important as other scientists. I think we should be considered scientists ourselves.",
-            N: {
-              next: {
-                line: "Your opinions are invalid. Do some research before you disagree with a PolySci major. <br>Bye."
-              }
-            },
-            Y: {
-              next: {
-                line: "I'm glad you agree with me. You should think about a PolySci minor. Your opinions align perfectly with how we think!"
-              }
-            }
+            line: "Congrats! You can change your skin via your inventory [I]"
           }
         },
         N: {
           next: {
-            line: "Hopefully next time you can hear me out!"
+            line: "Ok."
+          }
+        }
+      }
+    }
+  });
+  const car2 = physics.add_npc({
+    prefix: "Car-Blue",
+    motion: "Up",
+    offsetX: 30,
+    offsetY: 0,
+    width: 70,
+    height: 125,
+    atlas: "Cars",
+    spawn: {x: 220, y: 320},
+    immovable: true,
+    name: "Car 2",
+    price: 1500,
+    story: {
+      next: {
+        line: "Buy skin for $1500?",
+        Y: {
+          next: {
+            line: "Congrats! You can change your skin via your inventory [I]"
+          }
+        },
+        N: {
+          next: {
+            line: "Ok."
+          }
+        }
+      }
+    }
+  });
+  const car3 = physics.add_npc({
+    prefix: "Car-Red",
+    motion: "Up",
+    offsetX: 30,
+    offsetY: 0,
+    width: 70,
+    height: 125,
+    atlas: "Cars",
+    spawn: {x: 120, y: 320},
+    immovable: true,
+    name: "Car 3",
+    price: 1000,
+    story: {
+      next: {
+        line: "Buy skin for $1000?",
+        Y: {
+          next: {
+            line: "Congrats! You can change your skin via your inventory [I]"
+          }
+        },
+        N: {
+          next: {
+            line: "Ok."
+          }
+        }
+      }
+    }
+  });
+  const npc1 = physics.add_npc({
+    spawn: {x: 45, y: 265},
+    immovable: true,
+    name: "Skin 1",
+    story: {
+      next: {
+        line: "Buy skin?",
+        price: 200,
+        Y: {
+          next: {
+            line: "Congrats! You can change your skin via your inventory [I]"
+          }
+        },
+        N: {
+          next: {
+            line: "Ok."
           }
         }
       }
     }
   });
   const npc2 = physics.add_npc({
-    spawn: {x: 160, y: 90},
+    spawn: {x: 80, y: 265},
     immovable: true,
-    motion: "Walking-Left", 
     frame: "001",
-    name: "Billy",
+    name: "Skin 2",
     story: {
       next: {
-        line: "Hi " + JSON.parse(localStorage.getItem("player")).name + "! I'm Billy, a CSE student!",
-        timeout: 8000
+        line: "Buy skin?",
+        price: 250,
+        Y: {
+          next: {
+            line: "Congrats! You can change your skin via your inventory [I]"
+          }
+        },
+        N: {
+          next: {
+            line: "Ok."
+          }
+        }
       }
     }
   });
@@ -141,7 +216,7 @@ function create() {
   player = physics.add_player({
     prefix: "Brown", 
     scale: 0.8, 
-    spawn: {x: 160, y: 176}
+    spawn: {x: 320, y: 600}
   });
   /**
    * Add collisions for NPCs after the player has been added - so that we can add the player to the npc's collisions
@@ -154,12 +229,27 @@ function create() {
   physics.add_player_layer_collisions({
     layers: collisionLayers.concat(player),
     player: npc2,
-    callback: JNotifier.toastPlayerInteraction
+    callback: JNotifier.storyPlayerInteraction
+  });
+  physics.add_player_layer_collisions({
+    layers: collisionLayers.concat(player),
+    player: car1,
+    callback: JNotifier.storyPlayerInteraction
+  });
+  physics.add_player_layer_collisions({
+    layers: collisionLayers.concat(player),
+    player: car2,
+    callback: JNotifier.storyPlayerInteraction
+  });
+  physics.add_player_layer_collisions({
+    layers: collisionLayers.concat(player),
+    player: car3,
+    callback: JNotifier.storyPlayerInteraction
   });
   /**
    * Add collisions for the player
    */
-  physics.add_player_layer_collisions({layers: collisionLayers.concat([npc1, npc2])});
+  physics.add_player_layer_collisions({layers: collisionLayers.concat([npc1, npc2, car1, car2, car3])});
   physics.add_camera_follow({
     camera: this.cameras.main,
     object: player
@@ -270,8 +360,6 @@ function tileInteraction(itemType) {
     message = "Exit building?<br><br>[Y] Yes &nbsp;&nbsp;&nbsp;&nbsp; [N] No";
   } else if (Object.keys(ITM.FOODS).includes(itemType)) {
     message = "Purchase <span style='font-style: oblique;'>" + ITM.FOODS[itemType]["name"] + "</span> for <span style='font-weight: heavy;'>$" + Math.abs(ITM.FOODS[itemType]["stats"]["cash"]) + "</span>?<br><br>[Y] Yes &nbsp;&nbsp;&nbsp;&nbsp; [N] No";
-  } else if (itemType == "bed") {
-    message = "Sleep?<br><br>[Y] Yes &nbsp;&nbsp;&nbsp;&nbsp; [N] No";
   } else {
     message = "UNKNOWN INTERACTION @function tileInteract(itemType:" + itemType + ")";
   }
@@ -299,8 +387,6 @@ function tileInteraction(itemType) {
         PDHandler.addInventory({itemList: [itemType]});
         JNotifier.toast({color: "green", html: "Purchased successfully!"});
       }
-    } else if (itemType == "bed") {
-      JNotifier.toast({color: "green", html: "Sleep; and make player less tired but more hungry and thirsty..."});
     }
 
     JNotifier.promptHide();

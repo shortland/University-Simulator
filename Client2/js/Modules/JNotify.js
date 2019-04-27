@@ -1,6 +1,9 @@
+import { PlayerDataHandler } from './ModuleLoader.js';
+
 export class JNotify {
   constructor({} = {}) {
     this.prevInteractantName;
+    this.PDHandler;
   }
 
   toastPlayerInteraction(interactant) {
@@ -15,12 +18,20 @@ export class JNotify {
   }
 
   storyPlayerInteraction(interactant) {
+    if ($("#prompt").is(":visible")) {
+      return;
+    }
+    let PDH = this.PDHandler = new PlayerDataHandler();
+    console.log(PDH);
     let yes_no = "<br><br>[Y] Yes &nbsp;&nbsp;&nbsp;&nbsp; [N] No";
     let yes = "<br><br>[Y] Yes";
     let no = "<br><br>[N] No";
-    recursiveStory(interactant.story.next);
+    recursiveStory(interactant, PDH, interactant.story.next);
 
-    function recursiveStory(story) {
+    function recursiveStory(interactant, PDH, story) {
+      if ($("#prompt").is(":visible")) {
+        return;
+      }
       setTimeout(() => {
         if ($("#prompt").is(":visible")) {
           return;
@@ -44,17 +55,25 @@ export class JNotify {
       );
 
       $(document).keypress(event => {
-        if (choice == "<br><br>[Y] Exit") {
-          $("#prompt").hide();
-          $(document).unbind("keypress");
-          return;
-        }
-        if (event.keyCode == 121) {
-          $("#prompt").hide();
-          recursiveStory(story.Y.next);
-        } else if (event.keyCode == 110) {
-          $("#prompt").hide();
-          recursiveStory(story.N.next);
+        if ($("#prompt").is(":visible")) {
+          if (choice == "<br><br>[Y] Exit") {
+            $("#prompt").hide();
+            $(document).unbind("keypress");
+            return;
+          }
+          if (event.keyCode == 121) {
+            if (interactant.price > 0) {
+              PDH.addStats({stats: {cash: (-1 * parseInt(interactant.price))}});
+              PDH.addInventory({itemList: [interactant.name]});
+              $("#prompt").hide();
+            } else {
+              $("#prompt").hide();
+              recursiveStory(interactant, PDH, story.Y.next);
+            }
+          } else if (event.keyCode == 110) {
+            $("#prompt").hide();
+            recursiveStory(interactant, PDH, story.N.next);
+          }
         }
       });
     }

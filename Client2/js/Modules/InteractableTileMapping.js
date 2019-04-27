@@ -91,4 +91,22 @@ export class InteractableTileMapping {
       }
     }
   };
+
+  CARS = {
+    "car-yellow": {
+      name: "Luxury Yellow Car",
+      speed: 600,
+      scale: 3.0,
+    },
+    "car-blue": {
+      name: "Affordable Yellow Car",
+      speed: 450,
+      scale: 3.0,
+    },
+    "car-red": {
+      name: "Inexpensive Red Car",
+      speed: 300,
+      scale: 3.0,
+    },
+  };
 }
