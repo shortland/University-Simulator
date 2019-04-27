@@ -32,7 +32,9 @@ export class Physics {
     npc.setName(name);
     npc.setImmovable(immovable);
     npc.story = story;
-    npc.price = parseInt(price);
+    if (price != null) {
+      npc.price = parseInt(price);
+    }
     return npc;
   }
 

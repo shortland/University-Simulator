@@ -66,7 +66,7 @@ function create() {
   worldLayer.setCollisionBetween(1, 10000, true, 'World');
 
   act = this;
-  console.log(interactableLayer); // get gids for collision
+  //console.log(interactableLayer); // get gids for collision
 
   /**
    * INTERACTIONS WITH TILES
@@ -91,7 +91,7 @@ function create() {
     width: 70,
     height: 125,
     atlas: "Cars",
-    spawn: {x: 320, y: 320},
+    spawn: {x: 220, y: 550},
     immovable: true,
     name: "Car 1",
     price: 2000,
@@ -119,7 +119,7 @@ function create() {
     width: 70,
     height: 125,
     atlas: "Cars",
-    spawn: {x: 220, y: 320},
+    spawn: {x: 145, y: 550},
     immovable: true,
     name: "Car 2",
     price: 1500,
@@ -147,7 +147,7 @@ function create() {
     width: 70,
     height: 125,
     atlas: "Cars",
-    spawn: {x: 120, y: 320},
+    spawn: {x: 70, y: 550},
     immovable: true,
     name: "Car 3",
     price: 1000,

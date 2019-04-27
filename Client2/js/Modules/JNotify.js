@@ -22,11 +22,12 @@ export class JNotify {
       return;
     }
     let PDH = this.PDHandler = new PlayerDataHandler();
-    console.log(PDH);
     let yes_no = "<br><br>[Y] Yes &nbsp;&nbsp;&nbsp;&nbsp; [N] No";
     let yes = "<br><br>[Y] Yes";
     let no = "<br><br>[N] No";
-    recursiveStory(interactant, PDH, interactant.story.next);
+    if (interactant.story.next != null || interactant.price != null) {
+      recursiveStory(interactant, PDH, interactant.story.next);
+    }
 
     function recursiveStory(interactant, PDH, story) {
       if ($("#prompt").is(":visible")) {
@@ -54,24 +55,29 @@ export class JNotify {
         "<center>" + story.line + choice + "</center>"
       );
 
-      $(document).keypress(event => {
+      $(document).on("keypress", event => {
         if ($("#prompt").is(":visible")) {
           if (choice == "<br><br>[Y] Exit") {
             $("#prompt").hide();
-            $(document).unbind("keypress");
+            $(document).off("keypress");
             return;
           }
+
           if (event.keyCode == 121) {
-            if (interactant.price > 0) {
-              PDH.addStats({stats: {cash: (-1 * parseInt(interactant.price))}});
+            if (interactant["price"] > 0) {
+              PDH.addStats({stats: {cash: (-1 * parseInt(interactant["price"]))}});
               PDH.addInventory({itemList: [interactant.name]});
               $("#prompt").hide();
+              $(document).off("keypress");
+              recursiveStory(interactant, PDH, story.Y.next);
             } else {
               $("#prompt").hide();
+              $(document).off("keypress");
               recursiveStory(interactant, PDH, story.Y.next);
             }
           } else if (event.keyCode == 110) {
             $("#prompt").hide();
+            $(document).off("keypress");
             recursiveStory(interactant, PDH, story.N.next);
           }
         }
