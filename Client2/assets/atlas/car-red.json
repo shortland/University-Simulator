@@ -240,7 +240,7 @@
                 "h": 128
             }
         },
-        "car-red-Walking-Down.000": {
+        "car-red-Walking-Right.000": {
             "frame": {
                 "x": 128,
                 "y": 256,
@@ -280,7 +280,7 @@
                 "h": 128
             }
         },
-        "car-red-Walking-Right.000": {
+        "car-red-Walking-Down.000": {
             "frame": {
                 "x": 384,
                 "y": 256,

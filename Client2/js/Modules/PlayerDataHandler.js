@@ -33,16 +33,13 @@ export class PlayerDataHandler {
   }
 
   useItem(id) {
+    console.log(id);
     const data = this.getStats();
     if (this.ITM.FOODS[id] != null) {
       this.consumeItem({item: id});
       let index = data["inventory"].indexOf(id);
       if (index !== -1) data["inventory"].splice(index, 1);
-    } else if (this.ITM.CARS[id] != null) {
-      let index = data["inventory"].indexOf(id);
-      if (index !== -1) data["inventory"].splice(index, 1);
-      localStorage.setItem("skin", id);
-    } else if (this.ITM.SKINS[id] != null) {
+    }  else if (this.ITM.SKINS[id] != null) {
       let index = data["inventory"].indexOf(id);
       if (index !== -1) data["inventory"].splice(index, 1);
       console.log("SETTING SKIN", id);
