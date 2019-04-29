@@ -1,0 +1,514 @@
+{
+    "frames": {
+        "Red_Brown-Standing.000": {
+            "frame": {
+                "x": 0,
+                "y": 0,
+                "w": 128,
+                "h": 280
+            },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 128,
+                "h": 280
+            },
+            "sourceSize": {
+                "w": 128,
+                "h": 280
+            }
+        },
+        "Red_Brown-Standing.001": {
+            "frame": {
+                "x": 128,
+                "y": 0,
+                "w": 128,
+                "h": 280
+            },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 128,
+                "h": 280
+            },
+            "sourceSize": {
+                "w": 128,
+                "h": 280
+            }
+        },
+        "Red_Brown-Standing.002": {
+            "frame": {
+                "x": 256,
+                "y": 0,
+                "w": 128,
+                "h": 280
+            },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 128,
+                "h": 280
+            },
+            "sourceSize": {
+                "w": 128,
+                "h": 280
+            }
+        },
+        "Red_Brown-Standing.003": {
+            "frame": {
+                "x": 384,
+                "y": 0,
+                "w": 128,
+                "h": 280
+            },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 128,
+                "h": 280
+            },
+            "sourceSize": {
+                "w": 128,
+                "h": 280
+            }
+        },
+        "Red_Brown-Standing.004": {
+            "frame": {
+                "x": 512,
+                "y": 0,
+                "w": 128,
+                "h": 280
+            },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 128,
+                "h": 280
+            },
+            "sourceSize": {
+                "w": 128,
+                "h": 280
+            }
+        },
+        "Red_Brown-Walking-Down.000": {
+            "frame": {
+                "x": 0,
+                "y": 280,
+                "w": 128,
+                "h": 280
+            },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 128,
+                "h": 280
+            },
+            "sourceSize": {
+                "w": 128,
+                "h": 280
+            }
+        },
+        "Red_Brown-Walking-Down.001": {
+            "frame": {
+                "x": 128,
+                "y": 280,
+                "w": 128,
+                "h": 280
+            },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 128,
+                "h": 280
+            },
+            "sourceSize": {
+                "w": 128,
+                "h": 280
+            }
+        },
+        "Red_Brown-Walking-Down.002": {
+            "frame": {
+                "x": 256,
+                "y": 280,
+                "w": 128,
+                "h": 280
+            },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 128,
+                "h": 280
+            },
+            "sourceSize": {
+                "w": 128,
+                "h": 280
+            }
+        },
+        "Red_Brown-Walking-Down.003": {
+            "frame": {
+                "x": 384,
+                "y": 280,
+                "w": 128,
+                "h": 280
+            },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 128,
+                "h": 280
+            },
+            "sourceSize": {
+                "w": 128,
+                "h": 280
+            }
+        },
+        "Red_Brown-Walking-Down.004": {
+            "frame": {
+                "x": 512,
+                "y": 280,
+                "w": 128,
+                "h": 280
+            },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 128,
+                "h": 280
+            },
+            "sourceSize": {
+                "w": 128,
+                "h": 280
+            }
+        },
+        "Red_Brown-Walking-Right.000": {
+            "frame": {
+                "x": 0,
+                "y": 560,
+                "w": 128,
+                "h": 280
+            },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 128,
+                "h": 280
+            },
+            "sourceSize": {
+                "w": 128,
+                "h": 280
+            }
+        },
+        "Red_Brown-Walking-Right.001": {
+            "frame": {
+                "x": 128,
+                "y": 560,
+                "w": 128,
+                "h": 280
+            },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 128,
+                "h": 280
+            },
+            "sourceSize": {
+                "w": 128,
+                "h": 280
+            }
+        },
+        "Red_Brown-Walking-Right.002": {
+            "frame": {
+                "x": 256,
+                "y": 560,
+                "w": 128,
+                "h": 280
+            },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 128,
+                "h": 280
+            },
+            "sourceSize": {
+                "w": 128,
+                "h": 280
+            }
+        },
+        "Red_Brown-Walking-Right.003": {
+            "frame": {
+                "x": 384,
+                "y": 560,
+                "w": 128,
+                "h": 280
+            },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 128,
+                "h": 280
+            },
+            "sourceSize": {
+                "w": 128,
+                "h": 280
+            }
+        },
+        "Red_Brown-Walking-Right.004": {
+            "frame": {
+                "x": 512,
+                "y": 560,
+                "w": 128,
+                "h": 280
+            },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 128,
+                "h": 280
+            },
+            "sourceSize": {
+                "w": 128,
+                "h": 280
+            }
+        },
+        "Red_Brown-Walking-Left.000": {
+            "frame": {
+                "x": 0,
+                "y": 840,
+                "w": 128,
+                "h": 280
+            },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 128,
+                "h": 280
+            },
+            "sourceSize": {
+                "w": 128,
+                "h": 280
+            }
+        },
+        "Red_Brown-Walking-Left.001": {
+            "frame": {
+                "x": 128,
+                "y": 840,
+                "w": 128,
+                "h": 280
+            },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 128,
+                "h": 280
+            },
+            "sourceSize": {
+                "w": 128,
+                "h": 280
+            }
+        },
+        "Red_Brown-Walking-Left.002": {
+            "frame": {
+                "x": 256,
+                "y": 840,
+                "w": 128,
+                "h": 280
+            },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 128,
+                "h": 280
+            },
+            "sourceSize": {
+                "w": 128,
+                "h": 280
+            }
+        },
+        "Red_Brown-Walking-Left.003": {
+            "frame": {
+                "x": 384,
+                "y": 840,
+                "w": 128,
+                "h": 280
+            },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 128,
+                "h": 280
+            },
+            "sourceSize": {
+                "w": 128,
+                "h": 280
+            }
+        },
+        "Red_Brown-Walking-Left.004": {
+            "frame": {
+                "x": 512,
+                "y": 840,
+                "w": 128,
+                "h": 280
+            },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 128,
+                "h": 280
+            },
+            "sourceSize": {
+                "w": 128,
+                "h": 280
+            }
+        },
+        "Red_Brown-Walking-Up.000": {
+            "frame": {
+                "x": 0,
+                "y": 1120,
+                "w": 128,
+                "h": 280
+            },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 128,
+                "h": 280
+            },
+            "sourceSize": {
+                "w": 128,
+                "h": 280
+            }
+        },
+        "Red_Brown-Walking-Up.001": {
+            "frame": {
+                "x": 128,
+                "y": 1120,
+                "w": 128,
+                "h": 280
+            },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 128,
+                "h": 280
+            },
+            "sourceSize": {
+                "w": 128,
+                "h": 280
+            }
+        },
+        "Red_Brown-Walking-Up.002": {
+            "frame": {
+                "x": 256,
+                "y": 1120,
+                "w": 128,
+                "h": 280
+            },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 128,
+                "h": 280
+            },
+            "sourceSize": {
+                "w": 128,
+                "h": 280
+            }
+        },
+        "Red_Brown-Walking-Up.003": {
+            "frame": {
+                "x": 384,
+                "y": 1120,
+                "w": 128,
+                "h": 280
+            },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 128,
+                "h": 280
+            },
+            "sourceSize": {
+                "w": 128,
+                "h": 280
+            }
+        },
+        "Red_Brown-Walking-Up.004": {
+            "frame": {
+                "x": 512,
+                "y": 1120,
+                "w": 128,
+                "h": 280
+            },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 128,
+                "h": 280
+            },
+            "sourceSize": {
+                "w": 128,
+                "h": 280
+            }
+        }
+    },
+    "meta": {
+        "app": "https://github.com/piskelapp/piskel/",
+        "version": "1.0",
+        "image": "Red_Brown.png",
+        "format": "RGBA8888",
+        "size": {
+            "w": 640,
+            "h": 896
+        }
+    }
+}

@@ -45,9 +45,22 @@ function preload() {
   
   this.load.tilemapTiledJSON("Dorm", "assets/tilemaps/Dorm.json");
   this.load.atlas("Brown", "assets/atlas/Brown.png", "assets/atlas/Brown.json");
+  this.load.atlas("Cars", "assets/atlas/Cars.png", "assets/atlas/Cars.json");
 
   this.load.atlas("Goku_Red", "assets/atlas/Goku_Red.png", "assets/atlas/Goku_Red.json");
   this.load.atlas("Goku_Black", "assets/atlas/Goku_Black.png", "assets/atlas/Goku_Black.json");
+
+  this.load.atlas("Black_Brown", "assets/atlas/Black_Brown.png", "assets/atlas/Black_Brown.json");
+  this.load.atlas("Black", "assets/atlas/Black.png", "assets/atlas/Black.json");
+  this.load.atlas("Blue_Clone", "assets/atlas/Blue_Clone.png", "assets/atlas/Blue_Clone.json");
+  this.load.atlas("Blue", "assets/atlas/Blue.png", "assets/atlas/Blue.json");
+  this.load.atlas("BrownV2", "assets/atlas/BrownV2.png", "assets/atlas/BrownV2.json");
+  this.load.atlas("Green_Brown", "assets/atlas/Green_Brown.png", "assets/atlas/Green_Brown.json");
+  this.load.atlas("Green", "assets/atlas/Green.png", "assets/atlas/Green.json");
+  this.load.atlas("Purple_Brown", "assets/atlas/Purple_Brown.png", "assets/atlas/Purple_Brown.json");
+  this.load.atlas("Purple", "assets/atlas/Purple.png", "assets/atlas/Purple.json");
+  this.load.atlas("Red_Brown", "assets/atlas/Red_Brown.png", "assets/atlas/Red_Brown.json");
+  this.load.atlas("Red", "assets/atlas/Red.png", "assets/atlas/Reds.json");
 }
 
 function create() {
@@ -151,7 +164,7 @@ function create() {
   } else if (SKIN == "Goku_Black" || SKIN == "Goku_Red") {
     skinData = goku;
   } else {
-    skinData = brown;
+    skinData = goku;
   }
   player = physics.add_player({
     atlas: SKIN,
