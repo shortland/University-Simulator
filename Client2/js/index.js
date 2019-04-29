@@ -1,4 +1,4 @@
-import { ToolTip, APIHandler, MapLoader, Chat, PlayerDataHandler, InteractableTileMapping } from './Modules/ModuleLoader.js';
+import { ToolTip, APIHandler, MapLoader, Chat, PlayerDataHandler, InteractableTileMapping, Physics } from './Modules/ModuleLoader.js';
 
 const config = {
   type: Phaser.AUTO,
@@ -459,6 +459,12 @@ function create() {
   } else {
     const chat = new Chat({initChat: true});
   }
+
+  const physicsGen = new Physics({physics: this.physics});
+  physicsGen.add_npc({
+    spawn: {x: player.x + 50, y: player.y},
+    immovable: false
+  });
 }
 
 function update(time, delta) {

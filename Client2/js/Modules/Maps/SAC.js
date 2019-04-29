@@ -30,12 +30,14 @@ const eventModifiableState = {
 
 let cursors;
 let player;
+let SKIN;
 
 var act;
 var map;
 var collidedInteractable = false;
 
 function preload() {
+  SKIN = localStorage.getItem("skin") || "Brown";
   this.load.image("indoor", "assets/tilesets/indoor.png");
   this.load.image("signs", "assets/tilesets/signs.png");
   this.load.image("solids", "assets/tilesets/Solids.png");
@@ -44,8 +46,8 @@ function preload() {
   this.load.atlas("Brown", "assets/atlas/Brown.png", "assets/atlas/Brown.json");
   this.load.atlas("Cars", "assets/atlas/Cars.png", "assets/atlas/Cars.json");
 
-  this.load.atlas("Goku_Black", "assets/atlas/Goku_Black.png", "assets/atlas/Goku_Black.json");
   this.load.atlas("Goku_Red", "assets/atlas/Goku_Red.png", "assets/atlas/Goku_Red.json");
+  this.load.atlas("Goku_Black", "assets/atlas/Goku_Black.png", "assets/atlas/Goku_Black.json");
 }
 
 function create() {
@@ -222,13 +224,29 @@ function create() {
       }
     }
   });
-  /**
+/**
    * Add the player
    */
+  let brown = {size: {w: 20, h: 20}, offset: {x: 54, y: 44}, scale: 0.8};
+  let goku = {size: {w: 60, h: 60}, offset: {x: 15, y: 200}, scale: 0.25};
+  let skinData;
+  if (SKIN == "Brown") {
+    skinData = brown;
+  } else if (SKIN == "Goku_Black" || SKIN == "Goku_Red") {
+    skinData = goku;
+  } else {
+    skinData = brown;
+  }
   player = physics.add_player({
-    prefix: "Brown", 
-    scale: 0.8, 
-    spawn: {x: 320, y: 600}
+    atlas: SKIN,
+    prefix: SKIN,
+    name: SKIN, 
+    scale: skinData["scale"], 
+    width: skinData["size"].w, 
+    height: skinData["size"].h,
+    offsetX: skinData["offset"].x,
+    offsetY: skinData["offset"].y,
+    spawn: {x: 160, y: 176}
   });
   /**
    * Add collisions for NPCs after the player has been added - so that we can add the player to the npc's collisions
@@ -271,7 +289,7 @@ function create() {
     animations: this.anims
   });
   anims.create_player({
-    prefix: "Brown"
+    prefix: SKIN
   });
   
   cursors = this.input.keyboard.createCursorKeys();
@@ -327,21 +345,21 @@ function update(time, delta) {
 
   // Update the animation last and give left/right animations precedence over up/down animations
   if (cursors.left.isDown) {
-    player.anims.play("Brown-Walking-Left", true);
+    player.anims.play(SKIN + "-Walking-Left", true);
   } else if (cursors.right.isDown) {
-    player.anims.play("Brown-Walking-Right", true);
+    player.anims.play(SKIN + "-Walking-Right", true);
   } else if (cursors.up.isDown) {
-    player.anims.play("Brown-Walking-Up", true);
+    player.anims.play(SKIN + "-Walking-Up", true);
   } else if (cursors.down.isDown) {
-    player.anims.play("Brown-Walking-Down", true);
+    player.anims.play(SKIN + "-Walking-Down", true);
   } else {
     player.anims.stop();
 
     // If we were moving, pick and idle frame to use
-    if (prevVelocity.x < 0) player.setTexture("Brown", "Brown-Walking-Left.000");
-    else if (prevVelocity.x > 0) player.setTexture("Brown", "Brown-Walking-Right.000");
-    else if (prevVelocity.y < 0) player.setTexture("Brown", "Brown-Walking-Up.000");
-    else if (prevVelocity.y > 0) player.setTexture("Brown", "Brown-Walking-Down.000");
+    if (prevVelocity.x < 0) player.setTexture(SKIN, SKIN + "-Walking-Left.000");
+    else if (prevVelocity.x > 0) player.setTexture(SKIN, SKIN + "-Walking-Right.000");
+    else if (prevVelocity.y < 0) player.setTexture(SKIN, SKIN + "-Walking-Up.000");
+    else if (prevVelocity.y > 0) player.setTexture(SKIN, SKIN + "-Walking-Down.000");
   }
 }
 
