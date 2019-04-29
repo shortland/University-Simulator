@@ -38,9 +38,22 @@ export class PlayerDataHandler {
       this.consumeItem({item: id});
       let index = data["inventory"].indexOf(id);
       if (index !== -1) data["inventory"].splice(index, 1);
+    } else if (this.ITM.CARS[id] != null) {
+      let index = data["inventory"].indexOf(id);
+      if (index !== -1) data["inventory"].splice(index, 1);
+      localStorage.setItem("skin", id);
+    } else if (this.ITM.SKINS[id] != null) {
+      let index = data["inventory"].indexOf(id);
+      if (index !== -1) data["inventory"].splice(index, 1);
+      console.log("SETTING SKIN", id);
+      localStorage.setItem("skin", id);
+      if (confirm("Reload page to view sprite update?")) {
+        window.location.href = window.location.href;
+      }
     } else {
       let index = data["inventory"].indexOf(id);
       if (index !== -1) data["inventory"].splice(index, 1);
+      console.log("UNKNOWN CONSUME ACTION");
     }
     this.updateStats(data);
   }

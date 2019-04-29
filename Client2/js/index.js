@@ -21,6 +21,7 @@ const config = {
 
 const game = new Phaser.Game(config);
 const ITM = new InteractableTileMapping;
+let SKIN;
 let cursors;
 let player;
 let showDebug = true;
@@ -33,6 +34,7 @@ var speed = 200;
 var collidedInteractable = false;
 
 function preload() {
+  SKIN = localStorage.getItem("skin") || "Brown";
   this.load.image("tiles2", "assets/tilesets/SBU RD (1).png");
   this.load.image("tiles4", "assets/tilesets/SBU house .png");
   this.load.image("beds", "assets/tilesets/Beds.png");
@@ -46,6 +48,7 @@ function preload() {
 
   this.load.tilemapTiledJSON("map", "assets/tilemaps/mainMap.json");
   this.load.atlas("Brown", "assets/atlas/Brown.png", "assets/atlas/Brown.json");
+  this.load.atlas("Goku_Black", "assets/atlas/Goku_Black.png", "assets/atlas/Goku_Black.json");
 }
 
 function create() {
@@ -224,18 +227,35 @@ function create() {
   let spawnData = document.getElementById("map").getAttribute("prevmaploc");
   let spawnPoint = {};
   if (spawnData === null || spawnData === undefined) {
-    spawnPoint = map.findObject("Objects", obj => obj.name === "Spawn Point");
+    if (localStorage.getItem("location") === null || localStorage.getItem("location") === undefined) {
+      spawnPoint = map.findObject("Objects", obj => obj.name === "Spawn Point");
+    } else {
+      console.log("USE OLD SPAWN");
+      let spawnP = localStorage.getItem("location").split(",");
+      spawnPoint.x = parseFloat(spawnP[0]);
+      spawnPoint.y = parseFloat(spawnP[1]);
+    }
   } else {
     spawnPoint.x = parseFloat(spawnData.split(",")[0]);
     spawnPoint.y = parseFloat(spawnData.split(",")[1]);
     document.getElementById("map").removeAttribute("prevmaploc");
   }
 
+  let brown = {size: {w: 20, h: 20}, offset: {x: 54, y: 44}, scale: 0.8};
+  let goku = {size: {w: 60, h: 60}, offset: {x: 15, y: 200}, scale: 0.25};
+  let skinData;
+  if (SKIN == "Brown") {
+    skinData = brown;
+  } else if (SKIN == "Goku_Black" || SKIN == "Goku_Red") {
+    skinData = goku;
+  } else {
+    skinData = brown;
+  }
   player = this.physics.add
-    .sprite(spawnPoint.x, spawnPoint.y, "Brown", "Brown-Standing.000")
-    .setSize(30, 20)
-    .setOffset(49, 44); // x then y
-  player.setScale( 0.8 );
+    .sprite(spawnPoint.x, spawnPoint.y, SKIN, SKIN + "-Standing.000")
+    .setSize(skinData["size"].w, skinData["size"].h)
+    .setOffset(skinData["offset"].x, skinData["offset"].y); // x then y
+  player.setScale( skinData["scale"] );
 
   // Watch the player and worldLayer for collisions, for the duration of the scene:
   this.physics.add.collider(player, worldLayer);
@@ -245,9 +265,9 @@ function create() {
   // animation manager so any sprite can access them.
   const anims = this.anims;
   anims.create({
-    key: "Brown-Walking-Left",
-    frames: anims.generateFrameNames("Brown", {
-      prefix: "Brown-Walking-Left.",
+    key: SKIN + "-Walking-Left",
+    frames: anims.generateFrameNames(SKIN, {
+      prefix: SKIN + "-Walking-Left.",
       start: 0,
       end: 4,
       zeroPad: 3
@@ -256,9 +276,9 @@ function create() {
     repeat: -1
   });
   anims.create({
-    key: "Brown-Walking-Right",
-    frames: anims.generateFrameNames("Brown", {
-      prefix: "Brown-Walking-Right.",
+    key: SKIN + "-Walking-Right",
+    frames: anims.generateFrameNames(SKIN, {
+      prefix: SKIN + "-Walking-Right.",
       start: 0,
       end: 4,
       zeroPad: 3
@@ -267,9 +287,9 @@ function create() {
     repeat: -1
   });
   anims.create({
-    key: "Brown-Walking-Up",
-    frames: anims.generateFrameNames("Brown", {
-      prefix: "Brown-Walking-Up.",
+    key: SKIN + "-Walking-Up",
+    frames: anims.generateFrameNames(SKIN, {
+      prefix: SKIN + "-Walking-Up.",
       start: 0,
       end: 4,
       zeroPad: 3
@@ -278,9 +298,9 @@ function create() {
     repeat: -1
   });
   anims.create({
-    key: "Brown-Walking-Down",
-    frames: anims.generateFrameNames("Brown", {
-      prefix: "Brown-Walking-Down.",
+    key: SKIN + "-Walking-Down",
+    frames: anims.generateFrameNames(SKIN, {
+      prefix: SKIN + "-Walking-Down.",
       start: 0,
       end: 4,
       zeroPad: 3
@@ -397,11 +417,9 @@ function create() {
   });
 
   this.input.keyboard.on("keydown-" + "I", event => {
+    // ONLY FOR FOR MAIN WORLD...
+    localStorage.setItem("location", player.x + "," + player.y);
     PDH.toggleInventory();
-  });
-
-  $(document).on("keypress", event => {
-    console.log(event);
   });
 
   // Debug graphics
@@ -468,21 +486,21 @@ function update(time, delta) {
 
   // Update the animation last and give left/right animations precedence over up/down animations
   if (cursors.left.isDown) {
-    player.anims.play("Brown-Walking-Left", true);
+    player.anims.play(SKIN + "-Walking-Left", true);
   } else if (cursors.right.isDown) {
-    player.anims.play("Brown-Walking-Right", true);
+    player.anims.play(SKIN + "-Walking-Right", true);
   } else if (cursors.up.isDown) {
-    player.anims.play("Brown-Walking-Up", true);
+    player.anims.play(SKIN + "-Walking-Up", true);
   } else if (cursors.down.isDown) {
-    player.anims.play("Brown-Walking-Down", true);
+    player.anims.play(SKIN + "-Walking-Down", true);
   } else {
     player.anims.stop();
 
     // If we were moving, pick and idle frame to use
-    if (prevVelocity.x < 0) player.setTexture("Brown", "Brown-Walking-Left.000");
-    else if (prevVelocity.x > 0) player.setTexture("Brown", "Brown-Walking-Right.000");
-    else if (prevVelocity.y < 0) player.setTexture("Brown", "Brown-Walking-Up.000");
-    else if (prevVelocity.y > 0) player.setTexture("Brown", "Brown-Walking-Down.000");
+    if (prevVelocity.x < 0) player.setTexture(SKIN, SKIN + "-Walking-Left.000");
+    else if (prevVelocity.x > 0) player.setTexture(SKIN, SKIN + "-Walking-Right.000");
+    else if (prevVelocity.y < 0) player.setTexture(SKIN, SKIN + "-Walking-Up.000");
+    else if (prevVelocity.y > 0) player.setTexture(SKIN, SKIN + "-Walking-Down.000");
   }
 }
 

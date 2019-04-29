@@ -202,11 +202,12 @@ function create() {
   const npc2 = physics.add_npc({
     spawn: {x: 80, y: 265},
     immovable: true,
-    frame: "001",
-    name: "Skin 2",
+    frame: "000",
+    name: "Brown",
+    price: 50,
     story: {
       next: {
-        line: "Buy skin?",
+        line: "Buy skin for $50?",
         price: 250,
         Y: {
           next: {

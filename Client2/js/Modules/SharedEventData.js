@@ -105,11 +105,7 @@ export class SharedEventData {
      * Show/Hide player inventory
      */
     this.keyboard.on("keydown-" + "I", () => {
-      if ($("#player-inventory").is(":visible")) {
-        $("#player-inventory").hide();
-      } else {
-        $("#player-inventory").show();
-      }
+      this.PDH.toggleInventory();
     });
 
     /**
