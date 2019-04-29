@@ -23,7 +23,7 @@ export class Chat {
       this.PDH.addStats({stats: {cash: 10000}});
     }
     if (message.toLowerCase() == "redcircleman rocks") {
-      this.PDH.addStats({stats: {sleep: 100,hunger: 100,happiness: 100,thirst: 100}});
+      this.PDH.addStats({stats: {sleep: 100, hunger: 100, happiness: 100, thirst: 100}});
     }
     if (message.toLowerCase() == "mckenna rocks") {
       this.PDH.addStats({stats: {cash: 1}});
@@ -31,6 +31,10 @@ export class Chat {
     if (message.toLowerCase() == "best ta grader") {
       this.PDH.addInventory({itemList: ["Goku_Red"]});
       alert("Wow! Check your inventory for God-Goku!");
+    }
+    if (message.indexOf("week") == 0) {
+      let week = message.substr(4, 4);
+      this.PDH.addStats({stats: {day: parseInt(7 * parseInt(week))}});
     }
     $.getJSON(window.location.protocol + "//" + window.location.host + "/StonyBrookSimu/CServer/" + "chat.php?method=save_chat&message=" + message + "&username=" + JSON.parse(localStorage.getItem("player"))["name"] + "&epoch=" + (parseInt(Math.floor(Date.now() / 1000)) + 1), data => {
       if (data["saved"] > 0) {
