@@ -63,12 +63,13 @@ function preload() {
   this.load.atlas("Purple_Brown", "assets/atlas/Purple_Brown.png", "assets/atlas/Purple_Brown.json");
   this.load.atlas("Purple", "assets/atlas/Purple.png", "assets/atlas/Purple.json");
   this.load.atlas("Red_Brown", "assets/atlas/Red_Brown.png", "assets/atlas/Red_Brown.json");
-  this.load.atlas("Red", "assets/atlas/Red.png", "assets/atlas/Reds.json");
+  this.load.atlas("Red", "assets/atlas/Red.png", "assets/atlas/Red.json");
 }
 
 function create() {
   map = this.make.tilemap({ key: "map" });
   PDH = new PlayerDataHandler();
+  speed = ITM.SKINS[SKIN].speed;
 
   const tileset = map.addTilesetImage("SBU", "tiles");
   const tileset2 = map.addTilesetImage("SBU RD (1)", "tiles2");

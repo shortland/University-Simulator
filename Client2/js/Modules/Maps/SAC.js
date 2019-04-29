@@ -59,7 +59,7 @@ function preload() {
   this.load.atlas("Purple_Brown", "assets/atlas/Purple_Brown.png", "assets/atlas/Purple_Brown.json");
   this.load.atlas("Purple", "assets/atlas/Purple.png", "assets/atlas/Purple.json");
   this.load.atlas("Red_Brown", "assets/atlas/Red_Brown.png", "assets/atlas/Red_Brown.json");
-  this.load.atlas("Red", "assets/atlas/Red.png", "assets/atlas/Reds.json");
+  this.load.atlas("Red", "assets/atlas/Red.png", "assets/atlas/Red.json");
 }
 
 function create() {
@@ -214,7 +214,7 @@ function create() {
     }
   });
   const npc2 = physics.add_npc({
-    spawn: {x: 80, y: 265},
+    spawn: {x: 80, y: 290},
     immovable: true,
     frame: "000",
     name: "Brown",
@@ -223,6 +223,319 @@ function create() {
       next: {
         line: "Buy skin for $50?",
         price: 250,
+        Y: {
+          next: {
+            line: "Congrats! You can change your skin via your inventory [I]"
+          }
+        },
+        N: {
+          next: {
+            line: "Ok."
+          }
+        }
+      }
+    }
+  });
+  /**
+   * ADD DHRUBA MASS SKINS
+   */
+  const npc_0 = physics.add_npc({
+    spawn: {x: 120, y: 265},
+    immovable: true,
+    frame: "000",
+    atlas: "Black_Brown",
+    prefix: "Black_Brown",
+    name: "Black_Brown",
+    motion: "Standing",
+    immovable: true,
+    price: 200,
+    scale: 0.25,
+    width: 60,
+    height: 60,
+    offsetX: 15,
+    offsetY: 200,
+    story: {
+      next: {
+        line: "Buy skin for $200?",
+        Y: {
+          next: {
+            line: "Congrats! You can change your skin via your inventory [I]"
+          }
+        },
+        N: {
+          next: {
+            line: "Ok."
+          }
+        }
+      }
+    }
+  });
+  const npc_1 = physics.add_npc({
+    spawn: {x: 160, y: 265},
+    immovable: true,
+    frame: "000",
+    atlas: "Blue_Clone",
+    prefix: "Blue_Clone",
+    name: "Blue_Clone",
+    motion: "Standing",
+    immovable: true,
+    price: 200,
+    scale: 0.25,
+    width: 60,
+    height: 60,
+    offsetX: 15,
+    offsetY: 200,
+    story: {
+      next: {
+        line: "Buy skin for $200?",
+        Y: {
+          next: {
+            line: "Congrats! You can change your skin via your inventory [I]"
+          }
+        },
+        N: {
+          next: {
+            line: "Ok."
+          }
+        }
+      }
+    }
+  });
+  const npc_2 = physics.add_npc({
+    spawn: {x: 200, y: 265},
+    immovable: true,
+    frame: "000",
+    atlas: "Blue",
+    prefix: "Blue",
+    name: "Blue",
+    motion: "Standing",
+    immovable: true,
+    price: 200,
+    scale: 0.25,
+    width: 60,
+    height: 60,
+    offsetX: 15,
+    offsetY: 200,
+    story: {
+      next: {
+        line: "Buy skin for $200?",
+        Y: {
+          next: {
+            line: "Congrats! You can change your skin via your inventory [I]"
+          }
+        },
+        N: {
+          next: {
+            line: "Ok."
+          }
+        }
+      }
+    }
+  });
+  const npc_3 = physics.add_npc({
+    spawn: {x: 240, y: 265},
+    immovable: true,
+    frame: "000",
+    atlas: "BrownV2",
+    prefix: "BrownV2",
+    name: "BrownV2",
+    motion: "Standing",
+    immovable: true,
+    price: 200,
+    scale: 0.25,
+    width: 60,
+    height: 60,
+    offsetX: 15,
+    offsetY: 200,
+    story: {
+      next: {
+        line: "Buy skin for $200?",
+        Y: {
+          next: {
+            line: "Congrats! You can change your skin via your inventory [I]"
+          }
+        },
+        N: {
+          next: {
+            line: "Ok."
+          }
+        }
+      }
+    }
+  });
+  const npc_4 = physics.add_npc({
+    spawn: {x: 280, y: 265},
+    immovable: true,
+    frame: "000",
+    atlas: "Green_Brown",
+    prefix: "Green_Brown",
+    name: "Green_Brown",
+    motion: "Standing",
+    immovable: true,
+    price: 200,
+    scale: 0.25,
+    width: 60,
+    height: 60,
+    offsetX: 15,
+    offsetY: 200,
+    story: {
+      next: {
+        line: "Buy skin for $200?",
+        Y: {
+          next: {
+            line: "Congrats! You can change your skin via your inventory [I]"
+          }
+        },
+        N: {
+          next: {
+            line: "Ok."
+          }
+        }
+      }
+    }
+  });
+  const npc_5 = physics.add_npc({
+    spawn: {x: 320, y: 265},
+    immovable: true,
+    frame: "000",
+    atlas: "Green",
+    prefix: "Green",
+    name: "Green",
+    motion: "Standing",
+    immovable: true,
+    price: 200,
+    scale: 0.25,
+    width: 60,
+    height: 60,
+    offsetX: 15,
+    offsetY: 200,
+    story: {
+      next: {
+        line: "Buy skin for $200?",
+        Y: {
+          next: {
+            line: "Congrats! You can change your skin via your inventory [I]"
+          }
+        },
+        N: {
+          next: {
+            line: "Ok."
+          }
+        }
+      }
+    }
+  });
+  const npc_6 = physics.add_npc({
+    spawn: {x: 360, y: 265},
+    immovable: true,
+    frame: "000",
+    atlas: "Purple_Brown",
+    prefix: "Purple_Brown",
+    name: "Purple_Brown",
+    motion: "Standing",
+    immovable: true,
+    price: 200,
+    scale: 0.25,
+    width: 60,
+    height: 60,
+    offsetX: 15,
+    offsetY: 200,
+    story: {
+      next: {
+        line: "Buy skin for $200?",
+        Y: {
+          next: {
+            line: "Congrats! You can change your skin via your inventory [I]"
+          }
+        },
+        N: {
+          next: {
+            line: "Ok."
+          }
+        }
+      }
+    }
+  });
+  const npc_7 = physics.add_npc({
+    spawn: {x: 400, y: 265},
+    immovable: true,
+    frame: "000",
+    atlas: "Purple",
+    prefix: "Purple",
+    name: "Purple",
+    motion: "Standing",
+    immovable: true,
+    price: 200,
+    scale: 0.25,
+    width: 60,
+    height: 60,
+    offsetX: 15,
+    offsetY: 200,
+    story: {
+      next: {
+        line: "Buy skin for $200?",
+        Y: {
+          next: {
+            line: "Congrats! You can change your skin via your inventory [I]"
+          }
+        },
+        N: {
+          next: {
+            line: "Ok."
+          }
+        }
+      }
+    }
+  });
+  const npc_8 = physics.add_npc({
+    spawn: {x: 440, y: 265},
+    immovable: true,
+    frame: "000",
+    atlas: "Red_Brown",
+    prefix: "Red_Brown",
+    name: "Red_Brown",
+    motion: "Standing",
+    immovable: true,
+    price: 200,
+    scale: 0.25,
+    width: 60,
+    height: 60,
+    offsetX: 15,
+    offsetY: 200,
+    story: {
+      next: {
+        line: "Buy skin for $200?",
+        Y: {
+          next: {
+            line: "Congrats! You can change your skin via your inventory [I]"
+          }
+        },
+        N: {
+          next: {
+            line: "Ok."
+          }
+        }
+      }
+    }
+  });
+  const npc_9 = physics.add_npc({
+    spawn: {x: 480, y: 265},
+    immovable: true,
+    frame: "000",
+    atlas: "Red",
+    prefix: "Red",
+    name: "Red",
+    motion: "Standing",
+    immovable: true,
+    price: 200,
+    scale: 0.25,
+    width: 60,
+    height: 60,
+    offsetX: 15,
+    offsetY: 200,
+    story: {
+      next: {
+        line: "Buy skin for $200?",
         Y: {
           next: {
             line: "Congrats! You can change your skin via your inventory [I]"
@@ -265,6 +578,56 @@ function create() {
    */
   physics.add_player_layer_collisions({
     layers: collisionLayers.concat(player),
+    player: npc_0,
+    callback: JNotifier.storyPlayerInteraction
+  });
+  physics.add_player_layer_collisions({
+    layers: collisionLayers.concat(player),
+    player: npc_1,
+    callback: JNotifier.storyPlayerInteraction
+  });
+  physics.add_player_layer_collisions({
+    layers: collisionLayers.concat(player),
+    player: npc_2,
+    callback: JNotifier.storyPlayerInteraction
+  });
+  physics.add_player_layer_collisions({
+    layers: collisionLayers.concat(player),
+    player: npc_3,
+    callback: JNotifier.storyPlayerInteraction
+  });
+  physics.add_player_layer_collisions({
+    layers: collisionLayers.concat(player),
+    player: npc_4,
+    callback: JNotifier.storyPlayerInteraction
+  });
+  physics.add_player_layer_collisions({
+    layers: collisionLayers.concat(player),
+    player: npc_5,
+    callback: JNotifier.storyPlayerInteraction
+  });
+  physics.add_player_layer_collisions({
+    layers: collisionLayers.concat(player),
+    player: npc_6,
+    callback: JNotifier.storyPlayerInteraction
+  });
+  physics.add_player_layer_collisions({
+    layers: collisionLayers.concat(player),
+    player: npc_7,
+    callback: JNotifier.storyPlayerInteraction
+  });
+  physics.add_player_layer_collisions({
+    layers: collisionLayers.concat(player),
+    player: npc_8,
+    callback: JNotifier.storyPlayerInteraction
+  });
+  physics.add_player_layer_collisions({
+    layers: collisionLayers.concat(player),
+    player: npc_9,
+    callback: JNotifier.storyPlayerInteraction
+  });
+  physics.add_player_layer_collisions({
+    layers: collisionLayers.concat(player),
     player: gokuBlack,
     callback: JNotifier.storyPlayerInteraction
   });
@@ -291,7 +654,7 @@ function create() {
   /**
    * Add collisions for the player
    */
-  physics.add_player_layer_collisions({layers: collisionLayers.concat([gokuBlack, npc2, car1, car2, car3])});
+  physics.add_player_layer_collisions({layers: collisionLayers.concat([npc_0, npc_1, npc_2, npc_3, npc_4, npc_5, npc_6, npc_7, npc_8, npc_9, gokuBlack, npc2, car1, car2, car3])});
   physics.add_camera_follow({
     camera: this.cameras.main,
     object: player

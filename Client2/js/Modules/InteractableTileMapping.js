@@ -112,17 +112,73 @@ export class InteractableTileMapping {
 
   SKINS = {
     "Brown": {
-      name: "Brown",
+      name: "Tan Shirt",
       speed: 200
     },
     "Goku_Black": {
       name: "Goku",
-      speed: 325
+      speed: 400
     },
     "Goku_Red": {
       name: "Super Saiyan God Goku",
-      speed: 450
-    }
+      speed: 600
+    },
+    "Black_Brown": {
+      name: "Black Shirt",
+      speed: 250
+    },
+    "Black": {
+      name: "Black",
+      speed: 250
+    },
+    "Blue_Clone": {
+      name: "Teal 1",
+      speed: 250
+    },
+    "Blue": {
+      name: "Teal 2",
+      speed: 250
+    },
+    "BrownV2": {
+      name: "Tan 2",
+      speed: 250
+    },
+    "Green_Brown": {
+      name: "Green 1",
+      speed: 250
+    },
+    "Green": {
+      name: "Green 2",
+      speed: 250
+    },
+    "Purple_Brown": {
+      name: "Purple 1",
+      speed: 250
+    },
+    "Purple": {
+      name: "Purple 2",
+      speed: 250
+    },
+    "Red_Brown": {
+      name: "Red 1",
+      speed: 250
+    },
+    "Red": {
+      name: "Red 2",
+      speed: 250
+    },
+    "car-yellow": {
+      name: "Luxury Yellow Car",
+      speed: 600
+    },
+    "car-blue": {
+      name: "Affordable Yellow Car",
+      speed: 500
+    },
+    "car-red": {
+      name: "Inexpensive Red Car",
+      speed: 400
+    },
   };
 
   Id2Name(id) {

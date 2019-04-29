@@ -176,6 +176,7 @@ html {
   z-index: 5;
   display: none;
   padding: 10px;
+  overflow-y: scroll;
 }
 
 #player-inv-table {
