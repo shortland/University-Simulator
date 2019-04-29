@@ -5,7 +5,7 @@
                 "x": 0,
                 "y": 0,
                 "w": 128,
-                "h": 128
+                "h": 280
             },
             "rotated": false,
             "trimmed": true,
@@ -13,11 +13,11 @@
                 "x": 0,
                 "y": 0,
                 "w": 128,
-                "h": 128
+                "h": 280
             },
             "sourceSize": {
                 "w": 128,
-                "h": 128
+                "h": 280
             }
         },
         "Goku_Red-Standing.001": {
@@ -25,7 +25,7 @@
                 "x": 128,
                 "y": 0,
                 "w": 128,
-                "h": 128
+                "h": 280
             },
             "rotated": false,
             "trimmed": true,
@@ -33,11 +33,11 @@
                 "x": 0,
                 "y": 0,
                 "w": 128,
-                "h": 128
+                "h": 280
             },
             "sourceSize": {
                 "w": 128,
-                "h": 128
+                "h": 280
             }
         },
         "Goku_Red-Standing.002": {
@@ -45,7 +45,7 @@
                 "x": 256,
                 "y": 0,
                 "w": 128,
-                "h": 128
+                "h": 280
             },
             "rotated": false,
             "trimmed": true,
@@ -53,11 +53,11 @@
                 "x": 0,
                 "y": 0,
                 "w": 128,
-                "h": 128
+                "h": 280
             },
             "sourceSize": {
                 "w": 128,
-                "h": 128
+                "h": 280
             }
         },
         "Goku_Red-Standing.003": {
@@ -65,7 +65,7 @@
                 "x": 384,
                 "y": 0,
                 "w": 128,
-                "h": 128
+                "h": 280
             },
             "rotated": false,
             "trimmed": true,
@@ -73,11 +73,11 @@
                 "x": 0,
                 "y": 0,
                 "w": 128,
-                "h": 128
+                "h": 280
             },
             "sourceSize": {
                 "w": 128,
-                "h": 128
+                "h": 280
             }
         },
         "Goku_Red-Standing.004": {
@@ -85,7 +85,7 @@
                 "x": 512,
                 "y": 0,
                 "w": 128,
-                "h": 128
+                "h": 280
             },
             "rotated": false,
             "trimmed": true,
@@ -93,19 +93,19 @@
                 "x": 0,
                 "y": 0,
                 "w": 128,
-                "h": 128
+                "h": 280
             },
             "sourceSize": {
                 "w": 128,
-                "h": 128
+                "h": 280
             }
         },
         "Goku_Red-Walking-Down.000": {
             "frame": {
                 "x": 0,
-                "y": 128,
+                "y": 280,
                 "w": 128,
-                "h": 128
+                "h": 280
             },
             "rotated": false,
             "trimmed": true,
@@ -113,19 +113,19 @@
                 "x": 0,
                 "y": 0,
                 "w": 128,
-                "h": 128
+                "h": 280
             },
             "sourceSize": {
                 "w": 128,
-                "h": 128
+                "h": 280
             }
         },
         "Goku_Red-Walking-Down.001": {
             "frame": {
                 "x": 128,
-                "y": 128,
+                "y": 280,
                 "w": 128,
-                "h": 128
+                "h": 280
             },
             "rotated": false,
             "trimmed": true,
@@ -133,19 +133,19 @@
                 "x": 0,
                 "y": 0,
                 "w": 128,
-                "h": 128
+                "h": 280
             },
             "sourceSize": {
                 "w": 128,
-                "h": 128
+                "h": 280
             }
         },
         "Goku_Red-Walking-Down.002": {
             "frame": {
                 "x": 256,
-                "y": 128,
+                "y": 280,
                 "w": 128,
-                "h": 128
+                "h": 280
             },
             "rotated": false,
             "trimmed": true,
@@ -153,19 +153,19 @@
                 "x": 0,
                 "y": 0,
                 "w": 128,
-                "h": 128
+                "h": 280
             },
             "sourceSize": {
                 "w": 128,
-                "h": 128
+                "h": 280
             }
         },
         "Goku_Red-Walking-Down.003": {
             "frame": {
                 "x": 384,
-                "y": 128,
+                "y": 280,
                 "w": 128,
-                "h": 128
+                "h": 280
             },
             "rotated": false,
             "trimmed": true,
@@ -173,19 +173,19 @@
                 "x": 0,
                 "y": 0,
                 "w": 128,
-                "h": 128
+                "h": 280
             },
             "sourceSize": {
                 "w": 128,
-                "h": 128
+                "h": 280
             }
         },
         "Goku_Red-Walking-Down.004": {
             "frame": {
                 "x": 512,
-                "y": 128,
+                "y": 280,
                 "w": 128,
-                "h": 128
+                "h": 280
             },
             "rotated": false,
             "trimmed": true,
@@ -193,19 +193,19 @@
                 "x": 0,
                 "y": 0,
                 "w": 128,
-                "h": 128
+                "h": 280
             },
             "sourceSize": {
                 "w": 128,
-                "h": 128
+                "h": 280
             }
         },
         "Goku_Red-Walking-Right.000": {
             "frame": {
                 "x": 0,
-                "y": 256,
+                "y": 560,
                 "w": 128,
-                "h": 128
+                "h": 280
             },
             "rotated": false,
             "trimmed": true,
@@ -213,19 +213,19 @@
                 "x": 0,
                 "y": 0,
                 "w": 128,
-                "h": 128
+                "h": 280
             },
             "sourceSize": {
                 "w": 128,
-                "h": 128
+                "h": 280
             }
         },
         "Goku_Red-Walking-Right.001": {
             "frame": {
                 "x": 128,
-                "y": 256,
+                "y": 560,
                 "w": 128,
-                "h": 128
+                "h": 280
             },
             "rotated": false,
             "trimmed": true,
@@ -233,19 +233,19 @@
                 "x": 0,
                 "y": 0,
                 "w": 128,
-                "h": 128
+                "h": 280
             },
             "sourceSize": {
                 "w": 128,
-                "h": 128
+                "h": 280
             }
         },
         "Goku_Red-Walking-Right.002": {
             "frame": {
                 "x": 256,
-                "y": 256,
+                "y": 560,
                 "w": 128,
-                "h": 128
+                "h": 280
             },
             "rotated": false,
             "trimmed": true,
@@ -253,19 +253,19 @@
                 "x": 0,
                 "y": 0,
                 "w": 128,
-                "h": 128
+                "h": 280
             },
             "sourceSize": {
                 "w": 128,
-                "h": 128
+                "h": 280
             }
         },
         "Goku_Red-Walking-Right.003": {
             "frame": {
                 "x": 384,
-                "y": 256,
+                "y": 560,
                 "w": 128,
-                "h": 128
+                "h": 280
             },
             "rotated": false,
             "trimmed": true,
@@ -273,19 +273,19 @@
                 "x": 0,
                 "y": 0,
                 "w": 128,
-                "h": 128
+                "h": 280
             },
             "sourceSize": {
                 "w": 128,
-                "h": 128
+                "h": 280
             }
         },
         "Goku_Red-Walking-Right.004": {
             "frame": {
                 "x": 512,
-                "y": 256,
+                "y": 560,
                 "w": 128,
-                "h": 128
+                "h": 280
             },
             "rotated": false,
             "trimmed": true,
@@ -293,19 +293,19 @@
                 "x": 0,
                 "y": 0,
                 "w": 128,
-                "h": 128
+                "h": 280
             },
             "sourceSize": {
                 "w": 128,
-                "h": 128
+                "h": 280
             }
         },
         "Goku_Red-Walking-Left.000": {
             "frame": {
                 "x": 0,
-                "y": 384,
+                "y": 840,
                 "w": 128,
-                "h": 128
+                "h": 280
             },
             "rotated": false,
             "trimmed": true,
@@ -313,19 +313,19 @@
                 "x": 0,
                 "y": 0,
                 "w": 128,
-                "h": 128
+                "h": 280
             },
             "sourceSize": {
                 "w": 128,
-                "h": 128
+                "h": 280
             }
         },
         "Goku_Red-Walking-Left.001": {
             "frame": {
                 "x": 128,
-                "y": 384,
+                "y": 840,
                 "w": 128,
-                "h": 128
+                "h": 280
             },
             "rotated": false,
             "trimmed": true,
@@ -333,19 +333,19 @@
                 "x": 0,
                 "y": 0,
                 "w": 128,
-                "h": 128
+                "h": 280
             },
             "sourceSize": {
                 "w": 128,
-                "h": 128
+                "h": 280
             }
         },
         "Goku_Red-Walking-Left.002": {
             "frame": {
                 "x": 256,
-                "y": 384,
+                "y": 840,
                 "w": 128,
-                "h": 128
+                "h": 280
             },
             "rotated": false,
             "trimmed": true,
@@ -353,19 +353,19 @@
                 "x": 0,
                 "y": 0,
                 "w": 128,
-                "h": 128
+                "h": 280
             },
             "sourceSize": {
                 "w": 128,
-                "h": 128
+                "h": 280
             }
         },
         "Goku_Red-Walking-Left.003": {
             "frame": {
                 "x": 384,
-                "y": 384,
+                "y": 840,
                 "w": 128,
-                "h": 128
+                "h": 280
             },
             "rotated": false,
             "trimmed": true,
@@ -373,19 +373,19 @@
                 "x": 0,
                 "y": 0,
                 "w": 128,
-                "h": 128
+                "h": 280
             },
             "sourceSize": {
                 "w": 128,
-                "h": 128
+                "h": 280
             }
         },
         "Goku_Red-Walking-Left.004": {
             "frame": {
                 "x": 512,
-                "y": 384,
+                "y": 840,
                 "w": 128,
-                "h": 128
+                "h": 280
             },
             "rotated": false,
             "trimmed": true,
@@ -393,19 +393,19 @@
                 "x": 0,
                 "y": 0,
                 "w": 128,
-                "h": 128
+                "h": 280
             },
             "sourceSize": {
                 "w": 128,
-                "h": 128
+                "h": 280
             }
         },
         "Goku_Red-Walking-Up.000": {
             "frame": {
                 "x": 0,
-                "y": 512,
+                "y": 1120,
                 "w": 128,
-                "h": 128
+                "h": 280
             },
             "rotated": false,
             "trimmed": true,
@@ -413,19 +413,19 @@
                 "x": 0,
                 "y": 0,
                 "w": 128,
-                "h": 128
+                "h": 280
             },
             "sourceSize": {
                 "w": 128,
-                "h": 128
+                "h": 280
             }
         },
         "Goku_Red-Walking-Up.001": {
             "frame": {
                 "x": 128,
-                "y": 512,
+                "y": 1120,
                 "w": 128,
-                "h": 128
+                "h": 280
             },
             "rotated": false,
             "trimmed": true,
@@ -433,19 +433,19 @@
                 "x": 0,
                 "y": 0,
                 "w": 128,
-                "h": 128
+                "h": 280
             },
             "sourceSize": {
                 "w": 128,
-                "h": 128
+                "h": 280
             }
         },
         "Goku_Red-Walking-Up.002": {
             "frame": {
                 "x": 256,
-                "y": 512,
+                "y": 1120,
                 "w": 128,
-                "h": 128
+                "h": 280
             },
             "rotated": false,
             "trimmed": true,
@@ -453,19 +453,19 @@
                 "x": 0,
                 "y": 0,
                 "w": 128,
-                "h": 128
+                "h": 280
             },
             "sourceSize": {
                 "w": 128,
-                "h": 128
+                "h": 280
             }
         },
         "Goku_Red-Walking-Up.003": {
             "frame": {
                 "x": 384,
-                "y": 512,
+                "y": 1120,
                 "w": 128,
-                "h": 128
+                "h": 280
             },
             "rotated": false,
             "trimmed": true,
@@ -473,19 +473,19 @@
                 "x": 0,
                 "y": 0,
                 "w": 128,
-                "h": 128
+                "h": 280
             },
             "sourceSize": {
                 "w": 128,
-                "h": 128
+                "h": 280
             }
         },
         "Goku_Red-Walking-Up.004": {
             "frame": {
                 "x": 512,
-                "y": 512,
+                "y": 1120,
                 "w": 128,
-                "h": 128
+                "h": 280
             },
             "rotated": false,
             "trimmed": true,
@@ -493,211 +493,11 @@
                 "x": 0,
                 "y": 0,
                 "w": 128,
-                "h": 128
+                "h": 280
             },
             "sourceSize": {
                 "w": 128,
-                "h": 128
-            }
-        },
-        "Goku_Red25.png": {
-            "frame": {
-                "x": 0,
-                "y": 640,
-                "w": 128,
-                "h": 128
-            },
-            "rotated": false,
-            "trimmed": true,
-            "spriteSourceSize": {
-                "x": 0,
-                "y": 0,
-                "w": 128,
-                "h": 128
-            },
-            "sourceSize": {
-                "w": 128,
-                "h": 128
-            }
-        },
-        "Goku_Red26.png": {
-            "frame": {
-                "x": 128,
-                "y": 640,
-                "w": 128,
-                "h": 128
-            },
-            "rotated": false,
-            "trimmed": true,
-            "spriteSourceSize": {
-                "x": 0,
-                "y": 0,
-                "w": 128,
-                "h": 128
-            },
-            "sourceSize": {
-                "w": 128,
-                "h": 128
-            }
-        },
-        "Goku_Red27.png": {
-            "frame": {
-                "x": 256,
-                "y": 640,
-                "w": 128,
-                "h": 128
-            },
-            "rotated": false,
-            "trimmed": true,
-            "spriteSourceSize": {
-                "x": 0,
-                "y": 0,
-                "w": 128,
-                "h": 128
-            },
-            "sourceSize": {
-                "w": 128,
-                "h": 128
-            }
-        },
-        "Goku_Red28.png": {
-            "frame": {
-                "x": 384,
-                "y": 640,
-                "w": 128,
-                "h": 128
-            },
-            "rotated": false,
-            "trimmed": true,
-            "spriteSourceSize": {
-                "x": 0,
-                "y": 0,
-                "w": 128,
-                "h": 128
-            },
-            "sourceSize": {
-                "w": 128,
-                "h": 128
-            }
-        },
-        "Goku_Red29.png": {
-            "frame": {
-                "x": 512,
-                "y": 640,
-                "w": 128,
-                "h": 128
-            },
-            "rotated": false,
-            "trimmed": true,
-            "spriteSourceSize": {
-                "x": 0,
-                "y": 0,
-                "w": 128,
-                "h": 128
-            },
-            "sourceSize": {
-                "w": 128,
-                "h": 128
-            }
-        },
-        "Goku_Red30.png": {
-            "frame": {
-                "x": 0,
-                "y": 768,
-                "w": 128,
-                "h": 128
-            },
-            "rotated": false,
-            "trimmed": true,
-            "spriteSourceSize": {
-                "x": 0,
-                "y": 0,
-                "w": 128,
-                "h": 128
-            },
-            "sourceSize": {
-                "w": 128,
-                "h": 128
-            }
-        },
-        "Goku_Red31.png": {
-            "frame": {
-                "x": 128,
-                "y": 768,
-                "w": 128,
-                "h": 128
-            },
-            "rotated": false,
-            "trimmed": true,
-            "spriteSourceSize": {
-                "x": 0,
-                "y": 0,
-                "w": 128,
-                "h": 128
-            },
-            "sourceSize": {
-                "w": 128,
-                "h": 128
-            }
-        },
-        "Goku_Red32.png": {
-            "frame": {
-                "x": 256,
-                "y": 768,
-                "w": 128,
-                "h": 128
-            },
-            "rotated": false,
-            "trimmed": true,
-            "spriteSourceSize": {
-                "x": 0,
-                "y": 0,
-                "w": 128,
-                "h": 128
-            },
-            "sourceSize": {
-                "w": 128,
-                "h": 128
-            }
-        },
-        "Goku_Red33.png": {
-            "frame": {
-                "x": 384,
-                "y": 768,
-                "w": 128,
-                "h": 128
-            },
-            "rotated": false,
-            "trimmed": true,
-            "spriteSourceSize": {
-                "x": 0,
-                "y": 0,
-                "w": 128,
-                "h": 128
-            },
-            "sourceSize": {
-                "w": 128,
-                "h": 128
-            }
-        },
-        "Goku_Red34.png": {
-            "frame": {
-                "x": 512,
-                "y": 768,
-                "w": 128,
-                "h": 128
-            },
-            "rotated": false,
-            "trimmed": true,
-            "spriteSourceSize": {
-                "x": 0,
-                "y": 0,
-                "w": 128,
-                "h": 128
-            },
-            "sourceSize": {
-                "w": 128,
-                "h": 128
+                "h": 280
             }
         }
     },

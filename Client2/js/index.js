@@ -48,7 +48,9 @@ function preload() {
 
   this.load.tilemapTiledJSON("map", "assets/tilemaps/mainMap.json");
   this.load.atlas("Brown", "assets/atlas/Brown.png", "assets/atlas/Brown.json");
+  
   this.load.atlas("Goku_Black", "assets/atlas/Goku_Black.png", "assets/atlas/Goku_Black.json");
+  this.load.atlas("Goku_Red", "assets/atlas/Goku_Red.png", "assets/atlas/Goku_Red.json");
 }
 
 function create() {

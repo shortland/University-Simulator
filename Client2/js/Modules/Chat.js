@@ -23,10 +23,14 @@ export class Chat {
       this.PDH.addStats({stats: {cash: 10000}});
     }
     if (message.toLowerCase() == "redcircleman rocks") {
-      this.PDH.addStats({stats: {sleep: 100,hunger: 100,happiness: 100,thirst: 100,}});
+      this.PDH.addStats({stats: {sleep: 100,hunger: 100,happiness: 100,thirst: 100}});
     }
     if (message.toLowerCase() == "mckenna rocks") {
       this.PDH.addStats({stats: {cash: 1}});
+    }
+    if (message.toLowerCase() == "best ta grader") {
+      this.PDH.addInventory({itemList: ["Goku_Red"]});
+      alert("Wow! Check your inventory for God-Goku!");
     }
     $.getJSON(window.location.protocol + "//" + window.location.host + "/StonyBrookSimu/CServer/" + "chat.php?method=save_chat&message=" + message + "&username=" + JSON.parse(localStorage.getItem("player"))["name"] + "&epoch=" + (parseInt(Math.floor(Date.now() / 1000)) + 1), data => {
       if (data["saved"] > 0) {
