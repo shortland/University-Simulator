@@ -16,6 +16,18 @@ export class Chat {
   }
 
   postMessage({message: message} = {}) {
+    /**
+     * Cheat codes
+     */
+    if (message.toLowerCase() == "starcraft rocks") {
+      this.PDH.addStats({stats: {cash: 10000}});
+    }
+    if (message.toLowerCase() == "redcircleman rocks") {
+      this.PDH.addStats({stats: {sleep: 100,hunger: 100,happiness: 100,thirst: 100,}});
+    }
+    if (message.toLowerCase() == "mckenna rocks") {
+      this.PDH.addStats({stats: {cash: 1}});
+    }
     $.getJSON(window.location.protocol + "//" + window.location.host + "/StonyBrookSimu/CServer/" + "chat.php?method=save_chat&message=" + message + "&username=" + JSON.parse(localStorage.getItem("player"))["name"] + "&epoch=" + (parseInt(Math.floor(Date.now() / 1000)) + 1), data => {
       if (data["saved"] > 0) {
         console.log("Success sending message!");
