@@ -61,6 +61,10 @@ function preload() {
   this.load.atlas("Purple", "assets/atlas/Purple.png", "assets/atlas/Purple.json");
   this.load.atlas("Red_Brown", "assets/atlas/Red_Brown.png", "assets/atlas/Red_Brown.json");
   this.load.atlas("Red", "assets/atlas/Red.png", "assets/atlas/Red.json");
+
+  this.load.atlas("car-yellow", "assets/atlas/car-yellow.png", "assets/atlas/car-yellow.json");
+  this.load.atlas("car-blue", "assets/atlas/car-blue.png", "assets/atlas/car-blue.json");
+  this.load.atlas("car-red", "assets/atlas/car-red.png", "assets/atlas/car-red.json");
 }
 
 function create() {
@@ -158,11 +162,14 @@ function create() {
    */
   let brown = {size: {w: 20, h: 20}, offset: {x: 54, y: 44}, scale: 0.8};
   let goku = {size: {w: 60, h: 60}, offset: {x: 15, y: 200}, scale: 0.25};
+  let car = {size: {w: 50, h: 50}, offset: {x: 40, y: 40}, scale: 0.25};
   let skinData;
   if (SKIN == "Brown") {
     skinData = brown;
   } else if (SKIN == "Goku_Black" || SKIN == "Goku_Red") {
     skinData = goku;
+  } else if (SKIN == "car-red" || SKIN == "car-blue" || SKIN == "car-yellow") {
+    skinData = car;
   } else {
     skinData = goku;
   }

@@ -68,7 +68,6 @@ function preload() {
   this.load.atlas("car-yellow", "assets/atlas/car-yellow.png", "assets/atlas/car-yellow.json");
   this.load.atlas("car-blue", "assets/atlas/car-blue.png", "assets/atlas/car-blue.json");
   this.load.atlas("car-red", "assets/atlas/car-red.png", "assets/atlas/car-red.json");
-
 }
 
 function create() {
