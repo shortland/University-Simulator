@@ -6,7 +6,11 @@ export class JNotify {
     this.PDHandler;
   }
 
-  toastPlayerInteraction(interactant) {
+  toastPlayerInteraction(interactant, x) {
+    // console.log(interactant, x);
+    if (x.type != "Sprite") {
+      return;
+    }
     $("#toastNotification").show();
     if (this.prevInteractantName != interactant.name) { // it's a different person, so finish the old animation quick
       $("#toastNotification").finish();

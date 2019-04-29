@@ -1,4 +1,4 @@
-import { ToolTip, APIHandler, MapLoader, Chat, PlayerDataHandler, InteractableTileMapping, Physics } from './Modules/ModuleLoader.js';
+import { ToolTip, APIHandler, MapLoader, Chat, PlayerDataHandler, InteractableTileMapping, Physics, JNotify } from './Modules/ModuleLoader.js';
 
 const config = {
   type: Phaser.AUTO,
@@ -21,6 +21,8 @@ const config = {
 
 const game = new Phaser.Game(config);
 const ITM = new InteractableTileMapping;
+const JNotifier = new JNotify();
+const ORIGIN_TIME = new Date().getTime();
 let SKIN;
 let cursors;
 let player;
@@ -109,136 +111,136 @@ function create() {
    * 
    * Welcoming signs 198 [42 long]
    */
-  interactableLayer.setTileIndexCallback([198], () => {
-    tileInteraction("sign-west");
+  interactableLayer.setTileIndexCallback([198], data => {
+    tileInteraction(data, "sign-west");
   });
-  interactableLayer.setTileIndexCallback([199], () => {
-    tileInteraction("door-west");
+  interactableLayer.setTileIndexCallback([199], data => {
+    tileInteraction(data, "door-west");
   });
-  interactableLayer.setTileIndexCallback([200], () => {
-    tileInteraction("sign-east");
+  interactableLayer.setTileIndexCallback([200], data => {
+    tileInteraction(data, "sign-east");
   });
-  interactableLayer.setTileIndexCallback([201], () => {
-    tileInteraction("door-east");
+  interactableLayer.setTileIndexCallback([201], data => {
+    tileInteraction(data, "door-east");
   });
-  interactableLayer.setTileIndexCallback([202], () => {
-    tileInteraction("sign-roth");
+  interactableLayer.setTileIndexCallback([202], data => {
+    tileInteraction(data, "sign-roth");
   });
-  interactableLayer.setTileIndexCallback([203], () => {
-    tileInteraction("door-roth");
+  interactableLayer.setTileIndexCallback([203], data => {
+    tileInteraction(data, "door-roth");
   });
-  interactableLayer.setTileIndexCallback([204], () => {
-    tileInteraction("sign-javitz");
+  interactableLayer.setTileIndexCallback([204], data => {
+    tileInteraction(data, "sign-javitz");
   });
-  interactableLayer.setTileIndexCallback([205], () => {
-    tileInteraction("door-javitz");
+  interactableLayer.setTileIndexCallback([205], data => {
+    tileInteraction(data, "door-javitz");
   });
-  interactableLayer.setTileIndexCallback([206], () => {
-    tileInteraction("sign-new-cs");
+  interactableLayer.setTileIndexCallback([206], data => {
+    tileInteraction(data, "sign-new-cs");
   });
-  interactableLayer.setTileIndexCallback([207], () => {
-    tileInteraction("door-new-cs");
+  interactableLayer.setTileIndexCallback([207], data => {
+    tileInteraction(data, "door-new-cs");
   });
-  interactableLayer.setTileIndexCallback([208], () => {
-    tileInteraction("sign-the-sac");
+  interactableLayer.setTileIndexCallback([208], data => {
+    tileInteraction(data, "sign-the-sac");
   });
-  interactableLayer.setTileIndexCallback([209], () => {
-    tileInteraction("door-the-sac");
+  interactableLayer.setTileIndexCallback([209], data => {
+    tileInteraction(data, "door-the-sac");
   });
-  interactableLayer.setTileIndexCallback([210], () => {
-    tileInteraction("sign-humanities");
+  interactableLayer.setTileIndexCallback([210], data => {
+    tileInteraction(data, "sign-humanities");
   });
-  interactableLayer.setTileIndexCallback([211], () => {
-    tileInteraction("door-humanities");
+  interactableLayer.setTileIndexCallback([211], data => {
+    tileInteraction(data, "door-humanities");
   });
-  interactableLayer.setTileIndexCallback([212], () => {
-    tileInteraction("sign-rec-center");
+  interactableLayer.setTileIndexCallback([212], data => {
+    tileInteraction(data, "sign-rec-center");
   });
-  interactableLayer.setTileIndexCallback([213], () => {
-    tileInteraction("door-rec-center");
+  interactableLayer.setTileIndexCallback([213], data => {
+    tileInteraction(data, "door-rec-center");
   });
-  interactableLayer.setTileIndexCallback([214], () => {
-    tileInteraction("sign-staller");
+  interactableLayer.setTileIndexCallback([214], data => {
+    tileInteraction(data, "sign-staller");
   });
-  interactableLayer.setTileIndexCallback([215], () => {
-    tileInteraction("door-staller");
+  interactableLayer.setTileIndexCallback([215], data => {
+    tileInteraction(data, "door-staller");
   });
-  interactableLayer.setTileIndexCallback([216], () => {
-    tileInteraction("sign-wang");
+  interactableLayer.setTileIndexCallback([216], data => {
+    tileInteraction(data, "sign-wang");
   });
-  interactableLayer.setTileIndexCallback([217], () => {
-    tileInteraction("door-wang");
+  interactableLayer.setTileIndexCallback([217], data => {
+    tileInteraction(data, "door-wang");
   });
-  interactableLayer.setTileIndexCallback([218], () => {
-    tileInteraction("sign-library");
+  interactableLayer.setTileIndexCallback([218], data => {
+    tileInteraction(data, "sign-library");
   });
-  interactableLayer.setTileIndexCallback([219], () => {
-    tileInteraction("door-library");
+  interactableLayer.setTileIndexCallback([219], data => {
+    tileInteraction(data, "door-library");
   });
-  interactableLayer.setTileIndexCallback([220], () => {
-    tileInteraction("sign-frey-hall");
+  interactableLayer.setTileIndexCallback([220], data => {
+    tileInteraction(data, "sign-frey-hall");
   });
-  interactableLayer.setTileIndexCallback([221], () => {
-    tileInteraction("door-frey-hall");
+  interactableLayer.setTileIndexCallback([221], data => {
+    tileInteraction(data, "door-frey-hall");
   });
-  interactableLayer.setTileIndexCallback([222], () => {
-    tileInteraction("sign-chemistry");
+  interactableLayer.setTileIndexCallback([222], data => {
+    tileInteraction(data, "sign-chemistry");
   });
-  interactableLayer.setTileIndexCallback([223], () => {
-    tileInteraction("door-chemistry");
+  interactableLayer.setTileIndexCallback([223], data => {
+    tileInteraction(data, "door-chemistry");
   });
-  interactableLayer.setTileIndexCallback([224], () => {
-    tileInteraction("sign-physics");
+  interactableLayer.setTileIndexCallback([224], data => {
+    tileInteraction(data, "sign-physics");
   });
-  interactableLayer.setTileIndexCallback([225], () => {
-    tileInteraction("door-physics");
+  interactableLayer.setTileIndexCallback([225], data => {
+    tileInteraction(data, "door-physics");
   });
-  interactableLayer.setTileIndexCallback([226], () => {
-    tileInteraction("sign-ess");
+  interactableLayer.setTileIndexCallback([226], data => {
+    tileInteraction(data, "sign-ess");
   });
-  interactableLayer.setTileIndexCallback([227], () => {
-    tileInteraction("door-ess");
+  interactableLayer.setTileIndexCallback([227], data => {
+    tileInteraction(data, "door-ess");
   });
-  interactableLayer.setTileIndexCallback([228], () => {
-    tileInteraction("sign-engineering");
+  interactableLayer.setTileIndexCallback([228], data => {
+    tileInteraction(data, "sign-engineering");
   });
-  interactableLayer.setTileIndexCallback([229], () => {
-    tileInteraction("door-engineering");
+  interactableLayer.setTileIndexCallback([229], data => {
+    tileInteraction(data, "door-engineering");
   });
-  interactableLayer.setTileIndexCallback([230], () => {
-    tileInteraction("sign-light-engineering");
+  interactableLayer.setTileIndexCallback([230], data => {
+    tileInteraction(data, "sign-light-engineering");
   });
-  interactableLayer.setTileIndexCallback([231], () => {
-    tileInteraction("door-light-engineering");
+  interactableLayer.setTileIndexCallback([231], data => {
+    tileInteraction(data, "door-light-engineering");
   });
-  interactableLayer.setTileIndexCallback([232], () => {
-    tileInteraction("sign-heavy-engineering");
+  interactableLayer.setTileIndexCallback([232], data => {
+    tileInteraction(data, "sign-heavy-engineering");
   });
-  interactableLayer.setTileIndexCallback([233], () => {
-    tileInteraction("door-heavy-engineering");
+  interactableLayer.setTileIndexCallback([233], data => {
+    tileInteraction(data, "door-heavy-engineering");
   });
-  interactableLayer.setTileIndexCallback([234], () => {
-    tileInteraction("sign-harriman-hall");
+  interactableLayer.setTileIndexCallback([234], data => {
+    tileInteraction(data, "sign-harriman-hall");
   });
-  interactableLayer.setTileIndexCallback([235], () => {
-    tileInteraction("door-harriman-hall");
+  interactableLayer.setTileIndexCallback([235], data => {
+    tileInteraction(data, "door-harriman-hall");
   });
-  interactableLayer.setTileIndexCallback([236], () => {
-    tileInteraction("sign-psychology");
+  interactableLayer.setTileIndexCallback([236], data => {
+    tileInteraction(data, "sign-psychology");
   });
-  interactableLayer.setTileIndexCallback([237], () => {
-    tileInteraction("door-psychology");
+  interactableLayer.setTileIndexCallback([237], data => {
+    tileInteraction(data, "door-psychology");
   });
 
 
   // doors! // 195 is invisible doormat
-  interactableLayer.setTileIndexCallback([193, 194, 195], () => {
-    tileInteraction("door");
+  interactableLayer.setTileIndexCallback([193, 194, 195], data => {
+    tileInteraction(data, "door");
   });
 
   // crappy chest credit
-  interactableLayer.setTileIndexCallback(135, function() {
-    tileInteraction("cashForCredit");
+  interactableLayer.setTileIndexCallback(135, data => {
+    tileInteraction(data, "cashForCredit");
   });
 
   aboveLayer.setDepth(10);
@@ -485,14 +487,83 @@ function create() {
     const chat = new Chat({initChat: true});
   }
 
+  /**
+   * AI?
+   */
   const physicsGen = new Physics({physics: this.physics});
-  physicsGen.add_npc({
-    spawn: {x: player.x + 50, y: player.y},
-    immovable: false
-  });
+  const dist = 1000;
+  for (let i = 0; i < 50; ++i) {
+    const newAI = physicsGen.add_npc({
+      spawn: {x: player.x + Math.floor(Math.random() * dist), y: player.y + Math.floor(Math.random() * dist)},
+      maxVX: 1000,
+      maxVY: 1000,
+      story: {
+        next: {
+          line: ITM.QOUTES[Math.floor(Math.random() * ITM.QOUTES.length)],
+          timeout: 3000
+        }
+      }
+    });
+    physicsGen.add_player_layer_collisions({
+      player: newAI,
+      layers: [worldLayer, player],
+      callback: JNotifier.toastPlayerInteraction
+      //callback: null//testMalleability
+    });
+    this.physics.add.collider(player, newAI);
+    listAI.push(newAI);
+  }
+
+  toggleDirection();
 }
 
+// function testMalleability(sprite, tile) {
+//   if (ORIGIN_TIME > new Date().getTime() - 10000) {
+//     console.log(sprite);
+//     sprite.setVisible(false);
+//     sprite.setActive(false);
+//     //sprite.destroy();
+//   }
+// }
+
+function toggleDirection() {
+  movingAI = true;
+  setTimeout(toggleDirection, 1000);
+}
+
+const listAI = [];
+var movingAI = false;
+
 function update(time, delta) {
+
+  if (movingAI) {
+    movingAI = false;
+    listAI.forEach(ai => {
+      let p = Math.random() < 0.5 ? -1 : 1;
+      let d = Math.random() < 0.5 ? true : false;
+      let z = Math.random() < 0.5 ? true : false;
+      let m = Math.random() < 0.5 ? true : false;
+      let v = Math.random() < 0.5 ? 200 : 50;
+      let speed = v;
+      if (m) {
+        speed = 0;
+      }
+      ai.body.setVelocity(0);
+      if (z) {
+        if (d) {
+          ai.body.setVelocityX(speed * p);
+        } else {
+          ai.body.setVelocityY(speed * p);
+        }
+      } else {
+        ai.body.setVelocityX(speed * p);
+        ai.body.setVelocityY(speed * p);
+      }
+      
+      ai.body.velocity.normalize().scale(speed);
+    });
+  }
+
   const prevVelocity = player.body.velocity.clone();
 
   // Stop any previous movement from the last frame
@@ -535,7 +606,7 @@ function update(time, delta) {
   }
 }
 
-function tileInteraction(itemType) {
+function tileInteraction(data, itemType) {
   if (collidedInteractable) {
     return; // the menu is open. so don't open new interactions... stop here.
   }

@@ -183,5 +183,19 @@ export class InteractableTileMapping {
 
   Id2Name(id) {
     return (this.SKINS[id] || this.CARS[id] || this.FOODS[id] || {name: id})["name"];
-  }
+  };
+
+  QOUTES = [
+    "What's a SeaWolf?",
+    "Try eating a different location on campus! I hear West is great!",
+    "What's your favorite class?",
+    "What's your major?",
+    "Hi!",
+    "I'm running late to class!!!",
+    "Have you checked out SBU on reddit.com?",
+    "Which major do you think is the hardest?",
+    "Don't you love the summer!",
+    "I can't wait for the summer!",
+    "Geez... That midterm was really hard."
+  ];
 }

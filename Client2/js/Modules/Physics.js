@@ -20,7 +20,8 @@ export class Physics {
     name = "",
     story = null,
     immovable = true,
-    price = null
+    price = null,
+    velocity = 0
   } = {}) {
     const npc = this.physics.add
       .sprite(spawn.x, spawn.y, atlas, prefix + "-" + motion + "." + frame)
@@ -31,6 +32,7 @@ export class Physics {
     npc.setMaxVelocity(maxVX, maxVY);
     npc.setName(name);
     npc.setImmovable(immovable);
+    npc.body.setVelocity(velocity);
     npc.story = story;
     if (price != null) {
       npc.price = parseInt(price);
