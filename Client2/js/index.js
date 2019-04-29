@@ -397,25 +397,11 @@ function create() {
   });
 
   this.input.keyboard.on("keydown-" + "I", event => {
-    if ($("#player-inventory").is(":visible")) {
-      $("#player-inventory").hide();
-    } else {
-      $("#player-inventory").show();
-      $("#player-inventory").html("");
-      const inventory = PDH.getInventory();
-      let counts = {};
-      inventory.forEach((x) => { counts[x] = (counts[x] || 0) + 1; });
-      const keys = Object.keys(counts);
-      keys.sort((a, b) => {
-          return counts[b] - counts[a]
-      });
+    PDH.toggleInventory();
+  });
 
-      //$("#player-inventory").html("<table id='inv_table'></table>");
-      keys.forEach(k => {
-        $("#player-inventory").append("<p>" + ITM.Id2Name(k) + ": x" + counts[k] + "</p>");
-      });
-      
-    }
+  $(document).on("keypress", event => {
+    console.log(event);
   });
 
   // Debug graphics

@@ -112,11 +112,11 @@ export class InteractableTileMapping {
 
   SKINS = {
     "Goku_Black": {
-      name: "Goku Black",
+      name: "Goku",
       speed: 325
     },
     "Goku_Red": {
-      name: "Goku Red",
+      name: "Super Saiyan God Goku",
       speed: 450
     }
   };

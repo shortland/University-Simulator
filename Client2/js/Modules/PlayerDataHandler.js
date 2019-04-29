@@ -5,18 +5,60 @@ export class PlayerDataHandler {
     this.ITM = new InteractableTileMapping;
   }
 
+  toggleInventory() {
+    if ($("#player-inventory").is(":visible")) {
+      $("#player-inventory").hide();
+    } else {
+      $("#player-inventory").show();
+      $("#player-inv-table").html("")
+      let inventory = this.getInventory();
+      let counts = {};
+      inventory.forEach((x) => { counts[x] = (counts[x] || 0) + 1; });
+      const keys = Object.keys(counts);
+      keys.sort((a, b) => {
+          return counts[b] - counts[a];
+      });
+      keys.forEach(k => {
+        $("#player-inv-table").append("<tr class='inv_item' id='"+ k +"'><td>" + this.ITM.Id2Name(k) + "</td><td align='center'>x" + counts[k] + "</td></tr>");
+      });
+      $(".inv_item").on("click", event2 => {
+        this.useItem(event2.currentTarget.id);
+        this.toggleInventory();
+        /**
+         * TODO: this is kinda buggy
+         */
+        this.toggleInventory();
+      });
+    }
+  }
+
+  useItem(id) {
+    const data = this.getStats();
+    if (this.ITM.FOODS[id] != null) {
+      this.consumeItem({item: id});
+      let index = data["inventory"].indexOf(id);
+      if (index !== -1) data["inventory"].splice(index, 1);
+    } else {
+      let index = data["inventory"].indexOf(id);
+      if (index !== -1) data["inventory"].splice(index, 1);
+    }
+    this.updateStats(data);
+  }
+
+  // I don't think this is used... Legacy?
   consumeItem({item, ignore_cash = true} = {}) {
     const data = this.getStats();
-    Object.keys(this.ITM.FOODS[itemType]["stats"]).forEach(stat => {
+    Object.keys(this.ITM.FOODS[item]["stats"]).forEach(stat => {
       /**
        * Next if current is cash...
        * Assumes the cash transaction already took place
        */
       if (ignore_cash && stat == "cash") {
-        continue;
+        return;
       }
-      data[stat] += parseFloat(this.ITM.FOODS[itemType]["stats"][stat]);
+      data[stat] += parseFloat(this.ITM.FOODS[item]["stats"][stat]);
     });
+    this.updateStats(data);
   }
 
   addInventory({itemList} = {}) {

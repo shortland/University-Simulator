@@ -170,9 +170,19 @@ html {
   left: 110px;
   height: 600px;
   width: 600px;
-  background-color: white;
+  background-color: rgba(255, 255, 255, 0.8);
   color: black;
   z-index: 5;
   display: none;
   padding: 10px;
+}
+
+#player-inv-table {
+  width: 100%;
+}
+
+.inv_item:hover {
+  cursor: pointer;
+  text-decoration: underline;
+  border-bottom: 1px solid black;
 }
