@@ -51,6 +51,7 @@ html {
   height: 300px;
   overflow: scroll;
   color: black;
+  overflow-x: hidden;
 }
 
 .visible-box {
