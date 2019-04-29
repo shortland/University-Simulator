@@ -172,11 +172,11 @@ export class InteractableTileMapping {
       speed: 800
     },
     "car-blue": {
-      name: "Affordable Yellow Car",
+      name: "Affordable Blue Truck",
       speed: 600
     },
     "car-red": {
-      name: "Inexpensive Red Car",
+      name: "Cheap Red Car",
       speed: 400
     },
   };

@@ -1,5 +1,65 @@
 {
     "frames": {
+        "car-red-Up.000": {
+            "frame": {
+                "x": 0,
+                "y": 256,
+                "w": 128,
+                "h": 128
+            },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 128,
+                "h": 128
+            },
+            "sourceSize": {
+                "w": 128,
+                "h": 128
+            }
+        },
+        "car-blue-Up.000": {
+            "frame": {
+                "x": 0,
+                "y": 128,
+                "w": 128,
+                "h": 128
+            },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 128,
+                "h": 128
+            },
+            "sourceSize": {
+                "w": 128,
+                "h": 128
+            }
+        },
+        "car-yellow-Up.000": {
+            "frame": {
+                "x": 0,
+                "y": 0,
+                "w": 128,
+                "h": 128
+            },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 128,
+                "h": 128
+            },
+            "sourceSize": {
+                "w": 128,
+                "h": 128
+            }
+        },
         "car-yellow-Standing.000": {
             "frame": {
                 "x": 0,
