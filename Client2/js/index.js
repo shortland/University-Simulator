@@ -1,4 +1,4 @@
-import { ToolTip, APIHandler, MapLoader, Chat, PlayerDataHandler } from './Modules/ModuleLoader.js';
+import { ToolTip, APIHandler, MapLoader, Chat, PlayerDataHandler, InteractableTileMapping } from './Modules/ModuleLoader.js';
 
 const config = {
   type: Phaser.AUTO,
@@ -20,6 +20,7 @@ const config = {
 };
 
 const game = new Phaser.Game(config);
+const ITM = new InteractableTileMapping;
 let cursors;
 let player;
 let showDebug = true;
@@ -321,7 +322,7 @@ function create() {
     x: 16,
   });
   let helpMenuRight = new ToolTip({
-    game: this,// //
+    game: this,
     text: "[M] Show Minigames\n\n[Y] Accept transaction\n[N] Reject transaction\n\n[T] Toggle chat\n\n[I] Open/close inventory\n\n[P] Turn on/off phone\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n_______________________________",
     align: "left",
     clickDestroy: false,
@@ -400,10 +401,20 @@ function create() {
       $("#player-inventory").hide();
     } else {
       $("#player-inventory").show();
+      $("#player-inventory").html("");
       const inventory = PDH.getInventory();
       let counts = {};
-      inventory.forEach(function(x) { counts[x] = (counts[x] || 0)+1; });
-      console.log(counts);
+      inventory.forEach((x) => { counts[x] = (counts[x] || 0) + 1; });
+      const keys = Object.keys(counts);
+      keys.sort((a, b) => {
+          return counts[b] - counts[a]
+      });
+
+      //$("#player-inventory").html("<table id='inv_table'></table>");
+      keys.forEach(k => {
+        $("#player-inventory").append("<p>" + ITM.Id2Name(k) + ": x" + counts[k] + "</p>");
+      });
+      
     }
   });
 

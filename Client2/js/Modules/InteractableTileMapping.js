@@ -119,5 +119,9 @@ export class InteractableTileMapping {
       name: "Goku Red",
       speed: 450
     }
+  };
+
+  Id2Name(id) {
+    return (this.SKINS[id] || this.CARS[id] || this.FOODS[id] || {name: id})["name"];
   }
 }

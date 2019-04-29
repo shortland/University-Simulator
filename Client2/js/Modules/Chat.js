@@ -7,7 +7,6 @@ export class Chat {
       this.initChat();
     } else {
       localStorage.setItem("chat_loaded", true);
-      //http://ilankleiman.com/StonyBrookSimu/Client2/undefinedchat.php?method=save_chat&message=hi&username=Ilan%20Kleiman&epoch=1556521394
       this.refreshRate = 1000; // ms
       this.updateTimestamp = Math.floor(Date.now() / 1000);
       this.initChat();
@@ -41,7 +40,6 @@ export class Chat {
   }
 
   initChat() {
-    console.log("APD");
     $("#chat-box").on("keydown", e => {
       if (
         e.keyCode == 72 || // h
