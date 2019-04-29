@@ -105,7 +105,11 @@ export class SharedEventData {
      * Show/Hide player inventory
      */
     this.keyboard.on("keydown-" + "I", () => {
-      alert("Not yet implemented");
+      if ($("#player-inventory").is(":visible")) {
+        $("#player-inventory").hide();
+      } else {
+        $("#player-inventory").show();
+      }
     });
 
     /**
@@ -157,8 +161,8 @@ export class SharedEventData {
     });
     
     this.helpMenuRight = new ToolTip({
-      game: this.game,//[P] Turn on/off phone //[I] Open/close inventory
-      text: "[M] Show Minigames\n\n[Y] Accept transaction\n[N] Reject transaction\n\n[T] Toggle chat\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n_______________________________",
+      game: this.game,// //
+      text: "[M] Show Minigames\n\n[Y] Accept transaction\n[N] Reject transaction\n\n[T] Toggle chat\n\n[I] Open/close inventory\n\n[P] Turn on/off phone\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n_______________________________",
       align: "left",
       clickDestroy: false,
       depth: 100,

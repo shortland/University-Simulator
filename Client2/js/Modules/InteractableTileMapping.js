@@ -109,4 +109,15 @@ export class InteractableTileMapping {
       scale: 3.0,
     },
   };
+
+  SKINS = {
+    "Goku_Black": {
+      name: "Goku Black",
+      speed: 325
+    },
+    "Goku_Red": {
+      name: "Goku Red",
+      speed: 450
+    }
+  }
 }

@@ -1,19 +1,23 @@
+import { PlayerDataHandler } from './ModuleLoader.js';
+
 export class Chat {
   constructor({initChat = false} = {}) {
     if (initChat) {
+      // chat is already initialized
       this.initChat();
     } else {
       localStorage.setItem("chat_loaded", true);
-      this.baseURL = window.location.protocol + "//" + window.location.host + "/StonyBrookSimu/CServer/";
+      //http://ilankleiman.com/StonyBrookSimu/Client2/undefinedchat.php?method=save_chat&message=hi&username=Ilan%20Kleiman&epoch=1556521394
       this.refreshRate = 1000; // ms
       this.updateTimestamp = Math.floor(Date.now() / 1000);
       this.initChat();
       this.initPolling();
+      this.PDH = new PlayerDataHandler();
     }
   }
 
   postMessage({message: message} = {}) {
-    $.getJSON(this.baseURL + "chat.php?method=save_chat&message=" + message + "&username=" + JSON.parse(localStorage.getItem("player"))["name"] + "&epoch=" + (parseInt(Math.floor(Date.now() / 1000)) + 1), data => {
+    $.getJSON(window.location.protocol + "//" + window.location.host + "/StonyBrookSimu/CServer/" + "chat.php?method=save_chat&message=" + message + "&username=" + JSON.parse(localStorage.getItem("player"))["name"] + "&epoch=" + (parseInt(Math.floor(Date.now() / 1000)) + 1), data => {
       if (data["saved"] > 0) {
         console.log("Success sending message!");
       } else {
@@ -23,7 +27,7 @@ export class Chat {
   }
 
   initPolling(lastMessage = null) {
-    $.getJSON(this.baseURL + "chat.php?method=get_chat&epoch=" + this.updateTimestamp, data => {
+    $.getJSON(window.location.protocol + "//" + window.location.host + "/StonyBrookSimu/CServer/" + "chat.php?method=get_chat&epoch=" + this.updateTimestamp, data => {
       if (data["messages"].length > 0 && lastMessage != data["messages"][0]) {
         data["messages"].forEach(message => {
           $("#pre-chat").append("<div class='child-comment'>"+message+"</div>");
@@ -37,6 +41,7 @@ export class Chat {
   }
 
   initChat() {
+    console.log("APD");
     $("#chat-box").on("keydown", e => {
       if (
         e.keyCode == 72 || // h

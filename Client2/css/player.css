@@ -3,6 +3,19 @@
   font-weight: bold;
 }
 
+html {
+  overflow: scroll;
+  overflow-x: hidden;
+}
+::-webkit-scrollbar {
+  width: 0px;  /* Remove scrollbar space */
+  background: transparent;  /* Optional: just make scrollbar invisible */
+}
+/* Optional: show position indicator in red */
+::-webkit-scrollbar-thumb {
+  background: #FF0000;
+}
+
 ::placeholder {
   color: black;
 }
@@ -145,6 +158,19 @@
   background-position: center;
   background-repeat: no-repeat;
   background-size: 100% auto;
+  color: black;
+  z-index: 5;
+  display: none;
+}
+
+#player-inventory {
+  box-sizing: border-box;
+  position: fixed;
+  top: 110px;
+  left: 110px;
+  height: 600px;
+  width: 600px;
+  background-color: white;
   color: black;
   z-index: 5;
   display: none;

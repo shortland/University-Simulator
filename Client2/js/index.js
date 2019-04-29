@@ -1,4 +1,4 @@
-import { ToolTip, APIHandler, MapLoader, Chat } from './Modules/ModuleLoader.js';
+import { ToolTip, APIHandler, MapLoader, Chat, PlayerDataHandler } from './Modules/ModuleLoader.js';
 
 const config = {
   type: Phaser.AUTO,
@@ -27,6 +27,7 @@ let showDebug = true;
 var aboveLayer;
 var act;
 var map;
+var PDH;
 var speed = 200;
 var collidedInteractable = false;
 
@@ -48,6 +49,7 @@ function preload() {
 
 function create() {
   map = this.make.tilemap({ key: "map" });
+  PDH = new PlayerDataHandler();
 
   const tileset = map.addTilesetImage("SBU", "tiles");
   const tileset2 = map.addTilesetImage("SBU RD (1)", "tiles2");
@@ -319,8 +321,8 @@ function create() {
     x: 16,
   });
   let helpMenuRight = new ToolTip({
-    game: this,//[P] Turn on/off phone //[I] Open/close inventory
-    text: "[M] Show Minigames\n\n[Y] Accept transaction\n[N] Reject transaction\n\n[T] Toggle chat\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n_______________________________",
+    game: this,// //
+    text: "[M] Show Minigames\n\n[Y] Accept transaction\n[N] Reject transaction\n\n[T] Toggle chat\n\n[I] Open/close inventory\n\n[P] Turn on/off phone\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n_______________________________",
     align: "left",
     clickDestroy: false,
     depth: 100,
@@ -394,7 +396,15 @@ function create() {
   });
 
   this.input.keyboard.on("keydown-" + "I", event => {
-    alert("Not yet implemented");
+    if ($("#player-inventory").is(":visible")) {
+      $("#player-inventory").hide();
+    } else {
+      $("#player-inventory").show();
+      const inventory = PDH.getInventory();
+      let counts = {};
+      inventory.forEach(function(x) { counts[x] = (counts[x] || 0)+1; });
+      console.log(counts);
+    }
   });
 
   // Debug graphics
@@ -431,6 +441,8 @@ function create() {
 
   if (JSON.parse(localStorage.getItem("chat_loaded")) === false) {
     const chat = new Chat();
+  } else {
+    const chat = new Chat({initChat: true});
   }
 }
 

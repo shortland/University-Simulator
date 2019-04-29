@@ -27,6 +27,11 @@ export class PlayerDataHandler {
     this.updateStats(data);
   }
 
+  getInventory() {
+    this.refresh();
+    return this.getStats()["inventory"];
+  }
+
   addStats({stats} = {}) {
     let data = this.getStats();
     Object.keys(stats).forEach(stat => {

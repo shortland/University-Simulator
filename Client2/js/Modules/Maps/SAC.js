@@ -43,6 +43,9 @@ function preload() {
   this.load.tilemapTiledJSON("SAC", "assets/tilemaps/SAC.json");
   this.load.atlas("Brown", "assets/atlas/Brown.png", "assets/atlas/Brown.json");
   this.load.atlas("Cars", "assets/atlas/Cars.png", "assets/atlas/Cars.json");
+
+  this.load.atlas("Goku_Black", "assets/atlas/Goku_Black.png", "assets/atlas/Goku_Black.json");
+  this.load.atlas("Goku_Red", "assets/atlas/Goku_Red.png", "assets/atlas/Goku_Red.json");
 }
 
 function create() {
@@ -167,14 +170,22 @@ function create() {
       }
     }
   });
-  const npc1 = physics.add_npc({
+  const gokuBlack = physics.add_npc({
+    atlas: "Goku_Black",
+    prefix: "Goku_Black",
+    name: "Goku_Black",
+    motion: "Standing",
     spawn: {x: 45, y: 265},
     immovable: true,
-    name: "Skin 1",
+    price: 2000,
+    scale: 0.25,
+    width: 60,
+    height: 60,
+    offsetX: 15,
+    offsetY: 200,
     story: {
       next: {
-        line: "Buy skin?",
-        price: 200,
+        line: "Buy skin for $2000?",
         Y: {
           next: {
             line: "Congrats! You can change your skin via your inventory [I]"
@@ -223,7 +234,7 @@ function create() {
    */
   physics.add_player_layer_collisions({
     layers: collisionLayers.concat(player),
-    player: npc1,
+    player: gokuBlack,
     callback: JNotifier.storyPlayerInteraction
   });
   physics.add_player_layer_collisions({
@@ -249,7 +260,7 @@ function create() {
   /**
    * Add collisions for the player
    */
-  physics.add_player_layer_collisions({layers: collisionLayers.concat([npc1, npc2, car1, car2, car3])});
+  physics.add_player_layer_collisions({layers: collisionLayers.concat([gokuBlack, npc2, car1, car2, car3])});
   physics.add_camera_follow({
     camera: this.cameras.main,
     object: player
