@@ -101,7 +101,7 @@ function create() {
    * Add NPCs
    */
   const car1 = physics.add_npc({
-    prefix: "Car-Yellow",
+    prefix: "car-yellow",
     motion: "Up",
     offsetX: 30,
     offsetY: 0,
@@ -110,7 +110,7 @@ function create() {
     atlas: "Cars",
     spawn: {x: 220, y: 550},
     immovable: true,
-    name: "Car 1",
+    name: "car-yellow",
     price: 2000,
     story: {
       next: {
@@ -129,7 +129,7 @@ function create() {
     }
   });
   const car2 = physics.add_npc({
-    prefix: "Car-Blue",
+    prefix: "car-blue",
     motion: "Up",
     offsetX: 30,
     offsetY: 0,
@@ -138,7 +138,7 @@ function create() {
     atlas: "Cars",
     spawn: {x: 145, y: 550},
     immovable: true,
-    name: "Car 2",
+    name: "car-blue",
     price: 1500,
     story: {
       next: {
@@ -157,7 +157,7 @@ function create() {
     }
   });
   const car3 = physics.add_npc({
-    prefix: "Car-Red",
+    prefix: "car-red",
     motion: "Up",
     offsetX: 30,
     offsetY: 0,
@@ -166,7 +166,7 @@ function create() {
     atlas: "Cars",
     spawn: {x: 70, y: 550},
     immovable: true,
-    name: "Car 3",
+    name: "car-red",
     price: 1000,
     story: {
       next: {
