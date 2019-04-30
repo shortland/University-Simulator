@@ -1,4 +1,4 @@
-import { ToolTip, APIHandler, MapLoader, Chat, PlayerDataHandler, InteractableTileMapping, Physics, JNotify } from './Modules/ModuleLoader.js';
+import { ToolTip, APIHandler, MapLoader, Chat, PlayerDataHandler, InteractableTileMapping, Physics, JNotify, Sounds } from './Modules/ModuleLoader.js';
 
 const config = {
   type: Phaser.AUTO,
@@ -22,7 +22,7 @@ const config = {
 const game = new Phaser.Game(config);
 const ITM = new InteractableTileMapping;
 const JNotifier = new JNotify();
-const ORIGIN_TIME = new Date().getTime();
+const aud = new Sounds;
 let SKIN;
 let cursors;
 let player;
@@ -483,6 +483,19 @@ function create() {
 
   if (JSON.parse(localStorage.getItem("chat_loaded")) === false) {
     const chat = new Chat();
+    /**
+     * Music
+     */
+    const sound = new Howl({
+      src: ["assets/audio/song.wav"],
+      autoplay: true,
+      loop: true,
+      volume: 0.5,
+      onend: function() {
+        console.log('Finished!');
+      }
+    });
+    sound.play();
   } else {
     const chat = new Chat({initChat: true});
   }
@@ -497,6 +510,7 @@ function create() {
       spawn: {x: player.x + Math.floor(Math.random() * dist), y: player.y + Math.floor(Math.random() * dist)},
       maxVX: 1000,
       maxVY: 1000,
+      name: "student_" + i,
       story: {
         next: {
           line: ITM.QOUTES[Math.floor(Math.random() * ITM.QOUTES.length)],
@@ -508,7 +522,6 @@ function create() {
       player: newAI,
       layers: [worldLayer, player],
       callback: JNotifier.toastPlayerInteraction
-      //callback: null//testMalleability
     });
     this.physics.add.collider(player, newAI);
     listAI.push(newAI);
@@ -516,15 +529,6 @@ function create() {
 
   toggleDirection();
 }
-
-// function testMalleability(sprite, tile) {
-//   if (ORIGIN_TIME > new Date().getTime() - 10000) {
-//     console.log(sprite);
-//     sprite.setVisible(false);
-//     sprite.setActive(false);
-//     //sprite.destroy();
-//   }
-// }
 
 function toggleDirection() {
   movingAI = true;

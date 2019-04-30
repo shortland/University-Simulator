@@ -1,4 +1,4 @@
-import { ToolTip, PlayerDataHandler } from './ModuleLoader.js';
+import { ToolTip, PlayerDataHandler, Sounds } from './ModuleLoader.js';
 
 export class SharedEventData {
   constructor({game, keyboard, state} = {}) {
@@ -11,6 +11,7 @@ export class SharedEventData {
     this.PDH = new PlayerDataHandler();
     this.initHiddenMenus();
     this.initKeyboardEvents();
+    this.audio = new Sounds;
   }
 
   /**

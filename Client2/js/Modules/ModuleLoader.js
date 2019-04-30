@@ -8,3 +8,4 @@ export { SharedEventData } from './SharedEventData.js';
 export { PlayerDataHandler } from './PlayerDataHandler.js';
 export { Chat } from './Chat.js';
 export { JNotify } from './JNotify.js';
+export { Sounds } from './Sounds.js';

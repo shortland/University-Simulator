@@ -196,6 +196,8 @@ export class InteractableTileMapping {
     "Which major do you think is the hardest?",
     "Don't you love the summer!",
     "I can't wait for the summer!",
-    "Geez... That midterm was really hard."
+    "Geez... That midterm was really hard.",
+    "Hey!",
+    "What a lovely day :)"
   ];
 }
