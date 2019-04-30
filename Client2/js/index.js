@@ -477,6 +477,14 @@ function create() {
       $("#pre-chat").addClass("visible-box");
       $(".child-comment").finish().show();
     }
+    setTimeout(() => {
+      let message = $("#chat-box").val();
+      if (message.indexOf("spawn") == 0) {
+        let amt = message.substr(5, 5);
+        alert("Spawning " + amt + " more!");
+        createAIs(amt);
+      }
+    }, 5000);
     event.preventDefault();
     event.stopPropagation();
   });
@@ -503,39 +511,43 @@ function create() {
   /**
    * AI?
    */
-  const physicsGen = new Physics({physics: this.physics});
-  const dist = 600;
-  for (let i = 0; i < 50; ++i) {
-    let sign_a = Math.random() < 0.5 ? 1 : -1;
-    let sign_b = Math.random() < 0.5 ? 1 : -1;
-    let SKIN = ITM.SAFE_SKINS[Math.floor(Math.random() * ITM.SAFE_SKINS.length)];
-    const newAI = physicsGen.add_npc({
-      spawn: {x: player.x + (Math.floor(Math.random() * dist) * sign_a), y: player.y + (Math.floor(Math.random() * dist) * sign_b)},
-      maxVX: 1000,
-      maxVY: 1000,
-      name: "student_" + i,
-      width: 60,
-      height: 60,
-      offsetX: 15,
-      offsetY: 200,
-      scale: 0.25,
-      atlas: SKIN,
-      prefix: SKIN,
-      story: {
-        next: {
-          line: ITM.QOUTES[Math.floor(Math.random() * ITM.QOUTES.length)],
-          timeout: 3000
+  function createAIs(amt) {
+    const physicsGen = new Physics({physics: act.physics});
+    const dist = 600;
+    for (let i = 0; i < amt; ++i) {
+      let sign_a = Math.random() < 0.5 ? 1 : -1;
+      let sign_b = Math.random() < 0.5 ? 1 : -1;
+      let SKIN = ITM.SAFE_SKINS[Math.floor(Math.random() * ITM.SAFE_SKINS.length)];
+      const newAI = physicsGen.add_npc({
+        spawn: {x: player.x + (Math.floor(Math.random() * dist) * sign_a), y: player.y + (Math.floor(Math.random() * dist) * sign_b)},
+        maxVX: 1000,
+        maxVY: 1000,
+        name: "student_" + i,
+        width: 60,
+        height: 60,
+        offsetX: 15,
+        offsetY: 200,
+        scale: 0.25,
+        atlas: SKIN,
+        prefix: SKIN,
+        immovable: false,
+        story: {
+          next: {
+            line: ITM.QOUTES[Math.floor(Math.random() * ITM.QOUTES.length)],
+            timeout: 3000
+          }
         }
-      }
-    });
-    physicsGen.add_player_layer_collisions({
-      player: newAI,
-      layers: [worldLayer, player],
-      callback: JNotifier.toastPlayerInteraction
-    });
-    this.physics.add.collider(player, newAI);
-    listAI.push(newAI);
+      });
+      physicsGen.add_player_layer_collisions({
+        player: newAI,
+        layers: [worldLayer, player],
+        callback: JNotifier.toastPlayerInteraction
+      });
+      act.physics.add.collider(player, newAI);
+      listAI.push(newAI);
+    }
   }
+  createAIs(50);
 
   toggleDirection();
 }
