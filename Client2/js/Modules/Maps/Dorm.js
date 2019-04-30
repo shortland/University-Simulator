@@ -354,8 +354,7 @@ function tileInteraction(itemType) {
         volume: 0.05,
         onend: function() {
           console.log('Finished!');
-          ++plays;
-          if (plays === 2) {
+          if (++plays == 2) {
             sound.loop(false);
           }
         }

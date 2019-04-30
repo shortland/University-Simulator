@@ -188,3 +188,25 @@ html {
   text-decoration: underline;
   border-bottom: 1px solid black;
 }
+
+#play-container {
+  box-sizing: border-box;
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  background-color: rgba(255, 255, 255, 0.7); 
+  color: black;
+  display: flex; 
+  width: 800px; 
+  height: 800px; 
+  margin: auto; 
+  border: 2px solid red; 
+  z-index: 10;
+}
+
+#play-container p { 
+  text-decoration: underline;
+  margin: auto; /* Important */ 
+  text-align: center; 
+  cursor: pointer;
+}

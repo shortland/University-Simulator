@@ -795,4 +795,7 @@ function updateStats(playerData) {
 $(document).ready(function() {
   updateStats(JSON.parse(localStorage.getItem("player")));
   $(document).add('*').off();
+  $("#play-container").on("click", () => {
+    $("#play-container").hide();
+  });
 });
