@@ -89,7 +89,7 @@ function create() {
   worldLayer.setCollisionBetween(1, 10000, true, 'World');
 
   act = this;
-  console.log(interactableLayer); // get gids for collision
+  //console.log(interactableLayer); // get gids for collision
 
   /**
    * INTERACTIONS WITH TILES
@@ -182,7 +182,7 @@ function create() {
     height: skinData["size"].h,
     offsetX: skinData["offset"].x,
     offsetY: skinData["offset"].y,
-    spawn: {x: 160, y: 176}
+    spawn: {x: 160, y: 146}
   });
   /**
    * Add collisions for NPCs after the player has been added - so that we can add the player to the npc's collisions
@@ -341,7 +341,26 @@ function tileInteraction(itemType) {
         JNotifier.toast({color: "green", html: "Purchased successfully!"});
       }
     } else if (itemType == "bed") {
-      JNotifier.toast({color: "green", html: "Sleep; and make player less tired but more hungry and thirsty..."});
+      $("canvas").fadeOut(3500).fadeIn(2500);
+      JNotifier.toast({color: "green", html: "1 day passes..."});
+      /**
+       * SLEEP SOUND
+       */
+      let plays = 0;
+      const sound = new Howl({
+        src: ["assets/audio/Snoring.wav"],
+        autoplay: true,
+        loop: true,
+        volume: 0.05,
+        onend: function() {
+          console.log('Finished!');
+          ++plays;
+          if (plays === 2) {
+            sound.loop(false);
+          }
+        }
+      });
+      sound.play();
     }
 
     JNotifier.promptHide();

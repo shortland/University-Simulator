@@ -55,8 +55,22 @@ export class PlayerDataHandler {
     this.updateStats(data);
   }
 
-  // I don't think this is used... Legacy?
   consumeItem({item, ignore_cash = true} = {}) {
+    /**
+     * Music
+     */
+    let src = Math.random() < 0.5 ? ["assets/audio/Eating.wav"] : ["assets/audio/Drinking.wav"];
+    const sound = new Howl({
+      src: src,
+      autoplay: true,
+      loop: false,
+      volume: 0.01,
+      onend: function() {
+        console.log('Finished!');
+      }
+    });
+    sound.play();
+
     const data = this.getStats();
     Object.keys(this.ITM.FOODS[item]["stats"]).forEach(stat => {
       /**
@@ -98,7 +112,8 @@ export class PlayerDataHandler {
     $.getJSON("http://ilankleiman.com/StonyBrookSimu/CServer/index.php?method=get_user&username=" + username, data => {
       this.updateStats(data);
     }).fail(() => {
-      alert("Unable to fetch data");
+      // alert("Unable to fetch data");
+      console.log("ERROR FETCHING DATA");
     });
   }
 
