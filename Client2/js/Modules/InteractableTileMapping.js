@@ -181,6 +181,23 @@ export class InteractableTileMapping {
     },
   };
 
+  /**
+   * All the same "size" no cars or gokus
+   */
+  SAFE_SKINS = [
+    "Black_Brown", 
+    "Black", 
+    "Blue_Clone", 
+    "Blue", 
+    "BrownV2",
+    "Green_Brown",
+    "Green",
+    "Purple_Brown",
+    "Purple",
+    "Red_Brown",
+    "Red"
+  ];
+
   Id2Name(id) {
     return (this.SKINS[id] || this.CARS[id] || this.FOODS[id] || {name: id})["name"];
   };

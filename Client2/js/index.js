@@ -508,11 +508,19 @@ function create() {
   for (let i = 0; i < 50; ++i) {
     let sign_a = Math.random() < 0.5 ? 1 : -1;
     let sign_b = Math.random() < 0.5 ? 1 : -1;
+    let SKIN = ITM.SAFE_SKINS[Math.floor(Math.random() * ITM.SAFE_SKINS.length)];
     const newAI = physicsGen.add_npc({
       spawn: {x: player.x + (Math.floor(Math.random() * dist) * sign_a), y: player.y + (Math.floor(Math.random() * dist) * sign_b)},
       maxVX: 1000,
       maxVY: 1000,
       name: "student_" + i,
+      width: 60,
+      height: 60,
+      offsetX: 15,
+      offsetY: 200,
+      scale: 0.25,
+      atlas: SKIN,
+      prefix: SKIN,
       story: {
         next: {
           line: ITM.QOUTES[Math.floor(Math.random() * ITM.QOUTES.length)],
