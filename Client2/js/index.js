@@ -450,18 +450,18 @@ function create() {
   });
 
   // Debug graphics
-  this.input.keyboard.once("keydown_D", event => {
-    this.physics.world.createDebugGraphic();
-    const graphics = this.add
-      .graphics()
-      .setAlpha(0.75)
-      .setDepth(20);
-    interactableLayer.renderDebug(graphics, {
-      tileColor: null,
-      collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
-      faceColor: new Phaser.Display.Color(40, 39, 37, 255)
-    });
-  });
+  // this.input.keyboard.once("keydown_D", event => {
+  //   this.physics.world.createDebugGraphic();
+  //   const graphics = this.add
+  //     .graphics()
+  //     .setAlpha(0.75)
+  //     .setDepth(20);
+  //   interactableLayer.renderDebug(graphics, {
+  //     tileColor: null,
+  //     collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
+  //     faceColor: new Phaser.Display.Color(40, 39, 37, 255)
+  //   });
+  // });
 
   this.input.keyboard.on("keydown-" + "T", event => {
     if ($("#chat-box").is(":visible")) {
@@ -504,10 +504,12 @@ function create() {
    * AI?
    */
   const physicsGen = new Physics({physics: this.physics});
-  const dist = 1000;
+  const dist = 600;
   for (let i = 0; i < 50; ++i) {
+    let sign_a = Math.random() < 0.5 ? 1 : -1;
+    let sign_b = Math.random() < 0.5 ? 1 : -1;
     const newAI = physicsGen.add_npc({
-      spawn: {x: player.x + Math.floor(Math.random() * dist), y: player.y + Math.floor(Math.random() * dist)},
+      spawn: {x: player.x + (Math.floor(Math.random() * dist) * sign_a), y: player.y + (Math.floor(Math.random() * dist) * sign_b)},
       maxVX: 1000,
       maxVY: 1000,
       name: "student_" + i,
