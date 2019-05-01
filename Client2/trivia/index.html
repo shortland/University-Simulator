@@ -1,0 +1,33 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body style="zoom: 0.5;">
+        <div id = showScore>
+            <p id = 'comment'></p>
+        </div>
+        <div id = main>
+            <div id = starting>
+                <p class = 'bigText'> Ready for the test ?</p>
+                <button id = start>Start</button>
+            </div>
+            <div id = game>
+                <div class ='info' id="timer"> timer </div>
+                <div class = 'bigText' id="question_div">
+                    <p id="question">QUESTION</p>
+                </div>
+                <div id="options_div">
+                    <button class= "options" id = "a">A</button>
+                    <button class= "options" id = "b">B</button>
+                    <button class= "options" id = "c">C</button>
+                    <button class= "options" id = "d">D</button>
+                </div>
+                <div class ='info' id = progress></div>
+            </div>
+        </div>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src ="question.js"></script>
+        <script src ="quiz.js"></script>
+        <script src ="main.js"></script>
+    </body>
+</html>

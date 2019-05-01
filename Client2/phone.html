@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>University Simulator - Phone</title>
+    <link rel="stylesheet" type="text/css" href="css/player.css">
+  </head>
+
+  <body>
+    <center>
+      <p>(more games coming soon)</p> 
+      <p id='play_quiz' style='text-decoration:underline;cursor:pointer;'>[Quiz Game]</p>
+      <p id='play_maze' style='text-decoration:underline;cursor:pointer;'>[Maze Game]</p>
+      <p id='play_coin' style='text-decoration:underline;cursor:pointer;'>[Coin Game]</p>
+      <div class="minigames"></div>
+    </center>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+      $(document).ready(function() {
+        $("#play_coin").on("click", () => {
+          window.location.href = "coin.html";
+        });
+        $("#play_maze").on("click", () => {
+          window.location.href = "MazeMiniGame/index.html";
+        });
+        $("#play_quiz").on("click", () => {
+          window.location.href = "trivia/index.html";
+        });
+      });
+    </script>
+  </body>
+</html>

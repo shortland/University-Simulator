@@ -49,36 +49,36 @@ export class SharedEventData {
     /**
      * Show/Hide the Minigames menu
      */
-    this.keyboard.on("keydown-" + "M", () => {
-      if ($(".minigames").is(":visible")) {
-        $(".minigames").hide();
-      } else {
-        $(".minigames").show();
-        $(".minigames").html(
-          "<center>"+
-            "<h3>More games coming soon!</h3>" +
-            "Click <b id='play_coin' style='text-decoration:underline;cursor:pointer;'>[here]</b> to play the minigame: 'Coin Game'"+
-            "<br>You'll have 10 seconds to win cash for your player!" +
-          "</center>"
-        );
-        $("#play_coin").click(() => {
-          localStorage.setItem("coin_win", 0);
-          $(".minigames").html("<iframe id='minigame_frame' src='coin.html' frameBorder='0px'></iframe>");
-          $("#minigame_frame").focus();
-          setTimeout(() => {
-            $(".minigames").html("");
-            $(".minigames").hide();
-            let amt = localStorage.getItem("coin_win");
-            alert("Time's up! You won " + amt);
-            this.PDH.addStats({stats: {cash: amt}});
+    // this.keyboard.on("keydown-" + "M", () => {
+    //   if ($(".minigames").is(":visible")) {
+    //     $(".minigames").hide();
+    //   } else {
+    //     $(".minigames").show();
+    //     $(".minigames").html(
+    //       "<center>"+
+    //         "<h3>More games coming soon!</h3>" +
+    //         "Click <b id='play_coin' style='text-decoration:underline;cursor:pointer;'>[here]</b> to play the minigame: 'Coin Game'"+
+    //         "<br>You'll have 10 seconds to win cash for your player!" +
+    //       "</center>"
+    //     );
+    //     $("#play_coin").click(() => {
+    //       localStorage.setItem("coin_win", 0);
+    //       $(".minigames").html("<iframe id='minigame_frame' src='coin.html' frameBorder='0px'></iframe>");
+    //       $("#minigame_frame").focus();
+    //       setTimeout(() => {
+    //         $(".minigames").html("");
+    //         $(".minigames").hide();
+    //         let amt = localStorage.getItem("coin_win");
+    //         alert("Time's up! You won " + amt);
+    //         this.PDH.addStats({stats: {cash: amt}});
 
-            // let playerData = JSON.parse(localStorage.getItem("player"));
-            // playerData.cash = parseInt(playerData.cash) + parseInt(localStorage.getItem("coin_win"));
-            // PDHandler.updateStats(playerData);
-          }, 10000);
-        });
-      }
-    });
+    //         // let playerData = JSON.parse(localStorage.getItem("player"));
+    //         // playerData.cash = parseInt(playerData.cash) + parseInt(localStorage.getItem("coin_win"));
+    //         // PDHandler.updateStats(playerData);
+    //       }, 10000);
+    //     });
+    //   }
+    // });
 
     /**
      * Show/Hide player stats

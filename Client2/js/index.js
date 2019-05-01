@@ -360,7 +360,7 @@ function create() {
   let helpMenuLeft = new ToolTip({
     game: this,
     // \nShift+⬅️: Scroll left\nShift+➡️: Scroll right\nShift+⬆️: Scroll up\nShift+⬇️: Scroll down
-    text: "⬅️: Move left\n➡️: Move right\n⬆️: Move up\n⬇️: Move down\n\n[H] Show/hide this help menu\n\n[S] Show all player stats\n\n[Z] Toggle running (devmode)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n_______________________________",
+    text: "⬅️: Move left\n➡️: Move right\n⬆️: Move up\n⬇️: Move down\n\n[H] Show/hide this help menu\n\n[S] Show all player stats\n\n[Z] Toggle running (devmode)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n_______________________________",
     align: "left",
     clickDestroy: false,
     depth: 100,
@@ -370,7 +370,7 @@ function create() {
   });
   let helpMenuRight = new ToolTip({
     game: this,
-    text: "[M] Show Minigames\n\n[Y] Accept transaction\n[N] Reject transaction\n\n[T] Toggle chat\n\n[I] Open/close inventory\n\n[P] Turn on/off phone\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n_______________________________",
+    text: "[Y] Accept transaction\n[N] Reject transaction\n\n[T] Toggle chat\n\n[I] Open/close inventory\n\n[P] Show/Hide phone\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n_______________________________",
     align: "left",
     clickDestroy: false,
     depth: 100,
@@ -379,33 +379,33 @@ function create() {
     x: 416
   });
 
-  this.input.keyboard.on("keydown-" + "M", event => {
-    if ($(".minigames").is(":visible")) {
-      $(".minigames").hide();
-    } else {
-      $(".minigames").show();
-      $(".minigames").html(
-        "<center>"+
-        "<h3>More games coming soon!</h3>" +
-        "Click <b id='play_coin' style='text-decoration:underline;cursor:pointer;'>[here]</b> to play the minigame: 'Coin Game'"+
-        "<br>You'll have 10 seconds to win cash for your player!" +
-        "</center>"
-      );
-      $("#play_coin").click(function(event)  {
-        localStorage.setItem("coin_win", 0);
-        $(".minigames").html("<iframe id='minigame_frame' src='coin.html' frameBorder='0px'></iframe>");
-        $("#minigame_frame").focus();
-        setTimeout(() => {
-          $(".minigames").html("");
-          $(".minigames").hide();
-          alert("Time's up! You won " + localStorage.getItem("coin_win"));
-          let player = JSON.parse(localStorage.getItem("player"));
-          player.cash = parseInt(player.cash) + parseInt(localStorage.getItem("coin_win"));
-          updateStats(player);
-        }, 10000);
-      });
-    }
-  });
+  // this.input.keyboard.on("keydown-" + "M", event => {
+  //   if ($(".minigames").is(":visible")) {
+  //     $(".minigames").hide();
+  //   } else {
+  //     $(".minigames").show();
+  //     $(".minigames").html(
+  //       "<center>"+
+  //       "<h3>More games coming soon!</h3>" +
+  //       "Click <b id='play_coin' style='text-decoration:underline;cursor:pointer;'>[here]</b> to play the minigame: 'Coin Game'"+
+  //       "<br>You'll have 10 seconds to win cash for your player!" +
+  //       "</center>"
+  //     );
+  //     $("#play_coin").click(function(event)  {
+  //       localStorage.setItem("coin_win", 0);
+  //       $(".minigames").html("<iframe id='minigame_frame' src='coin.html' frameBorder='0px'></iframe>");
+  //       $("#minigame_frame").focus();
+  //       setTimeout(() => {
+  //         $(".minigames").html("");
+  //         $(".minigames").hide();
+  //         alert("Time's up! You won " + localStorage.getItem("coin_win"));
+  //         let player = JSON.parse(localStorage.getItem("player"));
+  //         player.cash = parseInt(player.cash) + parseInt(localStorage.getItem("coin_win"));
+  //         updateStats(player);
+  //       }, 10000);
+  //     });
+  //   }
+  // });
   
   this.input.keyboard.on("keydown-" + "H", event => {
     if (helpMenuTitle.visible) {
@@ -438,8 +438,20 @@ function create() {
   this.input.keyboard.on("keydown-" + "P", event => {
     if ($("#player-phone").is(":visible")) {
       $("#player-phone").hide();
+      //document.getElementById("phone_frame").src = "";
+      let player = JSON.parse(localStorage.getItem("player"));
+      player.cash = parseInt(player.cash) + parseInt(localStorage.getItem("coin_win"));
+      updateStats(player);
     } else {
+      console.log("reload");
+      //document.getElementById('phone_frame').src = "phone.html?nocache=" + Math.random();
+      //document.getElementById('phone_frame').contentWindow.location.reload();
+      document.getElementById('phone_frame').src += '#';
       $("#player-phone").show();
+      localStorage.setItem("coin_win", 0);
+
+      // var $contents = $('#phone_frame').contents();
+      // $contents.scrollTop($contents.height());
     }
   });
 
@@ -751,8 +763,10 @@ function tileInteraction(data, itemType) {
         const loader = new MapLoader();
         loader.loadMap({map: "SAC.js", prevMapLoc: {x: player.x, y: player.y}});
       } else {
-        alert("Not yet implemented!");
-        console.log("unimplemented process!");
+        console.log("DEFAULTING TO CLASSROOM!");
+        act.game.destroy();
+        const loader = new MapLoader();
+        loader.loadMap({map: "Classroom.js", prevMapLoc: {x: player.x, y: player.y}});
       }
       $("#prompt").hide();
       collidedInteractable = false;
