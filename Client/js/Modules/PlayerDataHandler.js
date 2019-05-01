@@ -109,7 +109,7 @@ export class PlayerDataHandler {
 
   refresh() {
     let username = this.getStats()["name"];
-    $.getJSON("http://ilankleiman.com/StonyBrookSimu/CServer/index.php?method=get_user&username=" + username, data => {
+    $.getJSON("https://universitysimulator.com/UniversitySimulator/Server/index.php?method=get_user&username=" + username, data => {
       this.updateStats(data);
     }).fail(() => {
       // alert("Unable to fetch data");
@@ -129,7 +129,7 @@ export class PlayerDataHandler {
     localStorage.setItem("player", playerString);
   
     $.ajax({
-      url: "http://ilankleiman.com/StonyBrookSimu/CServer/index.php?method=save_user&username=" + encodeURI(playerData.name),
+      url: "https://universitysimulator.com/UniversitySimulator/Server/index.php?method=save_user&username=" + encodeURI(playerData.name),
       type: 'post',
       dataType: 'json',
       success: function (data) {

@@ -34,7 +34,7 @@
     <script type='text/javascript'>
       localStorage.clear();
       function login() {
-        $.getJSON("http://ilankleiman.com/StonyBrookSimu/CServer/index.php?method=get_user&username=" + $("#username").val(), function(data) {
+        $.getJSON("https://universitysimulator.com/UniversitySimulator/Server/index.php?method=get_user&username=" + $("#username").val(), function(data) {
           localStorage.setItem("player", JSON.stringify(data));
           window.location = "player.html";
         }).fail(() => {

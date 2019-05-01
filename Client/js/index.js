@@ -789,7 +789,7 @@ function updateStats(playerData) {
   localStorage.setItem("player", playerString);
 
   $.ajax({
-    url: "http://ilankleiman.com/StonyBrookSimu/CServer/index.php?method=save_user&username="+encodeURI(playerData.name),
+    url: "https://universitysimulator.com/UniversitySimulator/Server/index.php?method=save_user&username="+encodeURI(playerData.name),
     type: 'post',
     dataType: 'json',
     //contentType: 'application/json', // ????

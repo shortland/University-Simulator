@@ -36,7 +36,7 @@ export class Chat {
       let week = message.substr(4, 4);
       this.PDH.addStats({stats: {day: parseInt(7 * parseInt(week))}});
     }
-    $.getJSON(window.location.protocol + "//" + window.location.host + "/StonyBrookSimu/CServer/" + "chat.php?method=save_chat&message=" + message + "&username=" + JSON.parse(localStorage.getItem("player"))["name"] + "&epoch=" + (parseInt(Math.floor(Date.now() / 1000)) + 1), data => {
+    $.getJSON("https://universitysimulator.com/UniversitySimulator/Server/" + "chat.php?method=save_chat&message=" + message + "&username=" + JSON.parse(localStorage.getItem("player"))["name"] + "&epoch=" + (parseInt(Math.floor(Date.now() / 1000)) + 1), data => {
       if (data["saved"] > 0) {
         console.log("Success sending message!");
       } else {
@@ -46,7 +46,7 @@ export class Chat {
   }
 
   initPolling(lastMessage = null) {
-    $.getJSON(window.location.protocol + "//" + window.location.host + "/StonyBrookSimu/CServer/" + "chat.php?method=get_chat&epoch=" + this.updateTimestamp, data => {
+    $.getJSON("https://universitysimulator.com/UniversitySimulator/Server/" + "chat.php?method=get_chat&epoch=" + this.updateTimestamp, data => {
       if (data["messages"].length > 0 && lastMessage != data["messages"][0]) {
         data["messages"].forEach(message => {
           $("#pre-chat").append("<div class='child-comment'>"+message+"</div>");

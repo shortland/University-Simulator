@@ -1,10 +1,8 @@
-# Stony Brook Sim
+# University Simulator
 
-View our firebase site to read about the game.
+About/Firebase: <https://stony-brook-sim.firebaseapp.com/>
 
-Firebase: https://stony-brook-sim.firebaseapp.com/
-
-Game: http://138.197.50.244/StonyBrookSimu/Client2/index.html
+Game: <https://UniversitySimulator.com>
 
 ## Project Members
 
