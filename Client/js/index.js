@@ -44,7 +44,7 @@ function preload() {
   this.load.image("tiles3", "assets/tilesets/Maze Tile.png");
   this.load.image("foods", "assets/tilesets/food.png");
   this.load.image("chair_tables", "assets/tilesets/ChairTables.png");
-  this.load.image("tiles", "assets/tilesets/SBU-extruded.png");
+  this.load.image("tiles", "assets/tilesets/SBU.png");
   this.load.image("signs", "assets/tilesets/signs.png");
   this.load.image("solids", "assets/tilesets/Solids.png");
 
@@ -77,7 +77,7 @@ function create() {
   PDH = new PlayerDataHandler();
   speed = ITM.SKINS[SKIN].speed;
 
-  const tileset = map.addTilesetImage("SBU", "tiles", 128, 128, 1, 2);
+  const tileset = map.addTilesetImage("SBU", "tiles", 128, 128, 0, 0);
   const tileset2 = map.addTilesetImage("SBU RD (1)", "tiles2", 128, 128, 0, 0);
   const tileset3 = map.addTilesetImage("Maze Tile", "tiles3");
   const tileset4 = map.addTilesetImage("SBU house", "tiles4");
