@@ -10,7 +10,7 @@
 
   <body>
     <center>
-      <p>(more games coming soon)</p> 
+      <p id='play_shooting' style='text-decoration:underline;cursor:pointer;'>[Shooting Game]</p>
       <p id='play_quiz' style='text-decoration:underline;cursor:pointer;'>[Quiz Game]</p>
       <p id='play_maze' style='text-decoration:underline;cursor:pointer;'>[Maze Game]</p>
       <p id='play_coin' style='text-decoration:underline;cursor:pointer;'>[Coin Game]</p>
@@ -27,6 +27,9 @@
         });
         $("#play_quiz").on("click", () => {
           window.location.href = "minigames/Trivia/index.html";
+        });
+        $("#play_shooting").on("click", () => {
+          window.location.href = "minigames/Shooting/index.html";
         });
       });
     </script>
