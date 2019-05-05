@@ -9,26 +9,29 @@
   </head>
 
   <body>
-    <center>
+    <div class="app-icon" id="play-coin"></div>
+    <div class="app-icon" id="play-maze"></div>
+    <div class="app-icon" id="play-quiz"></div>
+    <div class="app-icon" id="play-shooting"></div>
+    <!-- <center>
       <p id='play_shooting' style='text-decoration:underline;cursor:pointer;'>[Shooting Game]</p>
       <p id='play_quiz' style='text-decoration:underline;cursor:pointer;'>[Quiz Game]</p>
       <p id='play_maze' style='text-decoration:underline;cursor:pointer;'>[Maze Game]</p>
       <p id='play_coin' style='text-decoration:underline;cursor:pointer;'>[Coin Game]</p>
-      <div class="minigames"></div>
-    </center>
+    </center> -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script>
       $(document).ready(function() {
-        $("#play_coin").on("click", () => {
+        $("#play-coin").on("click", () => {
           window.location.href = "minigames/Coin/coin.html";
         });
-        $("#play_maze").on("click", () => {
+        $("#play-maze").on("click", () => {
           window.location.href = "minigames/Maze/index.html";
         });
-        $("#play_quiz").on("click", () => {
+        $("#play-quiz").on("click", () => {
           window.location.href = "minigames/Trivia/index.html";
         });
-        $("#play_shooting").on("click", () => {
+        $("#play-shooting").on("click", () => {
           window.location.href = "minigames/Shooting/index.html";
         });
       });

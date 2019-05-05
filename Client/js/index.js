@@ -37,10 +37,6 @@ var PDH;
 var speed = 200;
 var collidedInteractable = false;
 
-function loadingbar() {
-
-}
-
 function preload() {
   SKIN = localStorage.getItem("skin") || "Brown";
 

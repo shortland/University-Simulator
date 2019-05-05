@@ -188,7 +188,38 @@ body {
   left: calc(100% / 2 - 346px);
   top: 170px;
   position: fixed;
-  background-color: lightskyblue;
+  background-image: url("../assets/images/phone_background.jpeg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100% auto;
+}
+
+.app-icon {
+  width: 70px;
+  height: 70px;
+  border-radius: 5px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100% auto;
+  display: inline-block;
+  margin: 20px;
+  cursor: pointer;
+}
+
+#play-coin {
+  background-image: url("../assets/images/temp.png");
+}
+
+#play-maze {
+  background-image: url("../assets/images/temp.png");
+}
+
+#play-shooting {
+  background-image: url("../assets/images/temp.png");
+}
+
+#play-quiz {
+  background-image: url("../assets/images/temp.png");
 }
 
 .minigames {
