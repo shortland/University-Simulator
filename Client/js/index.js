@@ -2,14 +2,16 @@ import { ToolTip, APIHandler, MapLoader, Chat, PlayerDataHandler, InteractableTi
 
 const config = {
   type: Phaser.AUTO,
-  width: 800,
-  // height: 600,
+  width: window.innerWidth,
+  height: window.innerHeight,
   parent: "game-container",
   pixelArt: true,
   physics: {
     default: "arcade",
     arcade: {
-      gravity: { y: 0 }
+      gravity: {
+        y: 0
+      }
     }
   },
   scene: {
@@ -21,7 +23,7 @@ const config = {
 
 const game = new Phaser.Game(config);
 const ITM = new InteractableTileMapping;
-const JNotifier = new JNotify();
+const JNotifier = new JNotify;
 const aud = new Sounds;
 let SKIN;
 let cursors;
@@ -35,8 +37,75 @@ var PDH;
 var speed = 200;
 var collidedInteractable = false;
 
+function loadingbar() {
+
+}
+
 function preload() {
   SKIN = localStorage.getItem("skin") || "Brown";
+
+  /**
+   * Loading Bar
+   */
+  const progressBar = this.add.graphics();  
+  const width = this.cameras.main.width;
+  const height = this.cameras.main.height;
+  const loadingText = this.make.text({
+    x: width / 2,
+    y: height / 2 - 50,
+    text: 'Loading...',
+    style: {
+      font: '20px monospace',
+      fill: '#ffffff'
+    }
+  });
+  loadingText.setOrigin(0.5, 0.5);
+  
+  const percentText = this.make.text({
+    x: width / 2,
+    y: height / 2 - 5,
+    text: '0%',
+    style: {
+      font: '18px monospace',
+      fill: '#ffffff'
+    }
+  });
+  percentText.setOrigin(0.5, 0.5);
+  
+  const assetText = this.make.text({
+    x: width / 2,
+    y: height / 2 + 50,
+    text: '',
+    style: {
+      font: '18px monospace',
+      fill: '#ffffff'
+    }
+  });
+  assetText.setOrigin(0.5, 0.5);
+  
+  this.load.on('progress', function (value) {
+    percentText.setText(parseInt(value * 100) + '%');
+    progressBar.clear();
+    progressBar.fillStyle(0xffffff, 1);
+    progressBar.fillRect(width / 2 - 150, 280, 300 * value, 30);
+  });
+  
+  this.load.on('fileprogress', function (file) {
+    assetText.setText('Loading asset: ' + file.key);
+  });
+
+  this.load.on('complete', function () {
+    progressBar.destroy();
+    loadingText.destroy();
+    percentText.destroy();
+    assetText.destroy();
+  });
+  
+  this.load.image('logo', 'assets/images/UniversitySimulatorLogo.png');
+  /**
+   * End Loading Bat
+   */
+
   this.load.image("tiles2", "assets/tilesets/SBU RD (1).png");
   this.load.image("tiles4", "assets/tilesets/SBU house .png");
   this.load.image("beds", "assets/tilesets/Beds.png");
@@ -831,7 +900,4 @@ function updateStats(playerData) {
 $(document).ready(function() {
   updateStats(JSON.parse(localStorage.getItem("player")));
   $(document).add('*').off();
-  $("#play-container").on("click", () => {
-    $("#play-container").hide();
-  });
 });

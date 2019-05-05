@@ -7,6 +7,13 @@ html {
   overflow: scroll;
   overflow-x: hidden;
 }
+
+body {
+  padding: 0px;
+  margin: 0px;
+  overflow: hidden;
+}
+
 ::-webkit-scrollbar {
   width: 0px;  /* Remove scrollbar space */
   background: transparent;  /* Optional: just make scrollbar invisible */
@@ -32,9 +39,6 @@ html {
 #game-container {
   width: 100vw;
   height: 100vh;
-  position: fixed;
-  top: 10px;
-  left: 10px;
 }
 
 .child-comment {
@@ -75,11 +79,12 @@ html {
   box-sizing: border-box;
   position: fixed;
   bottom: 0px;
-  left: 10px;
+  left: 0px;
   background-color: rgba(255, 0, 0, 1.0);
   color: rgba(255, 255, 255, 1.0);
   border-top: 2px solid white;
-  width: 800px;
+  border-right: 2px solid white;
+  width: 700px;
   height: 55px;
   z-index: 3;
 }
@@ -129,39 +134,10 @@ html {
   z-index: 4;
 }
 
-/* .minigames {
-  position: fixed;
-  top: 50px;
-  left: 10px;
-  height: 640px;
-  width: 800px;
-  background-color: white;
-  color: black;
-  z-index: 5;
-  display:none;
-} */
-
 #minigame_frame {
   box-sizing: border-box;
   width: 100%;
   height: 100%;
-}
-
-#player-phone {
-  box-sizing: border-box;
-  position: fixed;
-  top: 150px;
-  left: 10px;
-  height: 400px;
-  width: 800px;
-  /* background-color: white; */
-  background-image: url("../assets/images/apple_iphone_landscape.png");
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: 100% auto;
-  color: black;
-  z-index: 5;
-  display: none;
 }
 
 #player-inventory {
@@ -189,32 +165,27 @@ html {
   border-bottom: 1px solid black;
 }
 
-#play-container {
+#player-phone {
   box-sizing: border-box;
   position: fixed;
-  top: 10px;
-  left: 10px;
-  background-color: rgba(255, 255, 255, 0.7); 
+  top: 150px;
+  left: calc(100% / 2 - 400px);
+  height: 400px;
+  width: 800px;
+  /* background-color: white; */
+  background-image: url("../assets/images/apple_iphone_landscape.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100% auto;
   color: black;
-  display: flex; 
-  width: 800px; 
-  height: 800px; 
-  margin: auto; 
-  border: 2px solid red; 
-  z-index: 10;
-}
-
-#play-container p { 
-  text-decoration: underline;
-  margin: auto; /* Important */ 
-  text-align: center; 
-  cursor: pointer;
+  z-index: 5;
+  display: none;
 }
 
 #phone_frame {
   width: 690px;
   height: 360px;
-  left: 64px;
+  left: calc(100% / 2 - 346px);
   top: 170px;
   position: fixed;
   background-color: lightskyblue;
