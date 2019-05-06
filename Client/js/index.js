@@ -872,6 +872,9 @@ $(document).ready(function() {
 
   $('body').bind('closePhone', () => {
     $("#player-phone").hide();
-    $("#game-container").focus();
+    //$("#chat-box").show();
+    $("#choice-collector").show();
+    $("#choice-collector").focus();
+    $("#choice-collector").hide();
   });
 });
