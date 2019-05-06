@@ -42,7 +42,7 @@ export class JNotify {
       return;
     }
     $("#toastNotification").show();
-    if (this.prevInteractantName != interactant.name) { // it's a different person, so finish the old animation quick
+    if (this.prevInteractantName != interactant.name && !this.importantHappening) { // it's a different person, so finish the old animation quick
       $("#toastNotification").finish();
     }
 

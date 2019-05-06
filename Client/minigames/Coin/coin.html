@@ -16,15 +16,15 @@
     #countdown {
       position: fixed;
       top: 50px;
-      left: 20px;
-      color: red;
+      left: 15px;
+      color: orange;
     }
   </style>
 </head>
 <body>
 <div id="countdown">10 seconds remaining</div>
 <script type="text/javascript">
-  const game = new Phaser.Game(800, 640, Phaser.AUTO, '', {
+  const game = new Phaser.Game(700, 360, Phaser.AUTO, '', {
     preload: preload,
     create: create,
     update: update
@@ -44,10 +44,8 @@
   }, 1000);
 
   $(document).on("keypress", event => {
-    if (event.keyCode == 121) {
-      timeleft = 0;
-    } else {
-      console.log("KEYPRESS?");
+    if (event.keyCode == 112) {
+      timeleft = -1;
     }
   });
 
@@ -67,6 +65,8 @@
   var scoreText;
 
   function create() {
+    game.world.setBounds(0, 0, 800, 640);
+
     game.physics.startSystem(Phaser.Physics.ARCADE);
 
     game.add.sprite(0, 0, 'background');
@@ -113,18 +113,28 @@
 
     coins.enableBody = true;
 
-    for (var i = 0; i < 25; i++) {
-      var coin = coins.create(i * 70, 0, 'coin');
+    for (let i = 0; i < 25; i++) {
+      const coin = coins.create((i * Math.floor(Math.random() * Math.floor(70))) + 50, 0, 'coin');
       coin.body.gravity.y = 300;
       coin.body.bounce.y = 0.2 + Math.random() * 0.2;
     }
 
-    scoreText = game.add.text(12, 12, 'Score: 0', { fontSize: '24px', fill: '#000' });
+    scoreText = game.add.text(10, 10, 'Score: 0', {
+      fontSize: '24px',
+      fill: '#FFFF00'
+    });
+    scoreText.fixedToCamera = true;
+
+    const quitText = game.add.text(540, 10, 'Press [P] Key to quit', {
+      fill: '#FFF'
+    });
+    quitText.fixedToCamera = true;
+    quitText.fontSize = '16px';
 
     game.camera.follow(player);
 
     cursors = game.input.keyboard.createCursorKeys();
-    window.scrollTo(0,document.body.scrollHeight);
+    window.scrollTo(0, document.body.scrollHeight);
   }
 
   function update() {

@@ -194,31 +194,53 @@ body {
 }
 
 .app-icon {
+  display: inline-block;
+  margin: 20px;
+  color: #FFFFFF;
+}
+
+#play-coin {
   width: 70px;
   height: 70px;
   border-radius: 5px;
   background-position: center;
   background-repeat: no-repeat;
   background-size: 100% auto;
-  display: inline-block;
-  margin: 20px;
+  background-image: url("../assets/images/icon-coin.png");
   cursor: pointer;
 }
 
-#play-coin {
-  background-image: url("../assets/images/temp.png");
-}
-
 #play-maze {
-  background-image: url("../assets/images/temp.png");
+  width: 70px;
+  height: 70px;
+  border-radius: 5px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100% auto;
+  background-image: url("../assets/images/icon-maze.png");
+  cursor: pointer;
 }
 
 #play-shooting {
-  background-image: url("../assets/images/temp.png");
+  width: 70px;
+  height: 70px;
+  border-radius: 5px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100% auto;
+  background-image: url("../assets/images/icon-shooting.png");
+  cursor: pointer;
 }
 
 #play-quiz {
-  background-image: url("../assets/images/temp.png");
+  width: 70px;
+  height: 70px;
+  border-radius: 5px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100% auto;
+  background-image: url("../assets/images/icon-trivia.png");
+  cursor: pointer;
 }
 
 .minigames {
