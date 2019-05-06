@@ -123,9 +123,8 @@ body {
   box-sizing: border-box;
   padding: 20px;
   position: fixed;
-  bottom: 100px;
-  left: 200px;
-  /* height: 70px; */
+  left: calc(100% / 2 - 200px);
+  height: auto;
   width: 400px;
   background-color: rgba(255, 255, 255, 0.8);
   border: 1px solid blue;

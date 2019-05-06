@@ -6,6 +6,36 @@ export class JNotify {
     this.PDHandler;
   }
 
+  toast({timeout = 3000, html, color = "green", position = "bottom", important = false} = {}) {
+    if (important) {
+      $("#toastNotification").css({"z-index": 8});
+    }
+    if (position == "center") {
+      $("#toastNotification").css({"top": "calc(100% / 2 - 100px)"});
+      $("#toastNotification").show();
+      $("#toastNotification").html(
+        "<center style='color:" + color + "'>" + html + "</center>"
+      ).fadeOut(timeout, () => {
+        $("#toastNotification").css({"top": ""});
+      });
+    } else if (position == "bottom") {
+      $("#toastNotification").css({"bottom": "100px"});
+      $("#toastNotification").show();
+      $("#toastNotification").html(
+        "<center style='color:" + color + "'>" + html + "</center>"
+      ).fadeOut(timeout, () => {
+        $("#toastNotification").css({"bottom": ""});
+      });
+    } else {
+      $("#toastNotification").show();
+      $("#toastNotification").html(
+        "<center style='color:" + color + "'>" + html + "</center>"
+      ).fadeOut(timeout, () => {
+        console.log("toast done");
+      });
+    }
+  }
+
   toastPlayerInteraction(interactant, x) {
     // console.log(interactant, x);
     if (x.type != "Sprite") {
@@ -15,9 +45,10 @@ export class JNotify {
     if (this.prevInteractantName != interactant.name) { // it's a different person, so finish the old animation quick
       $("#toastNotification").finish();
     }
-    $("#toastNotification").html(
-      "<center style='color:black'>" + interactant.story.next.line + "</center>"
-    ).fadeOut(interactant.story.next.timeout);
+
+    const JN = new JNotify;
+    JN.toast({html: interactant.story.next.line, timeout: interactant.story.next.timeout, color: "black"});
+
     this.prevInteractantName = interactant.name;
   }
 
@@ -87,13 +118,6 @@ export class JNotify {
         }
       });
     }
-  }
-
-  toast({timeout = 3000, html, color = "green"} = {}) {
-    $("#toastNotification").show();
-    $("#toastNotification").html(
-      "<center style='color:" + color + "'>" + html + "</center>"
-    ).fadeOut(timeout);
   }
 
   prompt({show = true, html}) {

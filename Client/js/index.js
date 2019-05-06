@@ -443,34 +443,6 @@ function create() {
     y: 90,
     x: 416
   });
-
-  // this.input.keyboard.on("keydown-" + "M", event => {
-  //   if ($(".minigames").is(":visible")) {
-  //     $(".minigames").hide();
-  //   } else {
-  //     $(".minigames").show();
-  //     $(".minigames").html(
-  //       "<center>"+
-  //       "<h3>More games coming soon!</h3>" +
-  //       "Click <b id='play_coin' style='text-decoration:underline;cursor:pointer;'>[here]</b> to play the minigame: 'Coin Game'"+
-  //       "<br>You'll have 10 seconds to win cash for your player!" +
-  //       "</center>"
-  //     );
-  //     $("#play_coin").click(function(event)  {
-  //       localStorage.setItem("coin_win", 0);
-  //       $(".minigames").html("<iframe id='minigame_frame' src='coin.html' frameBorder='0px'></iframe>");
-  //       $("#minigame_frame").focus();
-  //       setTimeout(() => {
-  //         $(".minigames").html("");
-  //         $(".minigames").hide();
-  //         alert("Time's up! You won " + localStorage.getItem("coin_win"));
-  //         let player = JSON.parse(localStorage.getItem("player"));
-  //         player.cash = parseInt(player.cash) + parseInt(localStorage.getItem("coin_win"));
-  //         updateStats(player);
-  //       }, 10000);
-  //     });
-  //   }
-  // });
   
   this.input.keyboard.on("keydown-" + "H", event => {
     if (helpMenuTitle.visible) {
@@ -503,20 +475,9 @@ function create() {
   this.input.keyboard.on("keydown-" + "P", event => {
     if ($("#player-phone").is(":visible")) {
       $("#player-phone").hide();
-      //document.getElementById("phone_frame").src = "";
-      let player = JSON.parse(localStorage.getItem("player"));
-      player.cash = parseInt(player.cash) + parseInt(localStorage.getItem("coin_win"));
-      updateStats(player);
     } else {
-      console.log("reload");
-      //document.getElementById('phone_frame').src = "phone.html?nocache=" + Math.random();
-      //document.getElementById('phone_frame').contentWindow.location.reload();
       document.getElementById('phone_frame').src += '#';
       $("#player-phone").show();
-      localStorage.setItem("coin_win", 0);
-
-      // var $contents = $('#phone_frame').contents();
-      // $contents.scrollTop($contents.height());
     }
   });
 
@@ -896,4 +857,16 @@ function updateStats(playerData) {
 $(document).ready(function() {
   updateStats(JSON.parse(localStorage.getItem("player")));
   $(document).add('*').off();
+  $('body').bind('gameComplete', () => {
+    let winnings = localStorage.getItem("coin_win");
+    JNotifier.toast({
+      html: "You won $" + winnings + "!", 
+      position: "center", 
+      important: true
+    });
+    let player = JSON.parse(localStorage.getItem("player"));
+    player.cash = parseInt(player.cash) + parseInt(winnings);
+    updateStats(player);
+    localStorage.setItem("coin_win", 0);
+  });
 });
