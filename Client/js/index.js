@@ -869,4 +869,9 @@ $(document).ready(function() {
     updateStats(player);
     localStorage.setItem("coin_win", 0);
   });
+
+  $('body').bind('closePhone', () => {
+    $("#player-phone").hide();
+    $("#game-container").focus();
+  });
 });

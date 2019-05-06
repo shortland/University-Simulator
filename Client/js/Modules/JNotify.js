@@ -8,6 +8,8 @@ export class JNotify {
 
   toast({timeout = 3000, html, color = "green", position = "bottom", important = false} = {}) {
     if (important) {
+      $("#toastNotification").finish();
+      localStorage.setItem("importantToast", true);
       $("#toastNotification").css({"z-index": 8});
     }
     if (position == "center") {
@@ -17,6 +19,7 @@ export class JNotify {
         "<center style='color:" + color + "'>" + html + "</center>"
       ).fadeOut(timeout, () => {
         $("#toastNotification").css({"top": ""});
+        localStorage.setItem("importantToast", false);
       });
     } else if (position == "bottom") {
       $("#toastNotification").css({"bottom": "100px"});
@@ -25,6 +28,7 @@ export class JNotify {
         "<center style='color:" + color + "'>" + html + "</center>"
       ).fadeOut(timeout, () => {
         $("#toastNotification").css({"bottom": ""});
+        localStorage.setItem("importantToast", false);
       });
     } else {
       $("#toastNotification").show();
@@ -32,6 +36,7 @@ export class JNotify {
         "<center style='color:" + color + "'>" + html + "</center>"
       ).fadeOut(timeout, () => {
         console.log("toast done");
+        localStorage.setItem("importantToast", false);
       });
     }
   }
@@ -41,15 +46,20 @@ export class JNotify {
     if (x.type != "Sprite") {
       return;
     }
-    $("#toastNotification").show();
-    if (this.prevInteractantName != interactant.name && !this.importantHappening) { // it's a different person, so finish the old animation quick
+    
+    if (this.prevInteractantName != interactant.name && JSON.parse(localStorage.getItem("importantToast")) != true) { // it's a different person, so finish the old animation quick
       $("#toastNotification").finish();
+      $("#toastNotification").show();
+
+      const JN = new JNotify;
+      JN.toast({
+        html: interactant.story.next.line, 
+        timeout: interactant.story.next.timeout, 
+        color: "black"
+      });
+      
+      this.prevInteractantName = interactant.name;
     }
-
-    const JN = new JNotify;
-    JN.toast({html: interactant.story.next.line, timeout: interactant.story.next.timeout, color: "black"});
-
-    this.prevInteractantName = interactant.name;
   }
 
   storyPlayerInteraction(interactant) {

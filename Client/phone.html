@@ -47,6 +47,12 @@
         $("#play-shooting").on("click", () => {
           window.location.href = "minigames/Shooting/index.html";
         });
+
+        $(document).on("keypress", event => {
+          if (event.keyCode == 112) {
+            window.parent.$('body').trigger('closePhone');
+          }
+        });
       });
     </script>
   </body>
