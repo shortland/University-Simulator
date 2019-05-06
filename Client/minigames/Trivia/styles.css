@@ -1,3 +1,6 @@
+* {
+    outline: none;
+}
 
 html {
     display: table;
@@ -80,9 +83,9 @@ body {
     background-color:#917e6f;
 }
 
-.options:focus{
+/* .options:focus{
     background-color:#7d7977;
-}
+} */
 
 #start{
     background-color:#a28e7f;
@@ -101,9 +104,9 @@ body {
     background-color:#917e6f;
 }
 
-#start:focus{
+/* #start:focus{
     background-color:#7d7977;
-}
+} */
 
 #comment{
     font-family:Arial, Helvetica, sans-serif;

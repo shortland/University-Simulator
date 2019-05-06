@@ -1,22 +1,26 @@
 var questions = [
-    new question("What quad is ITS in Stony Brook?",["Mendi","Rosevelt","Roth","H Quad"],"Mendi"),
+    new question("Which quad is ITS in?",["Mendi","Rosevelt","Roth","H Quad"],"Mendi"),
     new question("What's a Sea Wolf?",["idk","a kind of wolf","I'm a sea wolf","dog"],"I'm a sea wolf"),
-    new question("Where is island soul?",["East","West","Roth","Jasmine"],"East"),
-    new question("Which building is the ITS center at?",["Gray","O'Neil","Almond","Irving"],"Gray"),
-    new question("What is TSA in stonybrook in stands for?",["Transportation Security Association","idk","Taiwanese Student Association","Transportation Security Administration"],""),
-    new question("What is this game called?",["University Simulator","Quiz Game","Maze","Typing Game"],"University Simulator"),
-    new question("Who is my professor?",["McKenna","Tashbook","Stark","J Wang"],"McKenna"),
-    new question("14*14 = ?",["126","156","146","196"],"196"),
-    new question("14 in hex is?",["a","c","d","e"],"e"),
-    new question("14 in binary is?",["1001","1111","1101","1110"],"1110")
+    new question("Where is Island Soul located on campus?",["East","West","Roth","Jasmine"],"East"),
+    new question("Where is the ITS center located?",["Gray","O'Neil","Almond","Irving"],"Gray"),
+    new question("In SBU, what does TSA stand for?",["Transportation Security Association","idk","Taiwanese Student Association","Transportation Security Administration"],"Taiwanese Student Association"),
+    new question("What's the name of this game? (not minigame)",["University Simulator","Quiz Game","Maze","Typing Game"],"University Simulator"),
+    new question("Where can Halal food be purchased on campus?", ["SAC", "East Side Dining", "West Side Dining", "Jasmine"], "East Side Dining"),
+    new question("Which undergraduate major has the most enrolled students in SBU?", ["Computer Science", "Biology", "Psychology", "Physics"], "Biology"),
+    new question("Who is the current standing president of SBU?", ["Shirley Strum Kenny", "John H. Marburger III", "John S. Toll", "Samuel L. Stanley"], "Samuel L. Stanley"),
+    new question("About how many students attend SBU?", ["26,000", "28,000", "40,000", "42,000"], "26,000")
+    // new question("Who is my professor?",["McKenna","Tashbook","Stark","J Wang"],"McKenna"),
+    // new question("14*14 = ?",["126","156","146","196"],"196"),
+    // new question("14 in hex is?",["a","c","d","e"],"e"),
+    // new question("14 in binary is?",["1001","1111","1101","1110"],"1110")
 ];
 
 var quiz = new quiz(questions);
-var time=5;
+var time = 5;
 
 function ask(){
     
-    if(quiz.isDone()){
+    if (quiz.isDone()){
         console.log("this is done",quiz.index);
         showEnd();
     }
@@ -65,13 +69,13 @@ function showEnd(){
     $("#main").hide();
     var max = questions.length;
     if(max*0.8 <= quiz.score){
-        $("#comment").text("Great Job!!");
+        $("#comment").text("Great Job!\n $100 earned");
     }
     else if(max*0.6 <= quiz.score){
-        $("#comment").text("Nice Job!!");
+        $("#comment").text("Nice job, you can do better though!\n $50 earned");
     }
     else{
-        $("#comment").text("Probably should study more!!");
+        $("#comment").text("You should study a bit more!\n $0 earned.");
     }
     $("#showScore").prepend(doneHTML);
     $("#showScore").show();
@@ -116,5 +120,13 @@ function startTime() {
     }
     
     var t = setTimeout(function(){ startTime() }, 500);
-  }
+}
+
+$(document).ready(() => {
+    $(document).on("keypress", event => {
+        if (event.keyCode == 112) {
+            window.location.href = "../../phone.html";
+        }
+    });
+});
   

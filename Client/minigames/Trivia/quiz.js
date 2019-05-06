@@ -5,7 +5,7 @@ function quiz(questions){
 }
 
 quiz.prototype.indexAddOne=function(){
-    this.index ++;
+    this.index++;
 }
 
 quiz.prototype.indexToZero=function(){
