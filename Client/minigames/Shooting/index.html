@@ -4,15 +4,18 @@
         <meta charset="utf-8">
         <meta lang="en-us">
         <script src="https://cdn.jsdelivr.net/npm/phaser@3.15.1/dist/phaser-arcade-physics.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <style>
             * {
                 padding: 0px;
                 margin: 0px;
             }
-
-            /* body {
-                zoom: 0.9;
-            } */
+            #quit-game {
+                position: fixed;
+                top: 0px;
+                right: 20px;
+                color: #ffffff;
+            }
         </style>
     </head>
     <body>
@@ -21,5 +24,15 @@
         <script src="js/SceneGameOver.js"></script>
         <script src="js/game.js"></script>
         <script src='js/Entity.js'></script>
+        <div id="quit-game">Press [P] Key to quit</div>
+        <script>
+            $(document).ready(() => {
+                $(document).on("keypress", event => {
+                    if (event.keyCode == 112) {
+                        window.location.href = "../../phone.html";
+                    }
+                });
+            });
+        </script>
     </body>
 </html>

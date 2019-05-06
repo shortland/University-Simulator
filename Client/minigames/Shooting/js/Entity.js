@@ -18,9 +18,9 @@ class gameSprites extends Phaser.GameObjects.Sprite{
             }    
             this.setAngle(0);
             this.body.setVelocity(0, 0);
-            if(!this.isPlayer){
-                score+=1;
-                random = Phaser.Math.Between(0,100);
+            if (!this.isPlayer){
+                score += 10;
+                random = Phaser.Math.Between(0, 100);
             }
             this.setData("isDead", true);
             this.on('animationcomplete', function() {
@@ -76,9 +76,14 @@ class Player extends gameSprites{
         this.body.velocity.x = 200;
     }
     onDestroy(){
+        localStorage.setItem("coin_win", score);
         setTimeout(function(scene){
             scene.scene.start("SceneGameOver");
-        },1000,this.scene);
+            /**
+             * GET FINAL SCORE FOR $
+             */
+            window.parent.$('body').trigger('gameComplete');
+        }, 1000, this.scene);
     }
     powerUp(isPowerUpTrue){
         this.powerUp = isPowerUpTrue;
@@ -88,7 +93,7 @@ class Player extends gameSprites{
         this.x = Phaser.Math.Clamp(this.x, 0, this.scene.game.config.width);
         this.y = Phaser.Math.Clamp(this.y, 0, this.scene.game.config.height);   
         // start the timer when this.powerUp is true
-        if(this.getData("timerPowerUp")<50 && this.powerUp){
+        if(this.getData("timerPowerUp") < 300 && this.powerUp){
             this.setData("timerPowerUp",this.getData("timerPowerUp")+1);
         }
         else{

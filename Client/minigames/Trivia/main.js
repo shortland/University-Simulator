@@ -21,11 +21,11 @@ var time = 5;
 function ask(){
     
     if (quiz.isDone()){
-        console.log("this is done",quiz.index);
+        //console.log("this is done",quiz.index);
         showEnd();
     }
     else{
-        console.log("this is in else",quiz.index);
+        //console.log("this is in else",quiz.index);
         //show Q
         var q = $("#question").text(quiz.getIndex().text);
         //show options
@@ -64,18 +64,23 @@ function choose(id,choice){
 };
 
 function showEnd(){
+    console.log("DID SHOW END!");
     var doneHTML = "<p class = 'done'>Result</p>";
     doneHTML += "<p class = 'done'id = 'score'> Score:"+ quiz.score +"/"+questions.length+ "</p>";
     $("#main").hide();
     var max = questions.length;
-    if(max*0.8 <= quiz.score){
-        $("#comment").text("Great Job!\n $100 earned");
-    }
-    else if(max*0.6 <= quiz.score){
-        $("#comment").text("Nice job, you can do better though!\n $50 earned");
-    }
-    else{
-        $("#comment").text("You should study a bit more!\n $0 earned.");
+    if (max*0.8 <= quiz.score) {
+        $("#comment").text("Great Job!");
+        localStorage.setItem("coin_win", 200);
+        setTimeout(() => {window.parent.$('body').trigger('gameComplete');}, 1000);
+    } else if (max*0.6 <= quiz.score) {
+        $("#comment").text("Nice job, you can do better though!");
+        localStorage.setItem("coin_win", 100);
+        setTimeout(() => {window.parent.$('body').trigger('gameComplete');}, 1000);
+    } else {
+        $("#comment").text("You should study a bit more!");
+        localStorage.setItem("coin_win", 0);
+        setTimeout(() => {window.parent.$('body').trigger('gameComplete');}, 1000);
     }
     $("#showScore").prepend(doneHTML);
     $("#showScore").show();
@@ -98,7 +103,7 @@ function startTime() {
     // add a zero in front of numbers<10
     if(counter ==1 ){
         $("#main").css("background","#aeaeae");
-        console.log(time);
+        //console.log(time);
         $('#timer').text("timer: "+time);
         if(switchFlag == 1){
             nextQuestion();

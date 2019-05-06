@@ -37,7 +37,7 @@ class SceneMainMenu extends Phaser.Scene {
       }, this);
 
       //title
-      this.title = this.add.text(this.game.config.width * 0.5, 128, "SHOOT YOUR SHOT", {
+      this.title = this.add.text(this.game.config.width * 0.5, 80, "Alien Blaster", {
         fontFamily: 'Arial',
         fontSize: 48,
         fontStyle: 'bold',
@@ -46,9 +46,9 @@ class SceneMainMenu extends Phaser.Scene {
       });
       this.title.setOrigin(0.5);
 
-      this.help = this.add.text(this.game.config.width*0.5,300,"Instructions: Use arrow keys to move\nSpace key to shoot\nCollect the L boxes to power up",{
+      this.help = this.add.text(this.game.config.width * 0.5, 300, "Use arrow keys to move\nHold Spacebar to shoot\nCollect the boxes marked with L's to power up",{
         fontFamily: 'Arial',
-        fontSize: 24,
+        fontSize: 16,
         fontStyle: 'bold',
         color: '#ffffff',
         align: 'center'
