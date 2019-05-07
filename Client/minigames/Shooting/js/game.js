@@ -6,7 +6,7 @@ var config = {
     physics: {
         default: "arcade",
         arcade: {
-            debug: true,
+            // debug: true,
             gravity: { 
                 x: 0, 
                 y: 0 
@@ -14,7 +14,7 @@ var config = {
         },
     },
     scene: [
-        SceneMainMenu,
+        // SceneMainMenu,
         SceneMain,
         SceneGameOver
     ],

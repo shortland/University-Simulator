@@ -37,6 +37,13 @@ var PDH;
 var speed = 200;
 var collidedInteractable = false;
 
+/**
+ * AI
+ */
+const listAI = [];
+var movingAI = false;
+const prevAiPositions = [];
+
 function preload() {
   SKIN = localStorage.getItem("skin") || "Brown";
 
@@ -561,6 +568,7 @@ function create() {
         maxVX: 1000,
         maxVY: 1000,
         name: "student_" + i,
+        nameSprite: SKIN,
         width: 60,
         height: 60,
         offsetX: 15,
@@ -583,6 +591,62 @@ function create() {
       });
       act.physics.add.collider(player, newAI);
       listAI.push(newAI);
+
+      /**
+       * Create the animations for each of the sprite/skin types
+       */
+      anims.create({
+        key: SKIN + "-Walking-Left",
+        frames: anims.generateFrameNames(SKIN, {
+          prefix: SKIN + "-Walking-Left.",
+          start: 0,
+          end: 4,
+          zeroPad: 3
+        }),
+        frameRate: 10,
+        repeat: -1
+      });
+      anims.create({
+        key: SKIN + "-Walking-Right",
+        frames: anims.generateFrameNames(SKIN, {
+          prefix: SKIN + "-Walking-Right.",
+          start: 0,
+          end: 4,
+          zeroPad: 3
+        }),
+        frameRate: 10,
+        repeat: -1
+      });
+      anims.create({
+        key: SKIN + "-Walking-Up",
+        frames: anims.generateFrameNames(SKIN, {
+          prefix: SKIN + "-Walking-Up.",
+          start: 0,
+          end: 4,
+          zeroPad: 3
+        }),
+        frameRate: 10,
+        repeat: -1
+      });
+      anims.create({
+        key: SKIN + "-Walking-Down",
+        frames: anims.generateFrameNames(SKIN, {
+          prefix: SKIN + "-Walking-Down.",
+          start: 0,
+          end: 4,
+          zeroPad: 3
+        }),
+        frameRate: 10,
+        repeat: -1
+      });
+      
+      /**
+       * Record the original positions of each AI
+       */
+      prevAiPositions[newAI.name] = {
+        x: newAI.x,
+        y: newAI.y
+      };
     }
   }
   createAIs(50);
@@ -595,9 +659,6 @@ function toggleDirection() {
   setTimeout(toggleDirection, 1000);
 }
 
-const listAI = [];
-var movingAI = false;
-
 function update(time, delta) {
 
   if (movingAI) {
@@ -605,7 +666,7 @@ function update(time, delta) {
     listAI.forEach(ai => {
       let p = Math.random() < 0.5 ? -1 : 1;
       let d = Math.random() < 0.5 ? true : false;
-      let z = Math.random() < 0.5 ? true : false;
+      //let z = Math.random() < 0.5 ? true : false;
       let m = Math.random() < 0.5 ? true : false;
       let v = Math.random() < 0.5 ? 200 : 50;
       let speed = v;
@@ -613,16 +674,50 @@ function update(time, delta) {
         speed = 0;
       }
       ai.body.setVelocity(0);
-      if (z) {
+      // if (z) {
+        let realSpeed = speed * p;
         if (d) {
-          ai.body.setVelocityX(speed * p);
+          ai.body.setVelocityX(realSpeed);
+          if (realSpeed > 0) {
+            // moving right
+            ai.anims.play(ai.nameSprite + "-Walking-Right", true);
+          } else if (realSpeed < 0) {
+            // moving left
+            ai.anims.play(ai.nameSprite + "-Walking-Left", true);
+          } else {
+            // stop animations
+            ai.anims.stop();
+          }
+          
         } else {
-          ai.body.setVelocityY(speed * p);
+          ai.body.setVelocityY(realSpeed);
+          if (realSpeed < 0) {
+            // moving up
+            ai.anims.play(ai.nameSprite + "-Walking-Up", true);
+          } else if (realSpeed > 0) {
+            // moving down
+            ai.anims.play(ai.nameSprite + "-Walking-Down", true);
+          } else {
+            // stop animations
+            ai.anims.stop();
+          }
         }
-      } else {
-        ai.body.setVelocityX(speed * p);
-        ai.body.setVelocityY(speed * p);
-      }
+
+        if (ai.x == prevAiPositions[ai.name].x && ai.y == prevAiPositions[ai.name].y) {
+          ai.anims.stop();
+          console.log(ai.name, "didn't move");
+        } else {
+          prevAiPositions[ai.name] = {
+            x: ai.x,
+            y: ai.y
+          };
+          console.log(ai.name, "did move");
+        }
+      // } else {
+      //   // move diagonal
+      //   ai.body.setVelocityX(speed * p);
+      //   ai.body.setVelocityY(speed * p);
+      // }
       
       ai.body.velocity.normalize().scale(speed);
     });

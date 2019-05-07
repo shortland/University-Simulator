@@ -32,28 +32,28 @@ class SceneGameOver extends Phaser.Scene {
       this.scoreText.setOrigin(0.5);
 
       //restart button
-      this.btnRestart = this.add.sprite(
-        this.game.config.width * 0.5,
-        300,
-        "sprBtnRestart"
-      );
-      this.btnRestart.setInteractive();
-      this.btnRestart.on("pointerover", function() {
-        this.btnRestart.setTexture("sprBtnRestartHover"); // set the button texture to sprBtnPlayHover
-      }, this);
-      this.btnRestart.on("pointerout", function() {
-        this.setTexture("sprBtnRestart");
-      });
-      this.btnRestart.on("pointerdown", function() {
-        this.btnRestart.setTexture("sprBtnRestartDown");
-      }, this);
-      this.btnRestart.on("pointerup", function() {
-        this.btnRestart.setTexture("sprBtnRestart");
-        //reset score
-        score =0;
-        gameOverTimer = 0;
-        this.scene.start("SceneMain");
-      }, this);
+      // this.btnRestart = this.add.sprite(
+      //   this.game.config.width * 0.5,
+      //   300,
+      //   "sprBtnRestart"
+      // );
+      // this.btnRestart.setInteractive();
+      // this.btnRestart.on("pointerover", function() {
+      //   this.btnRestart.setTexture("sprBtnRestartHover"); // set the button texture to sprBtnPlayHover
+      // }, this);
+      // this.btnRestart.on("pointerout", function() {
+      //   this.setTexture("sprBtnRestart");
+      // });
+      // this.btnRestart.on("pointerdown", function() {
+      //   this.btnRestart.setTexture("sprBtnRestartDown");
+      // }, this);
+      // this.btnRestart.on("pointerup", function() {
+      //   this.btnRestart.setTexture("sprBtnRestart");
+      //   //reset score
+      //   score =0;
+      //   gameOverTimer = 0;
+      //   this.scene.start("SceneMain");
+      // }, this);
   
     }
   }

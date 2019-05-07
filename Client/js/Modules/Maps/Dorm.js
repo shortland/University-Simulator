@@ -2,7 +2,8 @@ import { ToolTip, MapLoader, InteractableTileMapping, Animations, Physics, Playe
 
 const config = {
   type: Phaser.AUTO,
-  width: 800,
+  width: window.innerWidth,
+  height: window.innerHeight,
   parent: "game-container",
   pixelArt: true,
   physics: {
@@ -360,6 +361,10 @@ function tileInteraction(itemType) {
         }
       });
       sound.play();
+      /**
+       * NEXT TURN
+       */
+      nextTurn();
     }
 
     JNotifier.promptHide();
@@ -384,7 +389,59 @@ function noInteractionsForDelay(millisec) {
   }, millisec);
 }
 
+
+function nextTurn() {
+  const playerData = PDHandler.getStats();
+
+  if (playerData.week == 28 && playerData.credits < 14) {
+    JNotifier.toast({
+      important: true,
+      html: "You don't have enough credits!",
+      color: "red",
+      position: "center"
+    });
+  } else {
+    JNotifier.toast({
+      important: true,
+      html: "You Have enough credits!",
+      color: "green",
+      position: "center"
+    });
+  }
+
+  PDHandler.addStats({stats: {
+    energy: Math.floor(Math.random() * 40) + 40,
+    hunger: -1 * Math.floor(Math.random() * 40) + 1,
+    thirst: -1 * Math.floor(Math.random() * 30) + 1,
+    happiness: Math.floor(Math.random() * 10) + 1,
+    followers: Math.floor(Math.random() * playerData.week) + 1,
+    week: playerData.week + 1
+  }});
+}
+
 $(document).ready(function() {
   PDHandler.refresh();
   $(document).add('*').off();
+
+  $('body').bind('gameComplete', () => {
+    let winnings = localStorage.getItem("coin_win");
+    JNotifier.toast({
+      html: "You won $" + winnings + "!", 
+      position: "center", 
+      important: true
+    });
+    let player = JSON.parse(localStorage.getItem("player"));
+    player.cash = parseInt(player.cash) + parseInt(winnings);
+    PDHandler.updateStats(player);
+    localStorage.setItem("coin_win", 0);
+  });
+
+  $('body').bind('closePhone', () => {
+    $("#player-phone").hide();
+    $("#choice-collector").show();
+    $("#choice-collector").focus();
+    $("#choice-collector").hide();
+  });
+
+  // $("#game-container").css({"zoom": 2, "backgroundColor": "red"});
 });

@@ -160,7 +160,7 @@ export class PlayerDataHandler {
       "GPA: " + playerData.gpa + ", " + playerData.year + "<br>" +
       "" + playerData.credits + "/120 Credits <br><hr style='border:1px solid white'>" +
       "Cash: <b>$" + playerData.cash + "</b><br>"+
-      "Energy: " + playerData.sleep + "%<br>"+
+      "Energy: " + playerData.energy + "%<br>"+
       "Hunger: " + playerData.hunger + "%<br>"+
       "Thirst: " + playerData.thirst + "%<br>"+
       "Happiness: " + playerData.happiness + "%<br><hr style='border:1px solid white'>"+

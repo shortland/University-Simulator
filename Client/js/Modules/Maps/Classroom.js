@@ -401,4 +401,24 @@ function noInteractionsForDelay(millisec) {
 $(document).ready(function() {
   PDHandler.refresh();
   $(document).add('*').off();
+
+  $('body').bind('gameComplete', () => {
+    let winnings = localStorage.getItem("coin_win");
+    JNotifier.toast({
+      html: "You won $" + winnings + "!", 
+      position: "center", 
+      important: true
+    });
+    let player = JSON.parse(localStorage.getItem("player"));
+    player.cash = parseInt(player.cash) + parseInt(winnings);
+    PDHandler.updateStats(player);
+    localStorage.setItem("coin_win", 0);
+  });
+
+  $('body').bind('closePhone', () => {
+    $("#player-phone").hide();
+    $("#choice-collector").show();
+    $("#choice-collector").focus();
+    $("#choice-collector").hide();
+  });
 });

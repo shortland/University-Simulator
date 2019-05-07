@@ -18,6 +18,7 @@ export class Physics {
     maxVX = 1,
     maxVY = 1,
     name = "",
+    nameSprite = prefix,
     story = null,
     immovable = true,
     price = null,
@@ -31,6 +32,7 @@ export class Physics {
     npc.setScale(scale);
     npc.setMaxVelocity(maxVX, maxVY);
     npc.setName(name);
+    npc.nameSprite = nameSprite;
     npc.setImmovable(immovable);
     npc.body.setVelocity(velocity);
     npc.story = story;

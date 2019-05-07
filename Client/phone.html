@@ -35,6 +35,9 @@
     </div>
     <script>
       $(document).ready(function() {
+        // So null/undef doesn't break anything
+        localStorage.setItem("coin_win", 0);
+
         $("#play-coin").on("click", () => {
           window.location.href = "minigames/Coin/coin.html";
         });
