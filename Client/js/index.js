@@ -656,7 +656,7 @@ function create() {
 
 function toggleDirection() {
   movingAI = true;
-  setTimeout(toggleDirection, 1000);
+  setTimeout(toggleDirection, 1000);//Math.floor(Math.random() * 5000) + 500);
 }
 
 function update(time, delta) {
@@ -666,62 +666,60 @@ function update(time, delta) {
     listAI.forEach(ai => {
       let p = Math.random() < 0.5 ? -1 : 1;
       let d = Math.random() < 0.5 ? true : false;
-      //let z = Math.random() < 0.5 ? true : false;
       let m = Math.random() < 0.5 ? true : false;
-      let v = Math.random() < 0.5 ? 200 : 50;
+      let v = Math.random() < 0.5 ? 50 : Math.floor(Math.random() * 100) + 100;
       let speed = v;
       if (m) {
         speed = 0;
       }
-      ai.body.setVelocity(0);
-      // if (z) {
-        let realSpeed = speed * p;
-        if (d) {
-          ai.body.setVelocityX(realSpeed);
-          if (realSpeed > 0) {
-            // moving right
-            ai.anims.play(ai.nameSprite + "-Walking-Right", true);
-          } else if (realSpeed < 0) {
-            // moving left
-            ai.anims.play(ai.nameSprite + "-Walking-Left", true);
-          } else {
-            // stop animations
-            ai.anims.stop();
-          }
-          
-        } else {
-          ai.body.setVelocityY(realSpeed);
-          if (realSpeed < 0) {
-            // moving up
-            ai.anims.play(ai.nameSprite + "-Walking-Up", true);
-          } else if (realSpeed > 0) {
-            // moving down
-            ai.anims.play(ai.nameSprite + "-Walking-Down", true);
-          } else {
-            // stop animations
-            ai.anims.stop();
-          }
-        }
-
-        if (ai.x == prevAiPositions[ai.name].x && ai.y == prevAiPositions[ai.name].y) {
-          ai.anims.stop();
-          console.log(ai.name, "didn't move");
-        } else {
-          prevAiPositions[ai.name] = {
-            x: ai.x,
-            y: ai.y
-          };
-          console.log(ai.name, "did move");
-        }
-      // } else {
-      //   // move diagonal
-      //   ai.body.setVelocityX(speed * p);
-      //   ai.body.setVelocityY(speed * p);
-      // }
       
+      /**
+       * Resets the AI velocity from the last update...
+       * This is hit or miss whether it resets a given ai's velocity
+       */
+      ai.body.setVelocity(0);
+
+      let realSpeed = speed * p;
+      if (d) {
+        ai.body.setVelocityX(realSpeed);
+        if (realSpeed > 0) {
+          ai.anims.play(ai.nameSprite + "-Walking-Right", true);
+        } else if (realSpeed < 0) {
+          ai.anims.play(ai.nameSprite + "-Walking-Left", true);
+        }
+      } else {
+        ai.body.setVelocityY(realSpeed);
+        if (realSpeed < 0) {
+          ai.anims.play(ai.nameSprite + "-Walking-Up", true);
+        } else if (realSpeed > 0) {
+          ai.anims.play(ai.nameSprite + "-Walking-Down", true);
+        }
+      }
+
+      if (realSpeed == 0) {
+        ai.anims.stop();
+      }
+
       ai.body.velocity.normalize().scale(speed);
     });
   }
+
+  /**
+   * Stop any animations if the prev. position is the same as the current position
+   *  Always check every update, not just during AI movement cycles
+   * NOTE: This sometimes causes the AI animation to stop moving even though the sprite is moving on the world...
+   * I rather have no animation than a sprite look like its trying to defy physics and keep walking into a wall... So this stays.
+   */
+  listAI.forEach(ai => {
+    if (ai.x == prevAiPositions[ai.name].x && ai.y == prevAiPositions[ai.name].y) {
+      ai.anims.stop();
+    } else {
+      prevAiPositions[ai.name] = {
+        x: ai.x,
+        y: ai.y
+      };
+    }
+  });
 
   const prevVelocity = player.body.velocity.clone();
 
