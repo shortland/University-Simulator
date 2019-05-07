@@ -171,7 +171,7 @@ function create() {
   /**
    * Add the player
    */
-  let brown = {size: {w: 20, h: 20}, offset: {x: 54, y: 44}, scale: 0.8};
+  let brown = {size: {w: 15, h: 15}, offset: {x: 56, y: 50}, scale: 1.0};
   let goku = {size: {w: 60, h: 60}, offset: {x: 15, y: 200}, scale: 0.25};
   let car = {size: {w: 50, h: 50}, offset: {x: 40, y: 40}, scale: 0.25};
   let skinData;
@@ -233,18 +233,18 @@ function create() {
   });
 
   // Debug graphics
-  this.input.keyboard.once("keydown_D", event => {
-    this.physics.world.createDebugGraphic();
-    const graphics = this.add
-      .graphics()
-      .setAlpha(0.75)
-      .setDepth(20);
-    interactableLayer.renderDebug(graphics, {
-      tileColor: null,
-      collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
-      faceColor: new Phaser.Display.Color(40, 39, 37, 255)
-    }); 
-  });
+  // this.input.keyboard.once("keydown_D", event => {
+  //   this.physics.world.createDebugGraphic();
+  //   const graphics = this.add
+  //     .graphics()
+  //     .setAlpha(0.75)
+  //     .setDepth(20);
+  //   interactableLayer.renderDebug(graphics, {
+  //     tileColor: null,
+  //     collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
+  //     faceColor: new Phaser.Display.Color(40, 39, 37, 255)
+  //   }); 
+  // });
 
   const chat = new Chat({initChat: true});
 }

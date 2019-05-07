@@ -335,7 +335,7 @@ function create() {
     document.getElementById("map").removeAttribute("prevmaploc");
   }
 
-  let brown = {size: {w: 20, h: 20}, offset: {x: 54, y: 44}, scale: 0.8};
+  let brown = {size: {w: 15, h: 15}, offset: {x: 56, y: 50}, scale: 1.0};
   let goku = {size: {w: 60, h: 60}, offset: {x: 15, y: 200}, scale: 0.25};
   let car = {size: {w: 50, h: 50}, offset: {x: 40, y: 40}, scale: 1};
   let skinData;
