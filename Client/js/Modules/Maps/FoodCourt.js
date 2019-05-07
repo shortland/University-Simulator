@@ -2,7 +2,8 @@ import { ToolTip, MapLoader, InteractableTileMapping, Animations, Physics, Playe
 
 const config = {
   type: Phaser.AUTO,
-  width: 800,
+  width: window.innerWidth,
+  height: window.innerHeight,
   parent: "game-container",
   pixelArt: true,
   physics: {
