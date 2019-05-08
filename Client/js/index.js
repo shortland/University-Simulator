@@ -908,7 +908,7 @@ function updateStats(playerData) {
   localStorage.setItem("player", playerString);
 
   $.ajax({
-    url: "https://universitysimulator.com/UniversitySimulator/Server/index.php?method=save_user&username="+encodeURI(playerData.name),
+    url: "https://universitysimulator.com/UniversitySimulator/Server/index.php?method=save_user&email="+encodeURI(playerData.email),
     type: 'post',
     dataType: 'json',
     //contentType: 'application/json', // ????
@@ -918,12 +918,12 @@ function updateStats(playerData) {
     data: playerString
   });
 
-  $("#player-name").html(playerData.name);
+  $("#player-name").html(playerData.username);
   $("#player-idn").html("ID: "+playerData.idn);
   $("#player-year").html("Year: "+playerData.year);
   $("#player-credits").html("Credits: "+playerData.credits + "/120");
   $("#player-cash").html("$"+playerData.cash);
-  playerData.day = 22;
+
   let classes = "";
   let i = 0;
   playerData.classes.forEach(function (value) {
@@ -935,7 +935,7 @@ function updateStats(playerData) {
     i++;
   });
   $("#player-stats-all").html(
-    "" + playerData.name + "\n<br>Day [" + playerData.day + "] - Week ["+ Math.ceil(playerData.day / 7) +"]<br><hr style='border:1px solid white'>" +
+    "" + playerData.username + "\n<br>Week [" + playerData.week + "]<br><hr style='border:1px solid white'>" +
     "GPA: " + playerData.gpa + ", " + playerData.year + "<br>" +
     "" + playerData.credits + "/120 Credits <br><hr style='border:1px solid white'>" +
     "Cash: <b>$" + playerData.cash + "</b><br>"+

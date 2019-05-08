@@ -1,0 +1,97 @@
+* {
+  font-family: 'Vegur', sans-serif;
+  box-sizing: border-box;
+}
+
+html {
+  overflow: scroll;
+  overflow-x: hidden;
+}
+
+body {
+  padding: 0px;
+  margin: 0px;
+  overflow: hidden;
+  background-color: rgba(0, 0, 60, 0.1);
+}
+
+::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}
+
+button {
+  border: 0px;
+  background-color: rgb(241, 98, 114, 1.0);
+  cursor: pointer;
+  width: 300px;
+  height: 40px;
+  outline: none;
+  margin-top: 10px;
+  color: #FFFFFF;
+  font-weight: bold;
+  font-size: 15px;
+}
+
+input[type='text'], input[type='password'] {
+  border-radius: 0px;
+  font-size: 16px;
+  padding-left: 20px;
+  border: 0px;
+  text-align: left;
+  width: 300px;
+  height: 40px;
+  color: #000000;
+  outline: none;
+  background-color: rgba(255, 255, 255, 1);
+}
+
+#username, #Rusername {
+  border-bottom: 1px solid silver;
+  border-top-right-radius: 3px;
+  border-top-left-radius: 3px;
+}
+
+#Remail {
+  border-bottom: 1px solid silver;
+}
+
+#showRegister, #showLogin {
+  border-bottom: 1px solid black;
+  cursor: pointer;
+}
+
+#showRegister:hover, #showLogin:hover {
+  border-bottom: 2px solid black;
+}
+
+#toast {
+  position: fixed;
+  top: 10%;
+  z-index: 2;
+  left: calc(50% - 150px);
+  width: 300px;
+  height: 150px;
+  border: 1px solid red;
+  background-color: rgba(255, 255, 255, 1.0);
+  color: #000000;
+  padding: 20px;
+  margin: auto;
+  display: flex;
+  display: none;
+}
+
+#toast p {
+  margin: auto;
+  text-align: center;
+}
+
+#registerForm {
+  display: none;
+}
+
+#emailUsed, #incorrectPassword, #unverified {
+  display: none;
+  color: red;
+  padding-top: 10px;
+}

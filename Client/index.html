@@ -3,45 +3,35 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>University Simulator - Login</title>
-
-    <style>
-      #player-stats {
-        position: fixed;
-        bottom: 10px;
-        left: 10px;
-        background-color: rgba(255, 0, 0, 1.0);
-        color: rgba(255, 255, 255, 1.0);
-        width: 800px;
-        height: 55px;
-        z-index: 3;
-        font-family: "Comic Sans MS", cursive, sans-serif;
-      }
-    </style>
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+    <script type="text/javascript" src="js/feature.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="js/login.js"></script>
   </head>
-
   <body>
     <center>
-      <h1>TA/Mckenna: Please use the username "TA" (CASE-SENSITIVE) with the password "password" (any combination of password technically works; username is important)</h1>
-      <h3>Login</h3>
-      <input type='text' placeholder='username' id='username'/>
-      <br>
-      <input type='password' placeholder='password' id='password'/>
-      <br>
-      <button type='button' onClick='login()'>Login</button>
+      <div id="loginForm">
+        <h3>University Simulator</h3>
+        <input type="text" id="username" placeholder="Email Address" autocorrect="off" autocapitalize="off" spellcheck="false" autocomplete="email"/><br>
+        <input type="password" id="password" placeholder="Password" autocorrect="off" autocapitalize="off" spellcheck="false" autocomplete="password"/><br>
+        <button type="button" id="login">Login</button><br>
+        <div id="incorrectPassword">Incorrect email or password</div>
+        <div id="unverified">Account not verified, please check your email & verify account..</div>
+        <p>or <span id="showRegister">register new account</span></p>
+      </div>
+
+      <div id="registerForm">
+        <h3>University Simulator</h3>
+        <!-- <input type="text" id="Rusername" placeholder="Full Name" autocorrect="off" autocapitalize="off" spellcheck="false" autocomplete="name"/><br> -->
+        <input type="text" id="Remail" placeholder="Email Address" autocorrect="off" autocapitalize="off" spellcheck="false" autocomplete="email"/><br>
+        <input type="password" id="Rpassword" placeholder="Password" autocorrect="off" autocapitalize="off" spellcheck="false" autocomplete="new-password"/><br>
+        <div id="emailUsed">Email already in use</div>
+        <button type="button" id="register">Register</button><br>
+        <p>or <span id="showLogin">login to existing account</span></p>
+      </div>
     </center>
-    <script type='text/javascript'>
-      localStorage.clear();
-      function login() {
-        $.getJSON("https://universitysimulator.com/UniversitySimulator/Server/index.php?method=get_user&username=" + $("#username").val(), function(data) {
-          localStorage.setItem("player", JSON.stringify(data));
-          window.location = "player.html";
-        }).fail(() => {
-          alert("Invalid login");
-        });
-      }
-    </script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <div id="toast"><p>Toast!</p></div>
   </body>
 </html>

@@ -3,7 +3,7 @@
 
     if ($_GET['method'] == 'get_user') {
         try {
-            $trimmed = stripslashes(json_encode(utf8_encode(file_get_contents("users/" . $_GET['username'] . ".json"))));
+            $trimmed = stripslashes(json_encode(utf8_encode(file_get_contents("users/" . $_GET['email'] . ".json"))));
             $trimmed = substr($trimmed, 1);
             $trimmed = substr($trimmed, 0, -1);
             echo $trimmed;
@@ -18,7 +18,7 @@
     if ($_GET['method'] == 'save_user') {
         try {
             $jsonData = file_get_contents('php://input');
-            if (!file_put_contents("users/" . $_GET['username'] . ".json", $jsonData)) {
+            if (!file_put_contents("users/" . $_GET['email'] . ".json", $jsonData)) {
                 echo json_encode([
                     "error" => true,
                     "message" => "error saving user data"

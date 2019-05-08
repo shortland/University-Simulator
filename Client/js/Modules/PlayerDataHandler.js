@@ -108,8 +108,8 @@ export class PlayerDataHandler {
   }
 
   refresh() {
-    let username = this.getStats()["name"];
-    $.getJSON("https://universitysimulator.com/UniversitySimulator/Server/index.php?method=get_user&username=" + username, data => {
+    let email = this.getStats()["email"];
+    $.getJSON("https://universitysimulator.com/UniversitySimulator/Server/index.php?method=get_user&email=" + email, data => {
       this.updateStats(data);
     }).fail(() => {
       // alert("Unable to fetch data");
@@ -129,7 +129,7 @@ export class PlayerDataHandler {
     localStorage.setItem("player", playerString);
   
     $.ajax({
-      url: "https://universitysimulator.com/UniversitySimulator/Server/index.php?method=save_user&username=" + encodeURI(playerData.name),
+      url: "https://universitysimulator.com/UniversitySimulator/Server/index.php?method=save_user&email=" + encodeURI(playerData.email),
       type: 'post',
       dataType: 'json',
       success: function (data) {
@@ -138,7 +138,7 @@ export class PlayerDataHandler {
       data: playerString
     });
   
-    $("#player-name").html(playerData.name);
+    $("#player-name").html(playerData.username);
     $("#player-idn").html("ID: " + playerData.idn);
     $("#player-year").html("Year: " + playerData.year);
     $("#player-credits").html("Credits: " + playerData.credits + "/120");
@@ -156,7 +156,7 @@ export class PlayerDataHandler {
     });
 
     $("#player-stats-all").html(
-      "" + playerData.name + "\n<br>Day [" + playerData.day + "] - Week ["+ Math.ceil(playerData.day / 7) +"]<br><hr style='border:1px solid white'>" +
+      "" + playerData.username + "\n<br>Week [" + playerData.week + "]<br><hr style='border:1px solid white'>" +
       "GPA: " + playerData.gpa + ", " + playerData.year + "<br>" +
       "" + playerData.credits + "/120 Credits <br><hr style='border:1px solid white'>" +
       "Cash: <b>$" + playerData.cash + "</b><br>"+
