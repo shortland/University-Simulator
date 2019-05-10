@@ -22,7 +22,7 @@ body {
 
 button {
   border: 0px;
-  background-color: rgb(241, 98, 114, 1.0);
+  background-color: rgba(241, 98, 114, 1.0);
   cursor: pointer;
   width: 300px;
   height: 40px;
