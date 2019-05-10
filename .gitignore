@@ -1,0 +1,2 @@
+Server/users/*
+!Server/users/example@example.com.json
