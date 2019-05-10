@@ -109,14 +109,14 @@ function preload() {
    * End Loading Bat
    */
 
-  this.load.image("tiles2", "assets/tilesets/SBU RD (1).png");
-  this.load.image("tiles4", "assets/tilesets/SBU house .png");
-  this.load.image("beds", "assets/tilesets/Beds.png");
+  this.load.image("tiles2", "assets/tilesets/SBU RD-extruded.png");
+  this.load.image("tiles4", "assets/tilesets/SBU House-extruded.png");
+  this.load.image("beds", "assets/tilesets/Beds-extruded.png");
 
   this.load.image("tiles3", "assets/tilesets/Maze Tile.png");
   this.load.image("foods", "assets/tilesets/food.png");
   this.load.image("chair_tables", "assets/tilesets/ChairTables.png");
-  this.load.image("tiles", "assets/tilesets/SBU.png");
+  this.load.image("tiles", "assets/tilesets/SBU-extruded.png");
   this.load.image("signs", "assets/tilesets/signs.png");
   this.load.image("solids", "assets/tilesets/Solids.png");
 
@@ -149,12 +149,14 @@ function create() {
   PDH = new PlayerDataHandler();
   speed = ITM.SKINS[SKIN].speed;
 
-  const tileset = map.addTilesetImage("SBU", "tiles", 128, 128, 0, 0);
-  const tileset2 = map.addTilesetImage("SBU RD (1)", "tiles2", 128, 128, 0, 0);
+  const tileset = map.addTilesetImage("SBU", "tiles", 128, 128, 1, 2);
+  const tileset2 = map.addTilesetImage("SBU RD (1)", "tiles2", 128, 128, 1, 2);
+  const beds = map.addTilesetImage("Beds", "beds", 128, 128, 1, 2);
+  const tileset4 = map.addTilesetImage("SBU house", "tiles4", 128, 128, 1, 2);
+
   const tileset3 = map.addTilesetImage("Maze Tile", "tiles3");
-  const tileset4 = map.addTilesetImage("SBU house", "tiles4");
   const signs = map.addTilesetImage("signs", "signs");
-  const beds = map.addTilesetImage("Beds", "beds");
+  
   //const foods = map.addTilesetImage("foods", "foods");
 
   let allTileSets = [tileset, tileset2, tileset3, tileset4, signs, beds];
