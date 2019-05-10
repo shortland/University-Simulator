@@ -1,4 +1,4 @@
-import { ToolTip, APIHandler, MapLoader, Chat, PlayerDataHandler, InteractableTileMapping, Physics, JNotify, Sounds } from './Modules/ModuleLoader.js';
+import { ToolTip, APIHandler, MapLoader, Chat, PlayerDataHandler, InteractableTileMapping, Physics, JNotify, Sounds, SharedEventData } from './Modules/ModuleLoader.js';
 
 const config = {
   type: Phaser.AUTO,
@@ -34,15 +34,13 @@ var aboveLayer;
 var act;
 var map;
 var PDH;
-var speed = 200;
+const eventModifiableState = {
+  speed: 200,
+  devMode: false
+};
 var collidedInteractable = false;
 
-/**
- * AI
- */
-const listAI = [];
-var movingAI = false;
-const prevAiPositions = [];
+var SED;
 
 function preload() {
   /**
@@ -155,7 +153,7 @@ function preload() {
 function create() {
   map = this.make.tilemap({ key: "map" });
   PDH = new PlayerDataHandler();
-  speed = ITM.SKINS[SKIN].speed;
+  eventModifiableState.speed = ITM.SKINS[SKIN].speed;
 
   const tileset = map.addTilesetImage("SBU", "tiles", 128, 128, 1, 2);
   const tileset2 = map.addTilesetImage("SBU RD (1)", "tiles2", 128, 128, 1, 2);
@@ -345,6 +343,13 @@ function create() {
     document.getElementById("map").removeAttribute("prevmaploc");
   }
 
+  // for hiding the help menu if the user has seen it before
+  let showHelp = JSON.parse(localStorage.getItem("showHelp"));
+  if (typeof showHelp != "boolean") {
+    localStorage.setItem("showHelp", false);
+    showHelp = true;
+  }
+
   let brown = {size: {w: 15, h: 15}, offset: {x: 56, y: 50}, scale: 1.0};
   let goku = {size: {w: 60, h: 60}, offset: {x: 15, y: 200}, scale: 0.25};
   let car = {size: {w: 50, h: 50}, offset: {x: 40, y: 40}, scale: 1};
@@ -423,85 +428,9 @@ function create() {
   camera.setBounds(0, 0, 3200, 3200);
   cursors = this.input.keyboard.createCursorKeys();
 
-  // for hiding the help menu on future visits
-  let showHelp = JSON.parse(localStorage.getItem("showHelp"));
-  if (typeof showHelp != "boolean") {
-    localStorage.setItem("showHelp", false); // for next time
-    showHelp = true; // for this time
-  }
-  let helpMenuTitle = new ToolTip({
-    game: this,
-    text: "Help Menu\n",
-    align: "center",
-    clickDestroy: false,
-    depth: 100,
-    visible: showHelp,
-    x: 330,
-    y: 16,
-  });
-  let helpMenuLeft = new ToolTip({
-    game: this,
-    // \nShift+⬅️: Scroll left\nShift+➡️: Scroll right\nShift+⬆️: Scroll up\nShift+⬇️: Scroll down
-    text: "⬅️: Move left\n➡️: Move right\n⬆️: Move up\n⬇️: Move down\n\n[H] Show/hide this help menu\n\n[S] Show all player stats\n\n[Z] Toggle running (devmode)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n_______________________________",
-    align: "left",
-    clickDestroy: false,
-    depth: 100,
-    visible: showHelp,
-    y: 90,
-    x: 16,
-  });
-  let helpMenuRight = new ToolTip({
-    game: this,
-    text: "[Y] Accept transaction\n[N] Reject transaction\n\n[T] Toggle chat\n\n[I] Open/close inventory\n\n[P] Show/Hide phone\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n_______________________________",
-    align: "left",
-    clickDestroy: false,
-    depth: 100,
-    visible: showHelp,
-    y: 90,
-    x: 416
-  });
-  
-  this.input.keyboard.on("keydown-" + "H", event => {
-    if (helpMenuTitle.visible) {
-      helpMenuTitle.setVisible(false);
-      helpMenuLeft.setVisible(false);
-      helpMenuRight.setVisible(false);
-    } else {
-      helpMenuTitle.setVisible(true);
-      helpMenuLeft.setVisible(true);
-      helpMenuRight.setVisible(true);
-    }
-  });
-
-  this.input.keyboard.on("keydown-" + "Z", event => {
-    if (speed == 200) {
-      speed = 1000;
-    } else {
-      speed = 200;
-    }
-  });
-
-  this.input.keyboard.on("keydown-" + "S", event => {
-    if ($("#player-stats-all").is(":visible")) {
-      $("#player-stats-all").hide();
-    } else {
-      $("#player-stats-all").show();
-    }
-  });
-
-  this.input.keyboard.on("keydown-" + "P", event => {
-    if ($("#player-phone").is(":visible")) {
-      $("#player-phone").hide();
-    } else {
-      document.getElementById('phone_frame').src += '#';
-      $("#player-phone").show();
-    }
-  });
-
-  this.input.keyboard.on("keydown-" + "I", event => {
-    // ONLY FOR FOR MAIN WORLD...
+  // TEMP UNTIL A BETTER WAY... ONLY FOR THE MAIN WORLD...
+  this.input.keyboard.on("keydown-" + "X", event => {
     localStorage.setItem("location", player.x + "," + player.y);
-    PDH.toggleInventory();
   });
 
   // Debug graphics
@@ -518,34 +447,8 @@ function create() {
   //   });
   // });
 
-  this.input.keyboard.on("keydown-" + "T", event => {
-    if ($("#chat-box").is(":visible")) {
-      $("#chat-box").hide();
-      $("#chat-box").val("");
-      $("#chat-box").blur();
-      $("#pre-chat").removeClass("visible-box");
-      $(".child-comment").finish().hide();
-    } else {
-      $("#chat-box").show();
-      $("#chat-box").focus();
-      $("#chat-box").val("");
-      $("#pre-chat").addClass("visible-box");
-      $(".child-comment").finish().show();
-    }
-    setTimeout(() => {
-      let message = $("#chat-box").val();
-      if (message.indexOf("spawn") == 0) {
-        let amt = message.substr(5, 5);
-        alert("Spawning " + amt + " more!");
-        createAIs(amt);
-      }
-    }, 5000);
-    event.preventDefault();
-    event.stopPropagation();
-  });
-
   if (JSON.parse(localStorage.getItem("chat_loaded")) === false) {
-    const chat = new Chat();
+    const chat = new Chat({state: eventModifiableState});
     /**
      * Music
      */
@@ -560,181 +463,36 @@ function create() {
     });
     sound.play();
   } else {
-    const chat = new Chat({initChat: true});
+    const chat = new Chat({initChat: true, state: eventModifiableState});
   }
 
   /**
-   * AI?
+   * SharedEventData (basic specifically for index.js)
    */
-  function createAIs(amt) {
-    const physicsGen = new Physics({physics: act.physics});
-    const dist = 600;
-    for (let i = 0; i < amt; ++i) {
-      let sign_a = Math.random() < 0.5 ? 1 : -1;
-      let sign_b = Math.random() < 0.5 ? 1 : -1;
-      let SKIN = ITM.SAFE_SKINS[Math.floor(Math.random() * ITM.SAFE_SKINS.length)];
-      const newAI = physicsGen.add_npc({
-        spawn: {x: player.x + (Math.floor(Math.random() * dist) * sign_a), y: player.y + (Math.floor(Math.random() * dist) * sign_b)},
-        maxVX: 1000,
-        maxVY: 1000,
-        name: "student_" + i,
-        nameSprite: SKIN,
-        width: 60,
-        height: 60,
-        offsetX: 15,
-        offsetY: 200,
-        scale: 0.25,
-        atlas: SKIN,
-        prefix: SKIN,
-        immovable: false,
-        story: {
-          next: {
-            line: ITM.QOUTES[Math.floor(Math.random() * ITM.QOUTES.length)],
-            timeout: 3000
-          }
-        }
-      });
-      physicsGen.add_player_layer_collisions({
-        player: newAI,
-        layers: [worldLayer, player],
-        callback: JNotifier.toastPlayerInteraction
-      });
-      act.physics.add.collider(player, newAI);
-      listAI.push(newAI);
-
-      /**
-       * Create the animations for each of the sprite/skin types
-       */
-      anims.create({
-        key: SKIN + "-Walking-Left",
-        frames: anims.generateFrameNames(SKIN, {
-          prefix: SKIN + "-Walking-Left.",
-          start: 0,
-          end: 4,
-          zeroPad: 3
-        }),
-        frameRate: 10,
-        repeat: -1
-      });
-      anims.create({
-        key: SKIN + "-Walking-Right",
-        frames: anims.generateFrameNames(SKIN, {
-          prefix: SKIN + "-Walking-Right.",
-          start: 0,
-          end: 4,
-          zeroPad: 3
-        }),
-        frameRate: 10,
-        repeat: -1
-      });
-      anims.create({
-        key: SKIN + "-Walking-Up",
-        frames: anims.generateFrameNames(SKIN, {
-          prefix: SKIN + "-Walking-Up.",
-          start: 0,
-          end: 4,
-          zeroPad: 3
-        }),
-        frameRate: 10,
-        repeat: -1
-      });
-      anims.create({
-        key: SKIN + "-Walking-Down",
-        frames: anims.generateFrameNames(SKIN, {
-          prefix: SKIN + "-Walking-Down.",
-          start: 0,
-          end: 4,
-          zeroPad: 3
-        }),
-        frameRate: 10,
-        repeat: -1
-      });
-      
-      /**
-       * Record the original positions of each AI
-       */
-      prevAiPositions[newAI.name] = {
-        x: newAI.x,
-        y: newAI.y
-      };
-    }
-  }
-  createAIs(50);
-
-  toggleDirection();
-}
-
-function toggleDirection() {
-  movingAI = true;
-  setTimeout(toggleDirection, 1000);//Math.floor(Math.random() * 5000) + 500);
+  SED = new SharedEventData({
+    game: this,
+    keyboard: this.input.keyboard, 
+    state: eventModifiableState,
+    helpVisible: showHelp,
+    skinSpeed: ITM.SKINS[SKIN].speed,
+    createAIs: 50,
+    worldLayer: worldLayer,
+    player: player
+  });
 }
 
 function update(time, delta) {
+  SED.updateAIs();
 
-  if (movingAI) {
-    movingAI = false;
-    listAI.forEach(ai => {
-      let p = Math.random() < 0.5 ? -1 : 1;
-      let d = Math.random() < 0.5 ? true : false;
-      let m = Math.random() < 0.5 ? true : false;
-      let v = Math.random() < 0.5 ? 50 : Math.floor(Math.random() * 100) + 100;
-      let speed = v;
-      if (m) {
-        speed = 0;
-      }
-      
-      /**
-       * Resets the AI velocity from the last update...
-       * This is hit or miss whether it resets a given ai's velocity
-       */
-      ai.body.setVelocity(0);
-
-      let realSpeed = speed * p;
-      if (d) {
-        ai.body.setVelocityX(realSpeed);
-        if (realSpeed > 0) {
-          ai.anims.play(ai.nameSprite + "-Walking-Right", true);
-        } else if (realSpeed < 0) {
-          ai.anims.play(ai.nameSprite + "-Walking-Left", true);
-        }
-      } else {
-        ai.body.setVelocityY(realSpeed);
-        if (realSpeed < 0) {
-          ai.anims.play(ai.nameSprite + "-Walking-Up", true);
-        } else if (realSpeed > 0) {
-          ai.anims.play(ai.nameSprite + "-Walking-Down", true);
-        }
-      }
-
-      if (realSpeed == 0) {
-        ai.anims.stop();
-      }
-
-      ai.body.velocity.normalize().scale(speed);
-    });
+  if (eventModifiableState.createAIs > 0) {
+    SED.createAIs(eventModifiableState.createAIs)
   }
-
-  /**
-   * Stop any animations if the prev. position is the same as the current position
-   *  Always check every update, not just during AI movement cycles
-   * NOTE: This sometimes causes the AI animation to stop moving even though the sprite is moving on the world...
-   * I rather have no animation than a sprite look like its trying to defy physics and keep walking into a wall... So this stays.
-   */
-  listAI.forEach(ai => {
-    if (ai.x == prevAiPositions[ai.name].x && ai.y == prevAiPositions[ai.name].y) {
-      ai.anims.stop();
-    } else {
-      prevAiPositions[ai.name] = {
-        x: ai.x,
-        y: ai.y
-      };
-    }
-  });
 
   const prevVelocity = player.body.velocity.clone();
 
   // Stop any previous movement from the last frame
   player.body.setVelocity(0);
+  let speed = eventModifiableState.speed;
 
   // Horizontal movement
   if (cursors.left.isDown) {
@@ -777,8 +535,6 @@ function tileInteraction(data, itemType) {
   if (collidedInteractable) {
     return; // the menu is open. so don't open new interactions... stop here.
   }
-
-  console.log("interactions...");
 
   let playerData = JSON.parse(localStorage.getItem("player"));
   let message;

@@ -1,17 +1,34 @@
-import { ToolTip, PlayerDataHandler, Sounds } from './ModuleLoader.js';
+import { ToolTip, PlayerDataHandler, Sounds, InteractableTileMapping, Physics, JNotify } from './ModuleLoader.js';
 
 export class SharedEventData {
-  constructor({game, keyboard, state} = {}) {
+  constructor({game, keyboard, state, skinSpeed, helpVisible = false, createAIs = 0, worldLayer, player} = {}) {
     this.game = game;
     this.state = state;
+    this.player = player;
     this.keyboard = keyboard;
+    this.helpVisible = helpVisible;
     this.helpMenuTitle;
     this.helpMenuLeft;
     this.helpMenuRight;
-    this.PDH = new PlayerDataHandler();
+    this.skinSpeed = skinSpeed;
+    this.PDH = new PlayerDataHandler;
+    this.ITM = new InteractableTileMapping;
     this.initHiddenMenus();
     this.initKeyboardEvents();
     this.audio = new Sounds;
+    this.JNotifier = new JNotify;
+    this.worldLayer = worldLayer;
+    this.physicsGen = new Physics({physics: game.physics});
+
+    /**
+     * AI
+     */
+    this.listAI = [];
+    this.movingAI = false;
+    if (createAIs > 0) {
+      this.createAIs(createAIs);
+      this.toggleAIMovement();
+    }
   }
 
   /**
@@ -24,10 +41,12 @@ export class SharedEventData {
      * Warning: User will be able to walk through walls
      */
     this.keyboard.on("keydown-" + "Z", () => {
-      if (this.state["speed"] == 200) {
-        this.state["speed"] = 1000;
+      if (!this.state.devMode) {
+        this.state.speed = 1000;
+        this.state.devMode = true;
       } else {
-        this.state["speed"] = 200;
+        this.state.speed = this.skinSpeed;
+        this.state.devMode = false;
       }
     });
 
@@ -60,10 +79,11 @@ export class SharedEventData {
     /**
      * Show/Hide player phone
      */
-    this.keyboard.on("keydown-" + "P", () => {
+    this.keyboard.on("keydown-" + "P", event => {
       if ($("#player-phone").is(":visible")) {
         $("#player-phone").hide();
       } else {
+        document.getElementById("phone_frame").src += "#";
         $("#player-phone").show();
       }
     });
@@ -107,7 +127,7 @@ export class SharedEventData {
       align: "center",
       clickDestroy: false,
       depth: 100,
-      visible: false,
+      visible: this.helpVisible,
       x: 330,
       y: 16,
     });
@@ -118,20 +138,172 @@ export class SharedEventData {
       align: "left",
       clickDestroy: false,
       depth: 100,
-      visible: false,
+      visible: this.helpVisible,
       y: 90,
       x: 16,
     });
     
     this.helpMenuRight = new ToolTip({
-      game: this.game,// //
-      text: "[M] Show Minigames\n\n[Y] Accept transaction\n[N] Reject transaction\n\n[T] Toggle chat\n\n[I] Open/close inventory\n\n[P] Turn on/off phone\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n_______________________________",
+      game: this.game,
+      text: "[Y] Accept transaction\n[N] Reject transaction\n\n[T] Toggle chat\n\n[I] Open/close inventory\n\n[P] Show/hide phone\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n_______________________________",
       align: "left",
       clickDestroy: false,
       depth: 100,
-      visible: false,
+      visible: this.helpVisible,
       y: 90,
       x: 416
+    });
+  }
+
+  /**
+   * AI?
+   */
+  createAIs(amt, dist = 600) {
+    this.state.createAIs = 0;
+    for (let i = 0; i < amt; ++i) {
+      let sign_a = Math.random() < 0.5 ? 1 : -1;
+      let sign_b = Math.random() < 0.5 ? 1 : -1;
+      let SKIN = this.ITM.SAFE_SKINS[Math.floor(Math.random() * this.ITM.SAFE_SKINS.length)];
+      const newAI = this.physicsGen.add_npc({
+        spawn: {x: this.player.x + (Math.floor(Math.random() * dist) * sign_a), y: this.player.y + (Math.floor(Math.random() * dist) * sign_b)},
+        maxVX: 1000,
+        maxVY: 1000,
+        name: "student_" + i,
+        nameSprite: SKIN,
+        width: 60,
+        height: 60,
+        offsetX: 15,
+        offsetY: 200,
+        scale: 0.25,
+        atlas: SKIN,
+        prefix: SKIN,
+        immovable: false,
+        story: {
+          next: {
+            line: this.ITM.QOUTES[Math.floor(Math.random() * this.ITM.QOUTES.length)],
+            timeout: 3000
+          }
+        }
+      });
+
+      this.physicsGen.add_player_layer_collisions({
+        player: newAI,
+        layers: [this.player],
+        callback: this.JNotifier.toastPlayerInteraction
+      });
+      this.physicsGen.add_player_layer_collisions({
+        player: newAI,
+        layers: [this.worldLayer],
+        callback: a => {
+          a.anims.stop();
+          a.body.setVelocity(0);
+        }
+      });
+      this.game.physics.add.collider(this.player, newAI);
+      this.listAI.push(newAI);
+
+      /**
+       * Create the animations for each of the sprite/skin types
+       */
+      this.game.anims.create({
+        key: SKIN + "-Walking-Left",
+        frames: this.game.anims.generateFrameNames(SKIN, {
+          prefix: SKIN + "-Walking-Left.",
+          start: 0,
+          end: 4,
+          zeroPad: 3
+        }),
+        frameRate: 10,
+        repeat: -1
+      });
+      this.game.anims.create({
+        key: SKIN + "-Walking-Right",
+        frames: this.game.anims.generateFrameNames(SKIN, {
+          prefix: SKIN + "-Walking-Right.",
+          start: 0,
+          end: 4,
+          zeroPad: 3
+        }),
+        frameRate: 10,
+        repeat: -1
+      });
+      this.game.anims.create({
+        key: SKIN + "-Walking-Up",
+        frames: this.game.anims.generateFrameNames(SKIN, {
+          prefix: SKIN + "-Walking-Up.",
+          start: 0,
+          end: 4,
+          zeroPad: 3
+        }),
+        frameRate: 10,
+        repeat: -1
+      });
+      this.game.anims.create({
+        key: SKIN + "-Walking-Down",
+        frames: this.game.anims.generateFrameNames(SKIN, {
+          prefix: SKIN + "-Walking-Down.",
+          start: 0,
+          end: 4,
+          zeroPad: 3
+        }),
+        frameRate: 10,
+        repeat: -1
+      });
+    }
+  }
+
+  toggleAIMovement() {
+    this.movingAI = true;
+    var self = this;
+    setTimeout(() => {
+      self.toggleAIMovement();
+    }, 1000);
+  }
+
+  updateAIs() {
+    if (!this.movingAI) {
+      return;
+    }
+
+    this.movingAI = false;
+    this.listAI.forEach(ai => {
+      let p = Math.random() < 0.5 ? -1 : 1;
+      let d = Math.random() < 0.5 ? true : false;
+      let m = Math.random() < 0.5 ? true : false;
+      let v = Math.random() < 0.5 ? 50 : Math.floor(Math.random() * 100) + 100;
+      let speed = v;
+      if (m) {
+        speed = 0;
+      }
+      
+      /**
+       * Resets the AI velocity from the last update...
+       * This is hit or miss whether it resets a given ai's velocity
+       */
+      ai.body.setVelocity(0);
+
+      let realSpeed = speed * p;
+      if (d) {
+        ai.body.setVelocityX(realSpeed);
+        if (realSpeed > 0) {
+          ai.anims.play(ai.nameSprite + "-Walking-Right", true);
+        } else if (realSpeed < 0) {
+          ai.anims.play(ai.nameSprite + "-Walking-Left", true);
+        }
+      } else {
+        ai.body.setVelocityY(realSpeed);
+        if (realSpeed < 0) {
+          ai.anims.play(ai.nameSprite + "-Walking-Up", true);
+        } else if (realSpeed > 0) {
+          ai.anims.play(ai.nameSprite + "-Walking-Down", true);
+        }
+      }
+
+      if (realSpeed == 0) {
+        ai.anims.stop();
+      }
+
+      ai.body.velocity.normalize().scale(speed);
     });
   }
 }

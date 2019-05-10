@@ -1,7 +1,8 @@
 import { PlayerDataHandler } from './ModuleLoader.js';
 
 export class Chat {
-  constructor({initChat = false} = {}) {
+  constructor({initChat = false, state} = {}) {
+    this.state = state;
     this.PDH = new PlayerDataHandler;
     if (initChat) {
       // chat is already initialized
@@ -35,6 +36,10 @@ export class Chat {
     if (message.indexOf("week") == 0) {
       let week = message.substr(4, 4);
       this.PDH.addStats({stats: {week: week}});
+    }
+    if (message.indexOf("spawn") == 0) {
+      let amt = message.substr(5, 5);
+      this.state.createAIs = amt;
     }
     $.getJSON("https://universitysimulator.com/UniversitySimulator/Server/" + "chat.php?method=save_chat&message=" + message + "&username=" + JSON.parse(localStorage.getItem("player"))["username"] + "&epoch=" + (parseInt(Math.floor(Date.now() / 1000)) + 1), data => {
       if (data["saved"] > 0) {
