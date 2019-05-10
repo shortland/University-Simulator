@@ -1,3 +1,4 @@
+
 class SceneMain extends Phaser.Scene {
     constructor() {
       super({ key: "SceneMain" });
@@ -83,6 +84,8 @@ class SceneMain extends Phaser.Scene {
         repeat: -1
       })
 
+      //this.physics.
+
       // //scroll the back ground 
       // this.backgrounds = [];
       // for (var i = 0; i < 5; i++) { // create five scrolling backgrounds
@@ -135,7 +138,6 @@ class SceneMain extends Phaser.Scene {
           if(random>=90 || (random <=10 && random!=0)){
             powerUp = new PowerUp(this,gameWidth,this.getRandomInt(gameHeight));
             powerUp.setScale(0.2)
-            console.log("hi");
           }
           if(powerUp != null){
             this.powerUp.add(powerUp);
@@ -183,6 +185,15 @@ class SceneMain extends Phaser.Scene {
       
       //scores 
       this.scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#aaa'});
+
+      // For catching the spacebar keydowns not caught by update() loop
+      this.player.setData("onceShoot", 1);
+      const spaceBar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+      spaceBar.on('down', event => {
+        if (this.player.getData("onceShoot") == 0) {
+          this.player.setData("onceShoot", 1);
+        }
+      });
     }
 
     getRandomInt(max) {
@@ -203,7 +214,7 @@ class SceneMain extends Phaser.Scene {
           num +=1;
         }
       }
-      console.log(num);
+      //console.log(num);
       return num;
     }
 
@@ -290,7 +301,5 @@ class SceneMain extends Phaser.Scene {
           }
         }
       }
-
-
     }
   }

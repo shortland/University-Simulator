@@ -14,7 +14,6 @@ var config = {
         },
     },
     scene: [
-        // SceneMainMenu,
         SceneMain,
         SceneGameOver
     ],

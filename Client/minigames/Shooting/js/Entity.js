@@ -3,7 +3,10 @@ class gameSprites extends Phaser.GameObjects.Sprite{
         super(scene, x, y, id);
         this.scene = scene;
         this.scene.add.existing(this);
-        this.scene.physics.world.enableBody(this, 0);
+        let object = this.scene.physics.world.enableBody(this, 0);
+        if (type == "Player") {
+          object.body.setSize(20, 20);
+        }
         this.setData("type", type);
         this.setData("isDead", false);
     }
@@ -93,7 +96,7 @@ class Player extends gameSprites{
         this.x = Phaser.Math.Clamp(this.x, 0, this.scene.game.config.width);
         this.y = Phaser.Math.Clamp(this.y, 0, this.scene.game.config.height);   
         // start the timer when this.powerUp is true
-        if(this.getData("timerPowerUp") < 300 && this.powerUp){
+        if(this.getData("timerPowerUp") < 100 && this.powerUp){
             this.setData("timerPowerUp",this.getData("timerPowerUp")+1);
         }
         else{
@@ -102,18 +105,26 @@ class Player extends gameSprites{
         }
         //shooting timer
         if (this.getData("isShooting") && !this.powerUp) {
+          if (this.getData("onceShoot") == 1) {
+            this.setData("onceShoot", 2);
+            var atk = new playerAttack(this.scene, this.x+40, this.y);
+            this.scene.playerAttack.add(atk);
+            this.setData("timerShoot", 0);
+            setTimeout(() => {
+              this.setData("onceShoot", 0);
+            }, 500);
+          } else {
             if (this.getData("timerShoot") < 20) {
               this.setData("timerShoot", this.getData("timerShoot") + 1); 
-            }
-            else {
+            } else {
               var atk = new playerAttack(this.scene, this.x+40, this.y);
               this.scene.playerAttack.add(atk);
               this.setData("timerShoot", 0);
             }
-        }
-        else if (this.getData("isShooting")&&this.powerUp){
-            var atk = new playerAttack(this.scene, this.x, this.y);
-            this.scene.playerAttack.add(atk);
+          }
+        }  else if (this.getData("isShooting")&&this.powerUp){
+          var atk = new playerAttack(this.scene, this.x, this.y);
+          this.scene.playerAttack.add(atk);
         } 
     }
 }
