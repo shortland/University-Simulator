@@ -2,6 +2,7 @@ import { PlayerDataHandler } from './ModuleLoader.js';
 
 export class Chat {
   constructor({initChat = false} = {}) {
+    this.PDH = new PlayerDataHandler;
     if (initChat) {
       // chat is already initialized
       this.initChat();
@@ -11,7 +12,6 @@ export class Chat {
       this.updateTimestamp = Math.floor(Date.now() / 1000);
       this.initChat();
       this.initPolling();
-      this.PDH = new PlayerDataHandler();
     }
   }
 
