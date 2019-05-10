@@ -45,6 +45,14 @@ var movingAI = false;
 const prevAiPositions = [];
 
 function preload() {
+  /**
+   * Checks if the client has userdata or we need to force relog
+   */
+  if (localStorage.getItem("player") === null) {
+    window.location.href = "index.html";
+    return;
+  }
+  
   SKIN = localStorage.getItem("skin") || "Brown";
 
   /**

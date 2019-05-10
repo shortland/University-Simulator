@@ -27,7 +27,12 @@ $(document).ready(() => {
   });
 
   // Clear existing data
-  localStorage.clear();
+  if (localStorage.getItem("player") == null) {
+    localStorage.clear();
+  } else {
+    // TODO: refresh the localstorage data via server data... cookies...
+    window.location.href = "player.html";
+  }
 
   // Login
   $("#login").on("click", () => {
@@ -39,11 +44,11 @@ $(document).ready(() => {
       if (data.status == "ok") {
         if (data.data.username == "") {
           let username = prompt("What would you like to be called?");
+          while (username == "" || username == null) {
+            username = prompt("What would you your player name to be?");
+          }
           data.data.username = username;
-          console.log(data.data);
           let player = data.data;
-          console.log(player);
-          console.log(player.email);
           postData("https://universitysimulator.com/UniversitySimulator/Server/index.php?method=save_user&email=" + player.email, player)
           .then(data => {
             console.log(data);
