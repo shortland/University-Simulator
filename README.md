@@ -4,10 +4,14 @@ About/Firebase: <https://stony-brook-sim.firebaseapp.com/>
 
 Game: <https://UniversitySimulator.com>
 
-## Project Members
+## Developers
 
 ``` text
 Ilan Kleiman
 Dhruba Roy
-Shih-Chuan (David) Lin
+(David) Shih-Chuan Lin
 ```
+
+## About
+
+...
