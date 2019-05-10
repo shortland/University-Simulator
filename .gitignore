@@ -1,2 +1,4 @@
 Server/users/*
 !Server/users/example@example.com.json
+Server/open_verifications
+Server/chatlog.json
