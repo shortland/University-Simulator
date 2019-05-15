@@ -198,6 +198,26 @@ export class InteractableTileMapping {
     "Red"
   ];
 
+  ALL_SKINS = [
+    "Brown",
+    "Black_Brown", 
+    "Black", 
+    "Blue_Clone", 
+    "Blue", 
+    "BrownV2",
+    "Green_Brown",
+    "Green",
+    "Purple_Brown",
+    "Purple",
+    "Red_Brown",
+    "Red",
+    "Goku_Black",
+    "Goku_Red",
+    "car-red",
+    "car-blue",
+    "car-yellow"
+  ];
+
   Id2Name(id) {
     return (this.SKINS[id] || this.CARS[id] || this.FOODS[id] || {name: id})["name"];
   };

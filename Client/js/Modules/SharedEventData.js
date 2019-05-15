@@ -88,11 +88,24 @@ export class SharedEventData {
       }
     });
 
+
+    /**
+     * Show/Hide map
+     */
+    this.keyboard.on("keydown-" + "M", event => {
+      if ($("#mini-map").is(":visible")) {
+        $("#mini-map").hide();
+      } else {
+        $("#mini-map").show();
+      }
+    });
+
     /**
      * Show/Hide player inventory
      */
     this.keyboard.on("keydown-" + "I", () => {
       this.PDH.toggleInventory();
+      this.state.newSkin = "yes";
     });
 
     /**

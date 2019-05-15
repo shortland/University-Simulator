@@ -31,11 +31,12 @@ export class JNotify {
         localStorage.setItem("importantToast", false);
       });
     } else {
+      $("#toastNotification").css({"bottom": "100px"});
       $("#toastNotification").show();
       $("#toastNotification").html(
         "<center style='color:" + color + "'>" + html + "</center>"
       ).fadeOut(timeout, () => {
-        console.log("toast done");
+        $("#toastNotification").css({"bottom": ""});
         localStorage.setItem("importantToast", false);
       });
     }

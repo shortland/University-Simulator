@@ -19,9 +19,15 @@ export class PlayerDataHandler {
           return counts[b] - counts[a];
       });
       keys.forEach(k => {
-        $("#player-inv-table").append("<tr class='inv_item' id='"+ k +"'><td>" + this.ITM.Id2Name(k) + "</td><td align='center'>x" + counts[k] + "</td></tr>");
+        // $("#player-inv-table").append("<tr class='inv_item' id='"+ k +"'><td>" + this.ITM.Id2Name(k) + "</td><td align='center'>x" + counts[k] + "</td></tr>");
+        $("#player-inv-table").append(`
+          <div class="app-icon" style="color:black !important;"><center><div class="inv_item" style="width: 70px;height: 70px;border-radius: 5px;background-position: center;background-repeat: no-repeat;background-size: auto 100%;background-image: url('assets\/items\/` + k + `.png');cursor: pointer;" title="` + this.ITM.Id2Name(k) + `" id="` + k + `"></div></center> x<span id="` + k + `_amount">` + counts[k] + `</span></div>
+        `);
       });
+      $(".app-icon").tooltip({show: true});
       $(".inv_item").on("click", event2 => {
+        //$("#" + event2.currentTarget.id + "_amount").html("USE");
+        //console.log("EAT", event2.currentTarget.id);
         this.useItem(event2.currentTarget.id);
         this.toggleInventory();
         /**
@@ -44,9 +50,9 @@ export class PlayerDataHandler {
       if (index !== -1) data["inventory"].splice(index, 1);
       console.log("SETTING SKIN", id);
       localStorage.setItem("skin", id);
-      if (confirm("Reload page to view sprite update?")) {
-        window.location.href = window.location.href;
-      }
+      // if (confirm("Reload page to view sprite update?")) {
+      //   window.location.href = window.location.href;
+      // }
     } else {
       let index = data["inventory"].indexOf(id);
       if (index !== -1) data["inventory"].splice(index, 1);
@@ -80,6 +86,7 @@ export class PlayerDataHandler {
       if (ignore_cash && stat == "cash") {
         return;
       }
+      console.log("Increasing stats");
       data[stat] += parseFloat(this.ITM.FOODS[item]["stats"][stat]);
     });
     this.updateStats(data);
@@ -141,7 +148,7 @@ export class PlayerDataHandler {
     $("#player-name").html(playerData.username);
     $("#player-idn").html("ID: " + playerData.idn);
     $("#player-year").html("Year: " + playerData.year);
-    $("#player-credits").html("Credits: " + playerData.credits + "/120");
+    $("#player-credits").html("Credits: " + playerData.credits + "");
     $("#player-cash").html("$" + playerData.cash);
 
     let classes = "";
@@ -158,9 +165,9 @@ export class PlayerDataHandler {
     $("#player-stats-all").html(
       "" + playerData.username + "\n<br>Week [" + playerData.week + "]<br><hr style='border:1px solid white'>" +
       "GPA: " + playerData.gpa + ", " + playerData.year + "<br>" +
-      "" + playerData.credits + "/120 Credits <br><hr style='border:1px solid white'>" +
+      "" + playerData.credits + " Credits <br><hr style='border:1px solid white'>" +
       "Cash: <b>$" + playerData.cash + "</b><br>"+
-      "Energy: " + playerData.energy + "%<br>"+
+      "Energy: " + playerData.sleep + "%<br>"+
       "Hunger: " + playerData.hunger + "%<br>"+
       "Thirst: " + playerData.thirst + "%<br>"+
       "Happiness: " + playerData.happiness + "%<br><hr style='border:1px solid white'>"+

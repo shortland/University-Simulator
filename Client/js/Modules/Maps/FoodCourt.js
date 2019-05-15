@@ -23,11 +23,15 @@ const config = {
   
 const game = new Phaser.Game(config);
 const PDHandler = new PlayerDataHandler;
-const JNotifier = new JNotify();
-const JSLoader = new MapLoader();
+const JNotifier = new JNotify;
+const JSLoader = new MapLoader;
+const ITM = new InteractableTileMapping;
+
 const eventModifiableState = {
-  speed: 200
+  speed: 200,
+  devMode: false
 };
+var SED;
 
 let cursors;
 let player;
@@ -164,7 +168,7 @@ function create() {
     name: "Laura Martorano",
     story: {
       next: {
-        line: "Hi " + JSON.parse(localStorage.getItem("player")).name + "! I'm Laura Martorano, a registered dietician!",
+        line: "Hi " + JSON.parse(localStorage.getItem("player")).username + "! I'm Laura Martorano, a registered dietician!",
         timeout: 8000
       }
     }
@@ -227,33 +231,32 @@ function create() {
   
   cursors = this.input.keyboard.createCursorKeys();
   
-  const sharedEventsDatas = new SharedEventData({
+  /**
+   * SharedEventData (basic specifically for index.js)
+   */
+  SED = new SharedEventData({
     game: this,
     keyboard: this.input.keyboard, 
-    state: eventModifiableState
+    state: eventModifiableState,
+    skinSpeed: ITM.SKINS[SKIN].speed,
+    createAIs: 0,
+    worldLayer: worldLayer,
+    player: player
   });
 
-  // Debug graphics
-  // this.input.keyboard.once("keydown_D", event => {
-  //   this.physics.world.createDebugGraphic();
-  //   const graphics = this.add
-  //     .graphics()
-  //     .setAlpha(0.75)
-  //     .setDepth(20);
-  //   interactableLayer.renderDebug(graphics, {
-  //     tileColor: null,
-  //     collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
-  //     faceColor: new Phaser.Display.Color(40, 39, 37, 255)
-  //   }); 
-  // });
-
-  const chat = new Chat({initChat: true});
+  const chat = new Chat({initChat: true, state: eventModifiableState});
 }
 
 /**
  * [2] Maybe move this into its own maps/dir type
  */
 function update(time, delta) {
+  SED.updateAIs();
+
+  if (eventModifiableState.createAIs > 0) {
+    SED.createAIs(eventModifiableState.createAIs)
+  }
+
   const prevVelocity = player.body.velocity.clone();
   const speed = eventModifiableState["speed"];
   // Stop any previous movement from the last frame
@@ -305,8 +308,6 @@ function tileInteraction(itemType) {
   }
 
   console.log("interactions...");
-
-  const ITM = new InteractableTileMapping;
   let playerData = PDHandler.getStats();
   let message;
 

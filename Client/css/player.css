@@ -113,7 +113,7 @@ body {
   padding: 20px;
   position: fixed;
   top: 200px;
-  left: 200px;
+  left: calc(50% - 200px);
   height: 200px;
   width: 400px;
   background-color: white;
@@ -160,12 +160,6 @@ body {
 
 #player-inv-table {
   width: 100%;
-}
-
-.inv_item:hover {
-  cursor: pointer;
-  text-decoration: underline;
-  border-bottom: 1px solid black;
 }
 
 #player-phone {
@@ -247,7 +241,39 @@ body {
   cursor: pointer;
 }
 
+#play-flappy {
+  width: 70px;
+  height: 70px;
+  border-radius: 5px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100% auto;
+  background-image: url("../assets/images/icon-flappy.png");
+  cursor: pointer;
+}
+
 .minigames {
-  width:100%;
-  height:100%;
+  width: 100%;
+  height: 100%;
+}
+
+#mini-map {
+  display: none;
+  position: fixed;
+  top: 5%;
+  left: 5%;
+  width: 90%;
+  height: 90%;
+  z-index: 2;
+}
+
+#map-layer {
+  width: auto;
+  height: auto;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-image: url("../assets/images/Full_Campus.png");
+  cursor: pointer;
+  border: 2px solid white;
 }

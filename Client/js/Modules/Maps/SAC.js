@@ -23,11 +23,16 @@ const config = {
   
 const game = new Phaser.Game(config);
 const PDHandler = new PlayerDataHandler;
-const JNotifier = new JNotify();
-const JSLoader = new MapLoader();
+const JNotifier = new JNotify;
+const JSLoader = new MapLoader;
+const ITM = new InteractableTileMapping;
+
 const eventModifiableState = {
-  speed: 200
+  speed: 200,
+  devMode: false
 };
+var SED;
+
 
 let cursors;
 let player;
@@ -683,27 +688,55 @@ function create() {
     state: eventModifiableState
   });
 
-  // Debug graphics
-  // this.input.keyboard.once("keydown_D", event => {
-  //   this.physics.world.createDebugGraphic();
-  //   const graphics = this.add
-  //     .graphics()
-  //     .setAlpha(0.75)
-  //     .setDepth(20);
-  //   interactableLayer.renderDebug(graphics, {
-  //     tileColor: null,
-  //     collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
-  //     faceColor: new Phaser.Display.Color(40, 39, 37, 255)
-  //   }); 
-  // });
+  /**
+   * SharedEventData (basic specifically for index.js)
+   */
+  SED = new SharedEventData({
+    game: this,
+    keyboard: this.input.keyboard, 
+    state: eventModifiableState,
+    skinSpeed: ITM.SKINS[SKIN].speed,
+    createAIs: 0,
+    worldLayer: worldLayer,
+    player: player
+  });
 
-  const chat = new Chat({initChat: true});
+  const chat = new Chat({initChat: true, state: eventModifiableState});
 }
 
 /**
  * [2] Maybe move this into its own maps/dir type
  */
 function update(time, delta) {
+  SED.updateAIs();
+
+  if (eventModifiableState.createAIs > 0) {
+    SED.createAIs(eventModifiableState.createAIs)
+  }
+  if (eventModifiableState.newSkin == "yes") {
+    SKIN = localStorage.getItem("skin") || "Brown";
+    let brown = {size: {w: 15, h: 15}, offset: {x: 56, y: 50}, scale: 1.0};
+    let goku = {size: {w: 60, h: 60}, offset: {x: 15, y: 200}, scale: 0.25};
+    let car = {size: {w: 50, h: 50}, offset: {x: 40, y: 40}, scale: 1};
+    let skinData;
+    let maxFrame = 4;
+    if (SKIN == "Brown") {
+      skinData = brown;
+    } else if (SKIN == "Goku_Black" || SKIN == "Goku_Red") {
+      skinData = goku;
+    } else if (SKIN == "car-red" || SKIN == "car-blue" || SKIN == "car-yellow") {
+      skinData = car;
+      maxFrame = 0;
+    } else {
+      skinData = goku;
+    }
+    player = player
+      .setSize(skinData["size"].w, skinData["size"].h)
+      .setOffset(skinData["offset"].x, skinData["offset"].y);
+    player.setScale( skinData["scale"] );
+    localStorage.setItem("location", player.x + "," + player.y);
+  }
+
   const prevVelocity = player.body.velocity.clone();
   const speed = eventModifiableState["speed"];
   // Stop any previous movement from the last frame
@@ -756,7 +789,6 @@ function tileInteraction(itemType) {
 
   console.log("interactions...");
 
-  const ITM = new InteractableTileMapping;
   let playerData = PDHandler.getStats();
   let message;
 

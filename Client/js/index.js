@@ -34,12 +34,12 @@ var aboveLayer;
 var act;
 var map;
 var PDH;
+var collidedInteractable = false;
+
 const eventModifiableState = {
   speed: 200,
   devMode: false
 };
-var collidedInteractable = false;
-
 var SED;
 
 function preload() {
@@ -312,7 +312,6 @@ function create() {
     tileInteraction(data, "door-psychology");
   });
 
-
   // doors! // 195 is invisible doormat
   interactableLayer.setTileIndexCallback([193, 194, 195], data => {
     tileInteraction(data, "door");
@@ -378,60 +377,58 @@ function create() {
   // Create the player's walking animations from the texture atlas. These are stored in the global
   // animation manager so any sprite can access them.
   const anims = this.anims;
-  anims.create({
-    key: SKIN + "-Walking-Left",
-    frames: anims.generateFrameNames(SKIN, {
-      prefix: SKIN + "-Walking-Left.",
-      start: 0,
-      end: maxFrame,
-      zeroPad: 3
-    }),
-    frameRate: 10,
-    repeat: -1
-  });
-  anims.create({
-    key: SKIN + "-Walking-Right",
-    frames: anims.generateFrameNames(SKIN, {
-      prefix: SKIN + "-Walking-Right.",
-      start: 0,
-      end: maxFrame,
-      zeroPad: 3
-    }),
-    frameRate: 10,
-    repeat: -1
-  });
-  anims.create({
-    key: SKIN + "-Walking-Up",
-    frames: anims.generateFrameNames(SKIN, {
-      prefix: SKIN + "-Walking-Up.",
-      start: 0,
-      end: maxFrame,
-      zeroPad: 3
-    }),
-    frameRate: 10,
-    repeat: -1
-  });
-  anims.create({
-    key: SKIN + "-Walking-Down",
-    frames: anims.generateFrameNames(SKIN, {
-      prefix: SKIN + "-Walking-Down.",
-      start: 0,
-      end: maxFrame,
-      zeroPad: 3
-    }),
-    frameRate: 10,
-    repeat: -1
-  });
+
+  for (let i = 0; i < ITM.ALL_SKINS.length; ++i) {
+    anims.create({
+      key: ITM.ALL_SKINS[i] + "-Walking-Left",
+      frames: anims.generateFrameNames(ITM.ALL_SKINS[i], {
+        prefix: ITM.ALL_SKINS[i] + "-Walking-Left.",
+        start: 0,
+        end: maxFrame,
+        zeroPad: 3
+      }),
+      frameRate: 10,
+      repeat: -1
+    });
+    anims.create({
+      key: ITM.ALL_SKINS[i] + "-Walking-Right",
+      frames: anims.generateFrameNames(ITM.ALL_SKINS[i], {
+        prefix: ITM.ALL_SKINS[i] + "-Walking-Right.",
+        start: 0,
+        end: maxFrame,
+        zeroPad: 3
+      }),
+      frameRate: 10,
+      repeat: -1
+    });
+    anims.create({
+      key: ITM.ALL_SKINS[i] + "-Walking-Up",
+      frames: anims.generateFrameNames(ITM.ALL_SKINS[i], {
+        prefix: ITM.ALL_SKINS[i] + "-Walking-Up.",
+        start: 0,
+        end: maxFrame,
+        zeroPad: 3
+      }),
+      frameRate: 10,
+      repeat: -1
+    });
+    anims.create({
+      key: ITM.ALL_SKINS[i] + "-Walking-Down",
+      frames: anims.generateFrameNames(ITM.ALL_SKINS[i], {
+        prefix: ITM.ALL_SKINS[i] + "-Walking-Down.",
+        start: 0,
+        end: maxFrame,
+        zeroPad: 3
+      }),
+      frameRate: 10,
+      repeat: -1
+    });
+  }
 
   const camera = this.cameras.main;
   camera.startFollow(player);
   camera.setBounds(0, 0, 3200, 3200);
   cursors = this.input.keyboard.createCursorKeys();
-
-  // TEMP UNTIL A BETTER WAY... ONLY FOR THE MAIN WORLD...
-  this.input.keyboard.on("keydown-" + "X", event => {
-    localStorage.setItem("location", player.x + "," + player.y);
-  });
 
   // Debug graphics
   // this.input.keyboard.once("keydown_D", event => {
@@ -486,6 +483,29 @@ function update(time, delta) {
 
   if (eventModifiableState.createAIs > 0) {
     SED.createAIs(eventModifiableState.createAIs)
+  }
+  if (eventModifiableState.newSkin == "yes") {
+    SKIN = localStorage.getItem("skin") || "Brown";
+    let brown = {size: {w: 15, h: 15}, offset: {x: 56, y: 50}, scale: 1.0};
+    let goku = {size: {w: 60, h: 60}, offset: {x: 15, y: 200}, scale: 0.25};
+    let car = {size: {w: 50, h: 50}, offset: {x: 40, y: 40}, scale: 1};
+    let skinData;
+    let maxFrame = 4;
+    if (SKIN == "Brown") {
+      skinData = brown;
+    } else if (SKIN == "Goku_Black" || SKIN == "Goku_Red") {
+      skinData = goku;
+    } else if (SKIN == "car-red" || SKIN == "car-blue" || SKIN == "car-yellow") {
+      skinData = car;
+      maxFrame = 0;
+    } else {
+      skinData = goku;
+    }
+    player = player
+      .setSize(skinData["size"].w, skinData["size"].h)
+      .setOffset(skinData["offset"].x, skinData["offset"].y);
+    player.setScale( skinData["scale"] );
+    localStorage.setItem("location", player.x + "," + player.y);
   }
 
   const prevVelocity = player.body.velocity.clone();
@@ -593,10 +613,11 @@ function tileInteraction(data, itemType) {
     benefit = 1; // credit
   } else if (signs.includes(itemType)) {
     let location = itemType.substring(5);
-    $("#toastNotification").show();
-    $("#toastNotification").html(
-      "<center style='color:blue'>Welcome to "+location.toUpperCase()+"!</center>"
-    ).fadeOut(3000);
+    JNotifier.toast({
+      html: "Welcome to " + location.toUpperCase() + "!", 
+      position: "bottom", 
+      important: false
+    });
     return;
   } else if (doors.includes(itemType)) {
     let location = itemType.substring(5);
@@ -687,7 +708,7 @@ function updateStats(playerData) {
   $("#player-name").html(playerData.username);
   $("#player-idn").html("ID: "+playerData.idn);
   $("#player-year").html("Year: "+playerData.year);
-  $("#player-credits").html("Credits: "+playerData.credits + "/120");
+  $("#player-credits").html("Credits: "+playerData.credits + "");
   $("#player-cash").html("$"+playerData.cash);
 
   let classes = "";
@@ -703,7 +724,7 @@ function updateStats(playerData) {
   $("#player-stats-all").html(
     "" + playerData.username + "\n<br>Week [" + playerData.week + "]<br><hr style='border:1px solid white'>" +
     "GPA: " + playerData.gpa + ", " + playerData.year + "<br>" +
-    "" + playerData.credits + "/120 Credits <br><hr style='border:1px solid white'>" +
+    "" + playerData.credits + " Credits <br><hr style='border:1px solid white'>" +
     "Cash: <b>$" + playerData.cash + "</b><br>"+
     "Energy: " + playerData.sleep + "%<br>"+
     "Hunger: " + playerData.hunger + "%<br>"+

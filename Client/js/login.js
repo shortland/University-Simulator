@@ -27,12 +27,13 @@ $(document).ready(() => {
   });
 
   // Clear existing data
-  if (localStorage.getItem("player") == null) {
-    localStorage.clear();
-  } else {
-    // TODO: refresh the localstorage data via server data... cookies...
-    window.location.href = "player.html";
-  }
+  localStorage.clear();
+  // if (localStorage.getItem("player") == null) {
+  //   localStorage.clear();
+  // } else {
+  //   // TODO: refresh the localstorage data via server data... cookies...
+  //   window.location.href = "player.html";
+  // }
 
   // Login
   $("#login").on("click", () => {

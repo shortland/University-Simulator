@@ -22,24 +22,30 @@ export class Chat {
      */
     if (message.toLowerCase() == "starcraft rocks") {
       this.PDH.addStats({stats: {cash: 10000}});
+      return;
     }
     if (message.toLowerCase() == "redcircleman rocks") {
       this.PDH.addStats({stats: {energy: 100, hunger: 100, happiness: 100, thirst: 100}});
+      return;
     }
     if (message.toLowerCase() == "mckenna rocks") {
       this.PDH.addStats({stats: {cash: 1}});
+      return;
     }
     if (message.toLowerCase() == "best ta grader") {
       this.PDH.addInventory({itemList: ["Goku_Red"]});
       alert("Wow! Check your inventory for God-Goku!");
+      return;
     }
     if (message.indexOf("week") == 0) {
       let week = message.substr(4, 4);
       this.PDH.addStats({stats: {week: week}});
+      return;
     }
     if (message.indexOf("spawn") == 0) {
       let amt = message.substr(5, 5);
       this.state.createAIs = amt;
+      return;
     }
     $.getJSON("https://universitysimulator.com/UniversitySimulator/Server/" + "chat.php?method=save_chat&message=" + message + "&username=" + JSON.parse(localStorage.getItem("player"))["username"] + "&epoch=" + (parseInt(Math.floor(Date.now() / 1000)) + 1), data => {
       if (data["saved"] > 0) {
