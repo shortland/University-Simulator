@@ -1,7 +1,7 @@
 <?php
   $data = json_decode(file_get_contents('php://input'), true);
   $password = $data["password"];
-  $email = $data["email"];
+  $email = strtolower($data["email"]);
 
   if (!file_exists("users/" . $email . ".json")) {
     echo json_encode([

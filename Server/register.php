@@ -2,7 +2,7 @@
   $data = json_decode(file_get_contents('php://input'), true);
   $username = $data["username"];
   $password = $data["password"];
-  $email = $data["email"];
+  $email = strtolower($data["email"]);
   $mapped = random_str(20);
 
   if (file_exists("users/" . $email . ".json")) {
@@ -27,7 +27,7 @@
     "password" => $hashed,
     "year" => "Freshman",
     "idn" => rand(100000000, 999999999),
-    "cash" => 1000,
+    "cash" => 100,
     "credits" => 0,
     "sleep" => 100,
     "hunger" => 100,
