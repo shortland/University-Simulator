@@ -559,7 +559,9 @@ function create() {
       }
     }
   });
-/**
+
+  
+  /**
    * Add the player
    */
   let brown = {size: {w: 15, h: 15}, offset: {x: 56, y: 50}, scale: 1.0};
@@ -584,8 +586,29 @@ function create() {
     height: skinData["size"].h,
     offsetX: skinData["offset"].x,
     offsetY: skinData["offset"].y,
-    spawn: {x: 160, y: 176}
+    spawn: {x: 160, y: 330}
   });
+
+// let brown = {size: {w: 15, h: 15}, offset: {x: 56, y: 50}, scale: 1.0};
+// let goku = {size: {w: 60, h: 60}, offset: {x: 15, y: 200}, scale: 0.25};
+// let car = {size: {w: 50, h: 50}, offset: {x: 40, y: 40}, scale: 1};
+// let skinData;
+// let maxFrame = 4;
+// if (SKIN == "Brown") {
+//   skinData = brown;
+// } else if (SKIN == "Goku_Black" || SKIN == "Goku_Red") {
+//   skinData = goku;
+// } else if (SKIN == "car-red" || SKIN == "car-blue" || SKIN == "car-yellow") {
+//   skinData = car;
+//   maxFrame = 0;
+// } else {
+//   skinData = goku;
+// }
+// player = this.physics.add
+//   .sprite(160, 330, SKIN, SKIN + "-Standing.000")
+//   .setSize(skinData["size"].w, skinData["size"].h)
+//   .setOffset(skinData["offset"].x, skinData["offset"].y); // x then y
+// player.setScale( skinData["scale"] );
   /**
    * Add collisions for NPCs after the player has been added - so that we can add the player to the npc's collisions
    */
@@ -673,20 +696,67 @@ function create() {
     object: player
   });
 
-  const anims = new Animations({
+  var anims = new Animations({
     animations: this.anims
   });
+
   anims.create_player({
     prefix: SKIN
   });
+
+  /**
+   * Create others
+   */
+  anims = this.anims;
+  let maxFrame = 3;
+  for (let i = 0; i < ITM.ALL_SKINS.length; ++i) {
+    anims.create({
+      key: ITM.ALL_SKINS[i] + "-Walking-Left",
+      frames: anims.generateFrameNames(ITM.ALL_SKINS[i], {
+        prefix: ITM.ALL_SKINS[i] + "-Walking-Left.",
+        start: 0,
+        end: maxFrame,
+        zeroPad: 3
+      }),
+      frameRate: 10,
+      repeat: -1
+    });
+    anims.create({
+      key: ITM.ALL_SKINS[i] + "-Walking-Right",
+      frames: anims.generateFrameNames(ITM.ALL_SKINS[i], {
+        prefix: ITM.ALL_SKINS[i] + "-Walking-Right.",
+        start: 0,
+        end: maxFrame,
+        zeroPad: 3
+      }),
+      frameRate: 10,
+      repeat: -1
+    });
+    anims.create({
+      key: ITM.ALL_SKINS[i] + "-Walking-Up",
+      frames: anims.generateFrameNames(ITM.ALL_SKINS[i], {
+        prefix: ITM.ALL_SKINS[i] + "-Walking-Up.",
+        start: 0,
+        end: maxFrame,
+        zeroPad: 3
+      }),
+      frameRate: 10,
+      repeat: -1
+    });
+    anims.create({
+      key: ITM.ALL_SKINS[i] + "-Walking-Down",
+      frames: anims.generateFrameNames(ITM.ALL_SKINS[i], {
+        prefix: ITM.ALL_SKINS[i] + "-Walking-Down.",
+        start: 0,
+        end: maxFrame,
+        zeroPad: 3
+      }),
+      frameRate: 10,
+      repeat: -1
+    });
+  }
   
   cursors = this.input.keyboard.createCursorKeys();
-  
-  const sharedEventsDatas = new SharedEventData({
-    game: this,
-    keyboard: this.input.keyboard, 
-    state: eventModifiableState
-  });
 
   /**
    * SharedEventData (basic specifically for index.js)
@@ -734,7 +804,6 @@ function update(time, delta) {
       .setSize(skinData["size"].w, skinData["size"].h)
       .setOffset(skinData["offset"].x, skinData["offset"].y);
     player.setScale( skinData["scale"] );
-    localStorage.setItem("location", player.x + "," + player.y);
   }
 
   const prevVelocity = player.body.velocity.clone();

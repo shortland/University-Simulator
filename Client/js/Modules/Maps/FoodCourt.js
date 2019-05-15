@@ -256,6 +256,28 @@ function update(time, delta) {
   if (eventModifiableState.createAIs > 0) {
     SED.createAIs(eventModifiableState.createAIs)
   }
+  if (eventModifiableState.newSkin == "yes") {
+    SKIN = localStorage.getItem("skin") || "Brown";
+    let brown = {size: {w: 15, h: 15}, offset: {x: 56, y: 50}, scale: 1.0};
+    let goku = {size: {w: 60, h: 60}, offset: {x: 15, y: 200}, scale: 0.25};
+    let car = {size: {w: 50, h: 50}, offset: {x: 40, y: 40}, scale: 1};
+    let skinData;
+    let maxFrame = 4;
+    if (SKIN == "Brown") {
+      skinData = brown;
+    } else if (SKIN == "Goku_Black" || SKIN == "Goku_Red") {
+      skinData = goku;
+    } else if (SKIN == "car-red" || SKIN == "car-blue" || SKIN == "car-yellow") {
+      skinData = car;
+      maxFrame = 0;
+    } else {
+      skinData = goku;
+    }
+    player = player
+      .setSize(skinData["size"].w, skinData["size"].h)
+      .setOffset(skinData["offset"].x, skinData["offset"].y);
+    player.setScale( skinData["scale"] );
+  }
 
   const prevVelocity = player.body.velocity.clone();
   const speed = eventModifiableState["speed"];

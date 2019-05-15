@@ -63,6 +63,11 @@ var gameAssets = {
     },
     restartGame: function() {
         game.state.start('main');
+        if (this.score > 0) {
+            localStorage.setItem("coin_win", parseInt(this.score));
+            window.parent.$('body').trigger('gameComplete');
+            window.location.href = "../../phone.html";
+        }
     },
     
     
@@ -85,3 +90,9 @@ var config = {
 var game = new Phaser.Game(config);
 game.state.add('main', gameAssets);
 game.state.start('main');
+
+// $(document).on("keypress", event => {
+//     if (event.keyCode == 112) {
+        
+//     }
+// });

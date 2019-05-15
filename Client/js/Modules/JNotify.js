@@ -111,6 +111,16 @@ export class JNotify {
 
           if (event.keyCode == 121) {
             if (interactant["price"] > 0) {
+              if ((-1 * parseInt(interactant["price"])) + PDH.getStats()["cash"] < 0) {
+                $("#prompt").hide();
+                $(document).off("keypress");
+                $("#toastNotification").finish();
+                $("#toastNotification").show();
+                $("#toastNotification").html(
+                  "<center style='color:red'>Not enough cash!</center>"
+                ).fadeOut(3000);
+                return;
+              }
               PDH.addStats({stats: {cash: (-1 * parseInt(interactant["price"]))}});
               PDH.addInventory({itemList: [interactant.name]});
               $("#prompt").hide();

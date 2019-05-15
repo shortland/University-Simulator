@@ -104,6 +104,7 @@ export class SharedEventData {
      * Show/Hide player inventory
      */
     this.keyboard.on("keydown-" + "I", () => {
+      console.log("SHOW INVENTORY");
       this.PDH.toggleInventory();
       this.state.newSkin = "yes";
     });

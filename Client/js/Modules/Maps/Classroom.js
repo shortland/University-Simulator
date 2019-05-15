@@ -233,12 +233,6 @@ function create() {
   });
   
   cursors = this.input.keyboard.createCursorKeys();
-  
-  const sharedEventsDatas = new SharedEventData({
-    game: this,
-    keyboard: this.input.keyboard, 
-    state: eventModifiableState
-  });
 
   /**
    * SharedEventData (basic specifically for index.js)
@@ -286,7 +280,6 @@ function update(time, delta) {
       .setSize(skinData["size"].w, skinData["size"].h)
       .setOffset(skinData["offset"].x, skinData["offset"].y);
     player.setScale( skinData["scale"] );
-    localStorage.setItem("location", player.x + "," + player.y);
   }
 
   const prevVelocity = player.body.velocity.clone();

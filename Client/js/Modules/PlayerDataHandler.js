@@ -109,6 +109,11 @@ export class PlayerDataHandler {
     let data = this.getStats();
     Object.keys(stats).forEach(stat => {
       console.log(stats[stat]);
+      if (stat == "cash") {
+        if (parseInt(stats[stat]) + parseInt(data["cash"]) < 0) {
+          return -1;
+        }
+      }
       data[stat] += parseFloat(stats[stat]);
     });
     this.updateStats(data);

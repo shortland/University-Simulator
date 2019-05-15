@@ -268,8 +268,8 @@ body {
 }
 
 #map-layer {
+  height: 90%;
   width: auto;
-  height: auto;
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
