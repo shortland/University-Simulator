@@ -29,6 +29,12 @@
     </div>
     <div class="app-icon">
       <center>
+        <div id="play-flappy"></div>
+      </center>
+      <p>Flappy Guy</p>
+    </div>
+    <div class="app-icon">
+      <center>
         <div id="play-shooting"></div>
       </center>
       <p>Alien Blaster</p>
@@ -46,6 +52,9 @@
         });
         $("#play-quiz").on("click", () => {
           window.location.href = "minigames/Trivia/index.html";
+        });
+        $("#play-flappy").on("click", () => {
+          window.location.href = "minigames/Flappy/index.html";
         });
         $("#play-shooting").on("click", () => {
           window.location.href = "minigames/Shooting/index.html";
