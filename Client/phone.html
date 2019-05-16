@@ -39,26 +39,51 @@
       </center>
       <p>Alien Blaster</p>
     </div>
+
+    <center>
+        <div id="need-sleep" style="color: red; display: none;">Please sleep to gain more energy!</div>
+    </center>
     <script>
       $(document).ready(function() {
         // So null/undef doesn't break anything
         localStorage.setItem("coin_win", 0);
+        let data = JSON.parse(localStorage.getItem("player"));
 
-        $("#play-coin").on("click", () => {
-          window.location.href = "minigames/Coin/coin.html";
-        });
-        $("#play-maze").on("click", () => {
-          window.location.href = "minigames/Maze/index.html";
-        });
-        $("#play-quiz").on("click", () => {
-          window.location.href = "minigames/Trivia/index.html";
-        });
-        $("#play-flappy").on("click", () => {
-          window.location.href = "minigames/Flappy/index.html";
-        });
-        $("#play-shooting").on("click", () => {
-          window.location.href = "minigames/Shooting/index.html";
-        });
+        if (data["sleep"] <= 0) {
+          $(".app-icon").css({"opacity": 0.5});
+          $("#need-sleep").show();
+        } else {
+          $("#play-coin").on("click", () => {
+            window.location.href = "minigames/Coin/coin.html";
+            
+            data["sleep"] = data["sleep"] - 50;
+            localStorage.setItem("player", JSON.stringify(data));
+          });
+          $("#play-maze").on("click", () => {
+            window.location.href = "minigames/Maze/index.html";
+
+            data["sleep"] = data["sleep"] - 50;
+            localStorage.setItem("player", JSON.stringify(data));
+          });
+          $("#play-quiz").on("click", () => {
+            window.location.href = "minigames/Trivia/index.html";
+
+            data["sleep"] = data["sleep"] - 50;
+            localStorage.setItem("player", JSON.stringify(data));
+          });
+          $("#play-flappy").on("click", () => {
+            window.location.href = "minigames/Flappy/index.html";
+
+            data["sleep"] = data["sleep"] - 50;
+            localStorage.setItem("player", JSON.stringify(data));
+          });
+          $("#play-shooting").on("click", () => {
+            window.location.href = "minigames/Shooting/index.html";
+
+            data["sleep"] = data["sleep"] - 50;
+            localStorage.setItem("player", JSON.stringify(data));
+          });
+        }
 
         $(document).on("keypress", event => {
           if (event.keyCode == 112) {
