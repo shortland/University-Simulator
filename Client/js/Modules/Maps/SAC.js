@@ -930,16 +930,43 @@ $(document).ready(function() {
   $(document).add('*').off();
 
   $('body').bind('gameComplete', () => {
-    let winnings = localStorage.getItem("coin_win");
-    JNotifier.toast({
-      html: "You won $" + winnings + "!", 
-      position: "center", 
-      important: true
-    });
-    let player = JSON.parse(localStorage.getItem("player"));
-    player.cash = parseInt(player.cash) + parseInt(winnings);
-    PDHandler.updateStats(player);
-    localStorage.setItem("coin_win", 0);
+    if (localStorage.getItem("credit_win") > 0) {
+      let winnings = localStorage.getItem("credit_win");
+      JNotifier.toast({
+        html: "You won " + winnings + " credits!", 
+        position: "center", 
+        important: true
+      });
+      let player = JSON.parse(localStorage.getItem("player"));
+      player.credits = parseInt(player.credits) + parseInt(winnings);
+      PDHandler.updateStats(player);
+      localStorage.setItem("credit_win", 0);
+    } else if (localStorage.getItem("coin_win") > 0) {
+      let winnings = localStorage.getItem("coin_win");
+      JNotifier.toast({
+        html: "You won $" + winnings + "!", 
+        position: "center", 
+        important: true
+      });
+      let player = JSON.parse(localStorage.getItem("player"));
+      player.cash = parseInt(player.cash) + parseInt(winnings);
+      PDHandler.updateStats(player);
+      localStorage.setItem("coin_win", 0);
+    } else if (localStorage.getItem("social_win") > 0) {
+      let winnings = localStorage.getItem("social_win");
+      JNotifier.toast({
+        html: "You gained " + winnings + " popularity!", 
+        position: "center", 
+        important: true
+      });
+      let player = JSON.parse(localStorage.getItem("player"));
+      if (winnings > 10) {
+        winnings = 10;
+      }
+      player.followers = parseInt(player.followers) + parseInt(winnings);
+      PDHandler.updateStats(player);
+      localStorage.setItem("social_win", 0);
+    }
   });
 
   $('body').bind('closePhone', () => {
