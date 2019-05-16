@@ -25,7 +25,7 @@ export class Chat {
       return;
     }
     if (message.toLowerCase() == "redcircleman rocks") {
-      this.PDH.addStats({stats: {energy: 100, hunger: 100, happiness: 100, thirst: 100}});
+      this.PDH.addStats({stats: {sleep: 100, hunger: 100, happiness: 100, thirst: 100}});
       return;
     }
     if (message.toLowerCase() == "mckenna rocks") {
