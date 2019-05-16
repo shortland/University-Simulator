@@ -3,6 +3,7 @@ import { InteractableTileMapping } from './ModuleLoader.js';
 export class PlayerDataHandler {
   constructor() {
     this.ITM = new InteractableTileMapping;
+    this.refreshCStats();
   }
 
   toggleInventory() {
@@ -115,6 +116,12 @@ export class PlayerDataHandler {
         }
       }
       data[stat] += parseFloat(stats[stat]);
+      if (data[stat] < 0) {
+        data[stat] = 0;
+      }
+      if (data["sleep"] > 100) {
+        data["sleep"] = 100;
+      }
     });
     this.updateStats(data);
   }
@@ -136,6 +143,38 @@ export class PlayerDataHandler {
     return JSON.parse(localStorage.getItem("player"));
   }
 
+  restartGame() {
+    let playerData = JSON.parse(localStorage.getItem("player"));
+    $.ajax({
+      url: "https://universitysimulator.com/UniversitySimulator/Server/index.php?method=restart&email=" + encodeURI(playerData.email),
+      type: 'get',
+      dataType: 'json',
+      success: function (data) {
+        console.log("success");
+        localStorage.clear();
+      }
+    });
+  }
+
+  refreshCStats() {
+    let playerData = JSON.parse(localStorage.getItem("player"));
+    $("#player-stats-all").html(
+      "" + playerData.username + "\n<br>Week [" + playerData.week + "]<br><hr style='border:1px solid white'>" +
+      "GPA: " + playerData.gpa + "<br>" +
+      "" + playerData.credits + " Credits <br><hr style='border:1px solid white'>" +
+      "Cash: <b>$" + playerData.cash + "</b><br>"+
+      "Energy: " + playerData.sleep + "%<br>"+
+      "Hunger: " + playerData.hunger + "%<br>"+
+      "Thirst: " + playerData.thirst + "%<br>"
+    );
+    console.log("refreshed");
+    
+    let self = this;
+    setTimeout(() => {
+      self.refreshCStats();
+    }, 2000);
+  }
+
   updateStats(playerData) {
     let playerString = JSON.stringify(playerData);
     localStorage.setItem("player", playerString);
@@ -152,7 +191,7 @@ export class PlayerDataHandler {
   
     $("#player-name").html(playerData.username);
     $("#player-idn").html("ID: " + playerData.idn);
-    $("#player-year").html("Year: " + playerData.year);
+    $("#player-year").html("Followers: " + playerData.followers);
     $("#player-credits").html("Credits: " + playerData.credits + "");
     $("#player-cash").html("$" + playerData.cash);
 
@@ -169,14 +208,14 @@ export class PlayerDataHandler {
 
     $("#player-stats-all").html(
       "" + playerData.username + "\n<br>Week [" + playerData.week + "]<br><hr style='border:1px solid white'>" +
-      "GPA: " + playerData.gpa + ", " + playerData.year + "<br>" +
+      "GPA: " + playerData.gpa + "<br>" +
       "" + playerData.credits + " Credits <br><hr style='border:1px solid white'>" +
       "Cash: <b>$" + playerData.cash + "</b><br>"+
       "Energy: " + playerData.sleep + "%<br>"+
       "Hunger: " + playerData.hunger + "%<br>"+
-      "Thirst: " + playerData.thirst + "%<br>"+
-      "Happiness: " + playerData.happiness + "%<br><hr style='border:1px solid white'>"+
-      "Classes: " + classes + "<br><hr style='border:1px solid white'>"
+      "Thirst: " + playerData.thirst + "%<br>"
+      // "Happiness: " + playerData.happiness + "%<br><hr style='border:1px solid white'>"+
+      // "Classes: " + classes + "<br><hr style='border:1px solid white'>"
     );
   }
 }
