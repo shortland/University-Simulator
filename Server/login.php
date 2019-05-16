@@ -14,9 +14,14 @@
   $userData = json_decode(file_get_contents("users/" . $email . ".json"), TRUE);
   if (password_verify($password, $userData["password"])) {
     if ($userData["verified"] == FALSE) {
+      // echo json_encode([
+      //   "status" => "unverified",
+      //   "message" => "account not verified"
+      // ]);
       echo json_encode([
-        "status" => "unverified",
-        "message" => "account not verified"
+        "status" => "ok",
+        "message" => "success",
+        "data" => $userData
       ]);
     } else {
       //unset($userData["password"]);
