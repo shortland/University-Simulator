@@ -64,7 +64,7 @@ var gameAssets = {
     restartGame: function() {
         game.state.start('main');
         if (this.score > 0) {
-            localStorage.setItem("coin_win", parseInt(this.score));
+            localStorage.setItem("social_win", parseInt(this.score));
             window.parent.$('body').trigger('gameComplete');
             window.location.href = "../../phone.html";
         }
