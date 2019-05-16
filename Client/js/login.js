@@ -87,7 +87,7 @@ $(document).ready(() => {
     })
     .then(data => {
       if (data.status == "ok") {
-        $("#registerForm").html("<p>Successfully registered account.</p><p>Please check your email and verify your account (may need to check spam folder)</p>");
+        $("#registerForm").html("<p>Successfully registered account.</p><p>Please check your email and verify your account (may need to check spam folder)</p><p><a href='index.html'>Login</a> now</p>");
       } else {
         $("#emailUsed").show();
       }
