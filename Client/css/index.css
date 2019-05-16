@@ -95,3 +95,9 @@ input[type='text'], input[type='password'] {
   color: red;
   padding-top: 10px;
 }
+
+.github-button-wrapper {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+}
