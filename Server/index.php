@@ -36,3 +36,45 @@
             ]);
         }
     }
+
+    if ($_GET['method'] == 'restart') {
+        try {
+            // create the new account data
+            file_put_contents("users/" . $_GET['email'] . ".json", json_encode([
+                "username" => "",
+                "email" => $email,
+                "verified" => FALSE, // this should get the value from the previous one...
+                "password" => $hashed,
+                "year" => "Freshman",
+                "idn" => rand(100000000, 999999999),
+                "cash" => 100,
+                "credits" => 0,
+                "sleep" => 100,
+                "hunger" => 100,
+                "happiness" => 100,
+                "thirst" => 100,
+                "gpa" => 4.0,
+                "classes" => [],
+                "inventory" => [
+                    "Purple_Brown",
+                    "food-steak",
+                    "food-steak",
+                    "food-water",
+                    "food-water",
+                    "food-pizza-pepperoni",
+                    "food-pizza",
+                    "food-pizza",
+                    "food-pizza",
+                ],
+                "week" => 1,
+                "followers" => 0
+            ]));
+        } catch(Exception $e) {
+            echo json_encode([
+                "error" => true,
+                "message" => "unable to save user data"
+            ]);
+        }
+    }
+
+    
