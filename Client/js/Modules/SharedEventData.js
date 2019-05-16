@@ -95,8 +95,10 @@ export class SharedEventData {
     this.keyboard.on("keydown-" + "M", event => {
       if ($("#mini-map").is(":visible")) {
         $("#mini-map").hide();
+        $("#mini-map-bg-cover").hide();
       } else {
         $("#mini-map").show();
+        $("#mini-map-bg-cover").show();
       }
     });
 
