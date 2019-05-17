@@ -493,6 +493,7 @@ function update(time, delta) {
     SED.createAIs(eventModifiableState.createAIs)
   }
   if (eventModifiableState.newSkin == "yes") {
+    // change player speed... includes the physical offset of the sprite etc.
     SKIN = localStorage.getItem("skin") || "Brown";
     let brown = {size: {w: 15, h: 15}, offset: {x: 56, y: 50}, scale: 1.0};
     let goku = {size: {w: 60, h: 60}, offset: {x: 15, y: 200}, scale: 0.25};
@@ -513,7 +514,11 @@ function update(time, delta) {
       .setSize(skinData["size"].w, skinData["size"].h)
       .setOffset(skinData["offset"].x, skinData["offset"].y);
     player.setScale( skinData["scale"] );
+    
+    // change player speed
     eventModifiableState.speed = ITM.SKINS[SKIN].speed || ITM.CARS[SKIN].speed;
+
+    // set new spawn location
     localStorage.setItem("location", player.x + "," + player.y);
   }
 

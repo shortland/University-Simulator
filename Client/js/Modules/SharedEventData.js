@@ -205,7 +205,15 @@ export class SharedEventData {
       this.physicsGen.add_player_layer_collisions({
         player: newAI,
         layers: [this.player],
-        callback: this.JNotifier.toastPlayerInteraction
+        callback: (a, b) => {
+          // a is the AI
+          // b is the player
+          this.JNotifier.toastPlayerInteraction(a, b);
+
+          if (b.texture.key.includes("car")) {
+            a.dead = true;
+          }
+        }
       });
       this.physicsGen.add_player_layer_collisions({
         player: newAI,
@@ -283,6 +291,12 @@ export class SharedEventData {
 
     this.movingAI = false;
     this.listAI.forEach(ai => {
+      if (ai.dead) {
+        ai.body.setVelocity(0);
+        ai.anims.stop();
+        ai.story.next.line = "...<i>perished from car accident</i>...";
+        return;
+      }
       let p = Math.random() < 0.5 ? -1 : 1;
       let d = Math.random() < 0.5 ? true : false;
       let m = Math.random() < 0.5 ? true : false;
