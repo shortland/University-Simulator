@@ -3,6 +3,7 @@ import { InteractableTileMapping } from './ModuleLoader.js';
 export class PlayerDataHandler {
   constructor() {
     this.ITM = new InteractableTileMapping;
+    localStorage.setItem("refreshed_stats", Math.round((new Date()).getTime() / 1000));
     this.refreshCStats();
   }
 
@@ -44,8 +45,6 @@ export class PlayerDataHandler {
     const data = this.getStats();
     if (this.ITM.FOODS[id] != null) {
       this.consumeItem({item: id});
-      let index = data["inventory"].indexOf(id);
-      if (index !== -1) data["inventory"].splice(index, 1);
     }  else if (this.ITM.SKINS[id] != null) {
       let index = data["inventory"].indexOf(id);
       if (index !== -1) data["inventory"].splice(index, 1);
@@ -59,7 +58,7 @@ export class PlayerDataHandler {
       if (index !== -1) data["inventory"].splice(index, 1);
       console.log("UNKNOWN CONSUME ACTION");
     }
-    this.updateStats(data);
+    //this.updateStats(data);
   }
 
   consumeItem({item, ignore_cash = true} = {}) {
@@ -79,6 +78,11 @@ export class PlayerDataHandler {
     sound.play();
 
     const data = this.getStats();
+
+    // remove the item from inventory
+    let index = data["inventory"].indexOf(item);
+    if (index !== -1) data["inventory"].splice(index, 1);
+
     Object.keys(this.ITM.FOODS[item]["stats"]).forEach(stat => {
       /**
        * Next if current is cash...
@@ -88,6 +92,7 @@ export class PlayerDataHandler {
         return;
       }
       console.log("Increasing stats");
+      console.log(stat, "by", parseFloat(this.ITM.FOODS[item]["stats"][stat]));
       data[stat] += parseFloat(this.ITM.FOODS[item]["stats"][stat]);
     });
     this.updateStats(data);
@@ -102,14 +107,13 @@ export class PlayerDataHandler {
   }
 
   getInventory() {
-    this.refresh();
     return this.getStats()["inventory"];
   }
 
   addStats({stats} = {}) {
     let data = this.getStats();
     Object.keys(stats).forEach(stat => {
-      console.log(stats[stat]);
+      //console.log(stats[stat]);
       if (stat == "cash") {
         if (parseInt(stats[stat]) + parseInt(data["cash"]) < 0) {
           return -1;
@@ -150,44 +154,63 @@ export class PlayerDataHandler {
       type: 'get',
       dataType: 'json',
       success: function (data) {
-        console.log("success");
+        console.log("game restarted");
         localStorage.clear();
+        localStorage.setItem("needs_login", true);
       }
     });
   }
 
   refreshCStats() {
-    let playerData = JSON.parse(localStorage.getItem("player"));
-    $("#player-stats-all").html(
-      "" + playerData.username + "\n<br>Week [" + playerData.week + "]<br><hr style='border:1px solid white'>" +
-      "GPA: " + playerData.gpa + "<br>" +
-      "" + playerData.credits + " Credits <br><hr style='border:1px solid white'>" +
-      "Cash: <b>$" + playerData.cash + "</b><br>"+
-      "Energy: " + playerData.sleep + "%<br>"+
-      "Hunger: " + playerData.hunger + "%<br>"+
-      "Thirst: " + playerData.thirst + "%<br>"
-    );
-    console.log("refreshed");
-    
+    let last_refresh = localStorage.getItem("refreshed_stats");
+    if (Math.round((new Date()).getTime() / 1000) - last_refresh >= 2) {
+      let playerData = JSON.parse(localStorage.getItem("player"));
+      if (playerData === null) {
+        return;
+      }
+      $("#player-stats-all").html(
+        "" + playerData.username + "\n<br>Week [" + playerData.week + "]<br><hr style='border:1px solid white'>" +
+        "GPA: " + playerData.gpa + "<br>" +
+        "" + playerData.credits + " Credits <br><hr style='border:1px solid white'>" +
+        "Cash: <b>$" + playerData.cash + "</b><br>"+
+        "Energy: " + playerData.sleep + "%<br>"+
+        "Hunger: " + playerData.hunger + "%<br>"+
+        "Thirst: " + playerData.thirst + "%<br>"
+      );
+      this.serverSaveStats(playerData);
+      localStorage.setItem("refreshed_stats", Math.round((new Date()).getTime() / 1000));
+    }    
     let self = this;
     setTimeout(() => {
       self.refreshCStats();
     }, 2000);
   }
 
-  updateStats(playerData) {
-    let playerString = JSON.stringify(playerData);
-    localStorage.setItem("player", playerString);
-  
+  serverSaveStats(playerData) {
     $.ajax({
       url: "https://universitysimulator.com/UniversitySimulator/Server/index.php?method=save_user&email=" + encodeURI(playerData.email),
       type: 'post',
       dataType: 'json',
       success: function (data) {
-        console.log("success");
+        //console.log("success");
       },
-      data: playerString
+      data: JSON.stringify(playerData)
     });
+  }
+
+  updateStats(playerData) {
+    let playerString = JSON.stringify(playerData);
+    localStorage.setItem("player", playerString);
+  
+    // $.ajax({
+    //   url: "https://universitysimulator.com/UniversitySimulator/Server/index.php?method=save_user&email=" + encodeURI(playerData.email),
+    //   type: 'post',
+    //   dataType: 'json',
+    //   success: function (data) {
+    //     //console.log("success");
+    //   },
+    //   data: playerString
+    // });
   
     $("#player-name").html(playerData.username);
     $("#player-idn").html("ID: " + playerData.idn);

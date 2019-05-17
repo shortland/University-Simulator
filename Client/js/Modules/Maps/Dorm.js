@@ -157,7 +157,7 @@ function create() {
     name: "Billy",
     story: {
       next: {
-        line: "Hi " + JSON.parse(localStorage.getItem("player")).name + "! I'm Billy, a CSE student!",
+        line: "Hi " + JSON.parse(localStorage.getItem("player")).username + "! I'm Billy, a CSE student!",
         timeout: 8000
       }
     }
@@ -366,8 +366,9 @@ function tileInteraction(itemType) {
         JNotifier.toast({color: "green", html: "Purchased successfully!"});
       }
     } else if (itemType == "bed") {
+      $("canvas").finish();
       $("canvas").fadeOut(3500).fadeIn(2500);
-      JNotifier.toast({color: "green", html: "1 day passes..."});
+      JNotifier.toast({color: "green", html: "1 week passes..."});
       /**
        * SLEEP SOUND
        */
@@ -389,6 +390,9 @@ function tileInteraction(itemType) {
        * NEXT TURN
        */
       nextTurn();
+
+      // no spam sleeping
+      noInteractionsForDelay(2000);
     }
 
     JNotifier.promptHide();
@@ -429,9 +433,10 @@ function nextTurn() {
       </center>
     `);
     }, 1000);
+    return;
   }
 
-  if (playerData.week >= 52) {
+  if (playerData.week == 52) {
     let health = (playerData["thirst"] + playerData["hunger"]) / 2;
     var end = gameEnding(playerData["cash"], playerData["credits"], playerData["followers"], health);
 

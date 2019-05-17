@@ -44,6 +44,14 @@ var SED;
 
 function preload() {
   /**
+   * Checks if the user needs to be re-logged in...
+   */
+  if (JSON.parse(localStorage.getItem("needs_login")) == true) {
+    window.location.href = "index.html";
+    return;
+  }
+
+  /**
    * Checks if the client has userdata or we need to force relog
    */
   if (localStorage.getItem("player") === null) {

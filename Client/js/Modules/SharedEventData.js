@@ -161,7 +161,7 @@ export class SharedEventData {
     
     this.helpMenuRight = new ToolTip({
       game: this.game,
-      text: "[Y] Accept transaction\n[N] Reject transaction\n\n[T] Toggle chat\n\n[I] Open/close inventory\n\n[P] Show/hide phone\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n_______________________________",
+      text: "[Y] Accept transaction\n[N] Reject transaction\n\n[T] Toggle chat\n\n[I] Open/close inventory\n\n[P] Show/hide phone\n\n[M] Show/hide map\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n_______________________________",
       align: "left",
       clickDestroy: false,
       depth: 100,
