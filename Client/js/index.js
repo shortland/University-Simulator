@@ -40,6 +40,7 @@ var timeCycling;
 
 const eventModifiableState = {
   speed: 200,
+  kills: [],
   devMode: false
 };
 var SED;
@@ -451,18 +452,18 @@ function create() {
   cursors = this.input.keyboard.createCursorKeys();
 
   // Debug graphics
-  this.input.keyboard.once("keydown_D", event => {
-    this.physics.world.createDebugGraphic();
-    const graphics = this.add
-      .graphics()
-      .setAlpha(0.75)
-      .setDepth(20);
-    interactableLayer.renderDebug(graphics, {
-      tileColor: null,
-      collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
-      faceColor: new Phaser.Display.Color(40, 39, 37, 255)
-    });
-  });
+  // this.input.keyboard.once("keydown_D", event => {
+  //   this.physics.world.createDebugGraphic();
+  //   const graphics = this.add
+  //     .graphics()
+  //     .setAlpha(0.75)
+  //     .setDepth(20);
+  //   interactableLayer.renderDebug(graphics, {
+  //     tileColor: null,
+  //     collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
+  //     faceColor: new Phaser.Display.Color(40, 39, 37, 255)
+  //   });
+  // });
 
   if (JSON.parse(localStorage.getItem("chat_loaded")) === false) {
     const chat = new Chat({state: eventModifiableState});
@@ -475,7 +476,7 @@ function create() {
       loop: true,
       volume: 0.5,
       onend: function() {
-        console.log('Finished!');
+        console.log('Looping background music...');
       }
     });
     sound.play();
@@ -502,12 +503,15 @@ function update(time, delta) {
   SED.updateAIs();
 
   /**
-   * if it's nighttime, turn people into zombies
+   * If it's nighttime, create AIs around the player
    */
-  if (eventModifiableState.night == true) {
-    //
+  if (eventModifiableState.night) {
+    SED.blockingCreateAIs(100, 4);
   }
 
+  /**
+   * Create AIs if state says to
+   */
   if (eventModifiableState.createAIs > 0) {
     SED.createAIs(eventModifiableState.createAIs)
   }

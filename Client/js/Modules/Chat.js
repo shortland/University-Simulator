@@ -52,6 +52,14 @@ export class Chat {
       this.state.radius = amt;
       return;
     }
+    if (message.toLowerCase() == "set night") {
+      localStorage.setItem("setNight", true);
+      return;
+    }
+    if (message.toLowerCase() == "set day") {
+      localStorage.setItem("setDay", true);
+      return;
+    }
     $.getJSON("https://universitysimulator.com/UniversitySimulator/Server/" + "chat.php?method=save_chat&message=" + message + "&username=" + JSON.parse(localStorage.getItem("player"))["username"] + "&epoch=" + (parseInt(Math.floor(Date.now() / 1000)) + 1), data => {
       if (data["saved"] > 0) {
         console.log("Success sending message!");

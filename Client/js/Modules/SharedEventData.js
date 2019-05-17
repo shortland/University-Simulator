@@ -172,9 +172,21 @@ export class SharedEventData {
   }
 
   /**
+   * Only creates AIs if at least 3 seconds have passed since last creation
+   */
+  blockingCreateAIs(amt, blockingSeconds) {
+    if (this.state.createAIs == 0) {
+      if (Math.round((new Date()).getTime() / 1000) - this.state.lastCreate >= blockingSeconds) {
+        this.createAIs(amt);
+      }
+    }
+  }
+
+  /**
    * AI?
    */
   createAIs(amt, dist = 600) {
+    this.state.lastCreate = Math.round((new Date()).getTime() / 1000);
     this.state.createAIs = 0;
     let radius = this.state.radius || dist;
 
@@ -231,10 +243,27 @@ export class SharedEventData {
           this.JNotifier.toastPlayerInteraction(a, b);
 
           if (b.texture.key.includes("car")) {
+            if (!a.dead) {
+              this.state.kills.push(a.name);
+              localStorage.setItem("kills", (parseInt(localStorage.getItem("kills")) || 0) + 1);
+              let data = JSON.parse(localStorage.getItem("player"));
+              data["cash"] += 1;
+              localStorage.setItem("player", JSON.stringify(data));
+            }
             a.dead = true;
           } else { // not in a car
             if (this.state.night) { // nighttime
-              console.log("player should die. not a car and its night");
+              if (!a.dead) { // already dead zombies shouldnt hurt you
+                let data = JSON.parse(localStorage.getItem("player"));
+                data["health"] -= 1;
+                if (data["health"] <= 0) {
+                  localStorage.setItem("zombie_death", true);
+                  $("body").fadeOut(5000, () => {
+                    window.location.href = "dead.html";
+                  });
+                }
+                localStorage.setItem("player", JSON.stringify(data));
+              }
             }
           }
         }
@@ -345,7 +374,6 @@ export class SharedEventData {
       frameRate: 10,
       repeat: -1
     });
-    console.log(this.game.anims);
   }
 
   toggleAIMovement() {

@@ -175,7 +175,9 @@ export class PlayerDataHandler {
         "Cash: <b>$" + playerData.cash + "</b><br>"+
         "Energy: " + playerData.sleep + "%<br>"+
         "Hunger: " + playerData.hunger + "%<br>"+
-        "Thirst: " + playerData.thirst + "%<br>"
+        "Thirst: " + playerData.thirst + "%<br>"+
+        "Health: " + playerData.health + "%<br><hr style='border:1px solid white'>" + 
+        "Kills: " + (localStorage.getItem("kills") || 0) + "<br><hr style='border:1px solid white'>"
       );
       this.serverSaveStats(playerData);
       localStorage.setItem("refreshed_stats", Math.round((new Date()).getTime() / 1000));
@@ -236,7 +238,9 @@ export class PlayerDataHandler {
       "Cash: <b>$" + playerData.cash + "</b><br>"+
       "Energy: " + playerData.sleep + "%<br>"+
       "Hunger: " + playerData.hunger + "%<br>"+
-      "Thirst: " + playerData.thirst + "%<br>"
+      "Thirst: " + playerData.thirst + "%<br>"+
+      "Health: " + playerData.health + "%<br><hr style='border:1px solid white'>" + 
+      "Kills: " + (localStorage.getItem("kills") || 0) + "<br><hr style='border:1px solid white'>"
       // "Happiness: " + playerData.happiness + "%<br><hr style='border:1px solid white'>"+
       // "Classes: " + classes + "<br><hr style='border:1px solid white'>"
     );

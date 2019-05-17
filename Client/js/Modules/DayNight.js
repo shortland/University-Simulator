@@ -28,6 +28,20 @@ export class DayNight {
   }
 
   animationChange() {
+    if (JSON.parse(localStorage.getItem("setDay"))) {
+      $("#game-container canvas").finish();
+      $("#game-container canvas").animate({"opacity": 1.0}, 100);
+      this.state.night = false;
+      this.timeStay = 0;
+      localStorage.setItm("setDay", false);
+    }
+    if (JSON.parse(localStorage.getItem("setNight"))) {
+      $("#game-container canvas").finish();
+      $("#game-container canvas").animate({"opacity": 0.40}, 1000);
+      this.state.night = true;
+      this.timeStay = 0;
+      localStorage.setItm("setNight", false);
+    }
     $("#game-container canvas").finish();
     let opacity_now = $("#game-container canvas").css("opacity");
     if (this.timeStay != this.cyclesToStay && (parseFloat(opacity_now) == 0.40 || parseFloat(opacity_now) == 1.0)) {

@@ -33,6 +33,7 @@
     "hunger" => 100,
     "happiness" => 100,
     "thirst" => 100,
+    "health" => 100,
     "gpa" => 4.0,
     "classes" => [],
     "inventory" => [
