@@ -25,7 +25,7 @@ const game = new Phaser.Game(config);
 const ITM = new InteractableTileMapping;
 const JNotifier = new JNotify;
 const aud = new Sounds;
-const timeCycling = new DayNight;
+
 let SKIN;
 let cursors;
 let player;
@@ -36,6 +36,7 @@ var act;
 var map;
 var PDH;
 var collidedInteractable = false;
+var timeCycling;
 
 const eventModifiableState = {
   speed: 200,
@@ -44,6 +45,11 @@ const eventModifiableState = {
 var SED;
 
 function preload() {
+  /**
+   * Reset time cycling module loaded status
+   */
+  timeCycling = new DayNight;
+
   /**
    * Checks if the user needs to be re-logged in...
    */

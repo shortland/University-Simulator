@@ -3,13 +3,18 @@
  */
 export class DayNight {
   constructor() {
-    this.timeStay = 0;
-    this.cyclesToStay = 4;
-    this.tickerCycle = 5000; // 5sec
-    this.init();
+    if (JSON.parse(localStorage.getItem("time_cycle_loaded")) == true) {
+      return;
+    } else {
+      this.timeStay = 0;
+      this.cyclesToStay = 4;
+      this.tickerCycle = 5000; // 5sec
+      this.init();
+    }
   }
 
   init() {
+    localStorage.setItem("time_cycle_loaded", true);
     this.ticker();
   }
 
@@ -22,7 +27,6 @@ export class DayNight {
   }
 
   animationChange() {
-    console.log("Changing day night animation!");
     $("#game-container canvas").finish();
     let opacity_now = $("#game-container canvas").css("opacity");
     if (this.timeStay != this.cyclesToStay && (parseFloat(opacity_now) == 0.40 || parseFloat(opacity_now) == 1.0)) { // 6 cycles of daytime
@@ -44,7 +48,6 @@ export class DayNight {
      */
     opacity_now = parseFloat(opacity_now).toFixed(2);
     if (opacity_now.toString().split('').pop() == '5') {
-      console.log("Should become day...");
       // it's becoming day
       if (opacity_now > 0.90) {
         opacity_now = 1.0;
