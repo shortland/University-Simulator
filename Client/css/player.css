@@ -37,11 +37,13 @@ body {
 #game-container {
   margin: 0;
   padding: 0;
-}
-
-#game-container {
   width: 100vw;
   height: 100vh;
+  background-color: rgba(0, 0, 0, 1.0);
+}
+
+#game-container canvas {
+  opacity: 1.0;
 }
 
 .child-comment {

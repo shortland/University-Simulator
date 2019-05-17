@@ -1,4 +1,4 @@
-import { ToolTip, APIHandler, MapLoader, Chat, PlayerDataHandler, InteractableTileMapping, Physics, JNotify, Sounds, SharedEventData } from './Modules/ModuleLoader.js';
+import { ToolTip, APIHandler, MapLoader, Chat, PlayerDataHandler, InteractableTileMapping, Physics, JNotify, Sounds, SharedEventData, DayNight } from './Modules/ModuleLoader.js';
 
 const config = {
   type: Phaser.AUTO,
@@ -25,6 +25,7 @@ const game = new Phaser.Game(config);
 const ITM = new InteractableTileMapping;
 const JNotifier = new JNotify;
 const aud = new Sounds;
+const timeCycling = new DayNight;
 let SKIN;
 let cursors;
 let player;
