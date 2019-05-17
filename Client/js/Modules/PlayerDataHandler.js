@@ -126,6 +126,9 @@ export class PlayerDataHandler {
       if (data["sleep"] > 100) {
         data["sleep"] = 100;
       }
+      if (data["health"] > 100) {
+        data["health"] = 100;
+      }
     });
     this.updateStats(data);
   }

@@ -469,6 +469,7 @@ function nextTurn() {
 
   PDHandler.addStats({stats: {
     sleep: 100,
+    health: 100,
     hunger: -1 * Math.floor(Math.random() * 40) + 1,
     thirst: -1 * Math.floor(Math.random() * 30) + 1,
     happiness: Math.floor(Math.random() * 10) + 1,
