@@ -172,7 +172,7 @@ body {
   height: 400px;
   width: 800px;
   /* background-color: white; */
-  background-image: url("../assets/images/apple_iphone_landscape.png");
+  background-image: url("../assets/images/newphone.png");
   background-position: center;
   background-repeat: no-repeat;
   background-size: 100% auto;
@@ -182,9 +182,9 @@ body {
 }
 
 #phone_frame {
-  width: 690px;
+  width: 760px;
   height: 360px;
-  left: calc(100% / 2 - 346px);
+  left: calc(50% - 380px);
   top: 170px;
   position: fixed;
   background-image: url("../assets/images/phone_background.jpeg");
