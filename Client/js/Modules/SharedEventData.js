@@ -83,7 +83,7 @@ export class SharedEventData {
       if ($("#player-phone").is(":visible")) {
         $("#player-phone").hide();
       } else {
-        document.getElementById("phone_frame").src += "#";
+        document.getElementById("phone_frame").src += '';
         $("#player-phone").show();
       }
     });
