@@ -177,6 +177,22 @@ export class SharedEventData {
   createAIs(amt, dist = 600) {
     this.state.createAIs = 0;
     let radius = this.state.radius || dist;
+
+    /**
+     * Zombie dead
+     */
+    this.game.anims.create({
+      key: "zombie-Dead",
+      frames: this.game.anims.generateFrameNames("zombie", {
+        prefix: "zombie-Dead.",
+        start: 0,
+        end: 4,
+        zeroPad: 3
+      }),
+      frameRate: 10,
+      repeat: -1
+    });
+
     for (let i = 0; i < amt; ++i) {
       let sign_a = Math.random() < 0.5 ? 1 : -1;
       let sign_b = Math.random() < 0.5 ? 1 : -1;
@@ -216,6 +232,10 @@ export class SharedEventData {
 
           if (b.texture.key.includes("car")) {
             a.dead = true;
+          } else { // not in a car
+            if (this.state.night) { // nighttime
+              console.log("player should die. not a car and its night");
+            }
           }
         }
       });
@@ -278,6 +298,54 @@ export class SharedEventData {
         repeat: -1
       });
     }
+    /**
+     * Zombie Frame
+     */
+    this.game.anims.create({
+      key: "zombie-Walking-Left",
+      frames: this.game.anims.generateFrameNames("zombie", {
+        prefix: "zombie-Walking-Left.",
+        start: 0,
+        end: 4,
+        zeroPad: 3
+      }),
+      frameRate: 10,
+      repeat: -1
+    });
+    this.game.anims.create({
+      key: "zombie-Walking-Right",
+      frames: this.game.anims.generateFrameNames("zombie", {
+        prefix: "zombie-Walking-Right.",
+        start: 0,
+        end: 4,
+        zeroPad: 3
+      }),
+      frameRate: 10,
+      repeat: -1
+    });
+    this.game.anims.create({
+      key: "zombie-Walking-Up",
+      frames: this.game.anims.generateFrameNames("zombie", {
+        prefix: "zombie-Walking-Up.",
+        start: 0,
+        end: 4,
+        zeroPad: 3
+      }),
+      frameRate: 10,
+      repeat: -1
+    });
+    this.game.anims.create({
+      key: "zombie-Walking-Down",
+      frames: this.game.anims.generateFrameNames("zombie", {
+        prefix: "zombie-Walking-Down.",
+        start: 0,
+        end: 4,
+        zeroPad: 3
+      }),
+      frameRate: 10,
+      repeat: -1
+    });
+    console.log(this.game.anims);
   }
 
   toggleAIMovement() {
@@ -298,6 +366,9 @@ export class SharedEventData {
       if (ai.dead) {
         ai.body.setVelocity(0);
         ai.anims.stop();
+        ai.setTexture("zombie", "zombie-Dead.004");
+        ai.setOffset(0, 120);
+        ai.setAngle(90);
         ai.story.next.line = "...<i>perished from car accident</i>...";
         return;
       }
@@ -320,16 +391,32 @@ export class SharedEventData {
       if (d) {
         ai.body.setVelocityX(realSpeed);
         if (realSpeed > 0) {
-          ai.anims.play(ai.nameSprite + "-Walking-Right", true);
+          if (this.state.night) {
+            ai.anims.play("zombie-Walking-Right", true);
+          } else {
+            ai.anims.play(ai.nameSprite + "-Walking-Right", true);
+          }
         } else if (realSpeed < 0) {
-          ai.anims.play(ai.nameSprite + "-Walking-Left", true);
+          if (this.state.night) {
+            ai.anims.play("zombie-Walking-Left", true);
+          } else {
+            ai.anims.play(ai.nameSprite + "-Walking-Left", true);
+          }
         }
       } else {
         ai.body.setVelocityY(realSpeed);
         if (realSpeed < 0) {
-          ai.anims.play(ai.nameSprite + "-Walking-Up", true);
+          if (this.state.night) {
+            ai.anims.play("zombie-Walking-Up", true);
+          } else {
+            ai.anims.play(ai.nameSprite + "-Walking-Up", true);
+          }
         } else if (realSpeed > 0) {
-          ai.anims.play(ai.nameSprite + "-Walking-Down", true);
+          if (this.state.night) {
+            ai.anims.play("zombie-Walking-Down", true);
+          } else {
+            ai.anims.play(ai.nameSprite + "-Walking-Down", true);
+          }
         }
       }
 

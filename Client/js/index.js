@@ -46,11 +46,6 @@ var SED;
 
 function preload() {
   /**
-   * Reset time cycling module loaded status
-   */
-  timeCycling = new DayNight;
-
-  /**
    * Checks if the user needs to be re-logged in...
    */
   if (JSON.parse(localStorage.getItem("needs_login")) == true) {
@@ -159,6 +154,7 @@ function preload() {
   this.load.atlas("Purple", "assets/atlas/Purple.png", "assets/atlas/Purple.json");
   this.load.atlas("Red_Brown", "assets/atlas/Red_Brown.png", "assets/atlas/Red_Brown.json");
   this.load.atlas("Red", "assets/atlas/Red.png", "assets/atlas/Red.json");
+  this.load.atlas("zombie", "assets/atlas/zombie.png", "assets/atlas/zombie.json");
 
   this.load.atlas("car-yellow", "assets/atlas/car-yellow.png", "assets/atlas/car-yellow.json");
   this.load.atlas("car-blue", "assets/atlas/car-blue.png", "assets/atlas/car-blue.json");
@@ -167,7 +163,16 @@ function preload() {
 
 function create() {
   map = this.make.tilemap({ key: "map" });
-  PDH = new PlayerDataHandler();
+  PDH = new PlayerDataHandler;
+
+  /**
+   * Reset time cycling module loaded status
+   */
+  timeCycling = new DayNight(eventModifiableState);
+
+  /**
+   * Add current speed to the state
+   */
   eventModifiableState.speed = ITM.SKINS[SKIN].speed;
 
   const tileset = map.addTilesetImage("SBU", "tiles", 128, 128, 1, 2);
@@ -446,18 +451,18 @@ function create() {
   cursors = this.input.keyboard.createCursorKeys();
 
   // Debug graphics
-  // this.input.keyboard.once("keydown_D", event => {
-  //   this.physics.world.createDebugGraphic();
-  //   const graphics = this.add
-  //     .graphics()
-  //     .setAlpha(0.75)
-  //     .setDepth(20);
-  //   interactableLayer.renderDebug(graphics, {
-  //     tileColor: null,
-  //     collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
-  //     faceColor: new Phaser.Display.Color(40, 39, 37, 255)
-  //   });
-  // });
+  this.input.keyboard.once("keydown_D", event => {
+    this.physics.world.createDebugGraphic();
+    const graphics = this.add
+      .graphics()
+      .setAlpha(0.75)
+      .setDepth(20);
+    interactableLayer.renderDebug(graphics, {
+      tileColor: null,
+      collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255),
+      faceColor: new Phaser.Display.Color(40, 39, 37, 255)
+    });
+  });
 
   if (JSON.parse(localStorage.getItem("chat_loaded")) === false) {
     const chat = new Chat({state: eventModifiableState});
@@ -495,6 +500,13 @@ function create() {
 
 function update(time, delta) {
   SED.updateAIs();
+
+  /**
+   * if it's nighttime, turn people into zombies
+   */
+  if (eventModifiableState.night == true) {
+    //
+  }
 
   if (eventModifiableState.createAIs > 0) {
     SED.createAIs(eventModifiableState.createAIs)

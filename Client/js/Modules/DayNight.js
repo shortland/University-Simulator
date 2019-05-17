@@ -2,12 +2,13 @@
  * Control the Day/Night cycles of the main map
  */
 export class DayNight {
-  constructor() {
+  constructor(state) {
     if (JSON.parse(localStorage.getItem("time_cycle_loaded")) == true) {
       return;
     } else {
+      this.state = state;
       this.timeStay = 0;
-      this.cyclesToStay = 4;
+      this.cyclesToStay = 6;
       this.tickerCycle = 5000; // 5sec
       this.init();
     }
@@ -29,7 +30,13 @@ export class DayNight {
   animationChange() {
     $("#game-container canvas").finish();
     let opacity_now = $("#game-container canvas").css("opacity");
-    if (this.timeStay != this.cyclesToStay && (parseFloat(opacity_now) == 0.40 || parseFloat(opacity_now) == 1.0)) { // 6 cycles of daytime
+    if (this.timeStay != this.cyclesToStay && (parseFloat(opacity_now) == 0.40 || parseFloat(opacity_now) == 1.0)) {
+      if (parseFloat(opacity_now) == 0.40) {
+        // nighttime
+        this.state.night = true;
+      } else {
+        this.state.night = false;
+      }
       console.log("stay time...");
       this.timeStay += 1;
       return;
@@ -50,8 +57,10 @@ export class DayNight {
     if (opacity_now.toString().split('').pop() == '5') {
       // it's becoming day
       if (opacity_now > 0.90) {
+        this.state.night = false;
         opacity_now = 1.0;
       } else {
+        this.state.night = false;
         opacity_now = parseFloat(parseFloat(opacity_now) + 0.10);
       }
     } else {
