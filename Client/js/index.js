@@ -513,6 +513,7 @@ function update(time, delta) {
       .setSize(skinData["size"].w, skinData["size"].h)
       .setOffset(skinData["offset"].x, skinData["offset"].y);
     player.setScale( skinData["scale"] );
+    eventModifiableState.speed = ITM.SKINS[SKIN].speed || ITM.CARS[SKIN].speed;
     localStorage.setItem("location", player.x + "," + player.y);
   }
 
