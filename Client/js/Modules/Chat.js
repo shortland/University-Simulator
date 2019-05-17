@@ -47,6 +47,11 @@ export class Chat {
       this.state.createAIs = amt;
       return;
     }
+    if (message.indexOf("radius") == 0) {
+      let amt = message.substr(6, 6);
+      this.state.radius = amt;
+      return;
+    }
     $.getJSON("https://universitysimulator.com/UniversitySimulator/Server/" + "chat.php?method=save_chat&message=" + message + "&username=" + JSON.parse(localStorage.getItem("player"))["username"] + "&epoch=" + (parseInt(Math.floor(Date.now() / 1000)) + 1), data => {
       if (data["saved"] > 0) {
         console.log("Success sending message!");

@@ -176,12 +176,16 @@ export class SharedEventData {
    */
   createAIs(amt, dist = 600) {
     this.state.createAIs = 0;
+    let radius = this.state.radius || dist;
     for (let i = 0; i < amt; ++i) {
       let sign_a = Math.random() < 0.5 ? 1 : -1;
       let sign_b = Math.random() < 0.5 ? 1 : -1;
       let SKIN = this.ITM.SAFE_SKINS[Math.floor(Math.random() * this.ITM.SAFE_SKINS.length)];
       const newAI = this.physicsGen.add_npc({
-        spawn: {x: this.player.x + (Math.floor(Math.random() * dist) * sign_a), y: this.player.y + (Math.floor(Math.random() * dist) * sign_b)},
+        spawn: {
+          x: this.player.x + (Math.floor(Math.random() * radius) * sign_a), 
+          y: this.player.y + (Math.floor(Math.random() * radius) * sign_b)
+        },
         maxVX: 1000,
         maxVY: 1000,
         name: "student_" + i,
