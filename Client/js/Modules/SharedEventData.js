@@ -249,6 +249,7 @@ export class SharedEventData {
               let data = JSON.parse(localStorage.getItem("player"));
               data["cash"] += 1;
               localStorage.setItem("player", JSON.stringify(data));
+              $("#player-cash").html("$" + data["cash"]);
             }
             a.dead = true;
           } else { // not in a car

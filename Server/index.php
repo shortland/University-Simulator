@@ -69,6 +69,11 @@
             // ]);
 
             unlink("users/" . $_GET['email'] . ".json");
+
+            echo json_encode([
+                "status" => "ok",
+                "message" => "reset user data"
+            ]);
         } catch(Exception $e) {
             echo json_encode([
                 "error" => true,

@@ -34,22 +34,26 @@ export class DayNight {
       this.state.night = false;
       this.timeStay = 0;
       localStorage.setItm("setDay", false);
+      localStorage.setItem("isNight", false);
     }
     if (JSON.parse(localStorage.getItem("setNight"))) {
       $("#game-container canvas").finish();
       $("#game-container canvas").animate({"opacity": 0.40}, 1000);
       this.state.night = true;
       this.timeStay = 0;
-      localStorage.setItm("setNight", false);
+      localStorage.setItem("setNight", false);
+      localStorage.setItem("isNight", true);
     }
     $("#game-container canvas").finish();
     let opacity_now = $("#game-container canvas").css("opacity");
     if (this.timeStay != this.cyclesToStay && (parseFloat(opacity_now) == 0.40 || parseFloat(opacity_now) == 1.0)) {
-      if (parseFloat(opacity_now) == 0.40) {
+      if (parseFloat(opacity_now).toFixed(2) == 0.40) {
         // nighttime
         this.state.night = true;
+        localStorage.setItem("isNight", true);
       } else {
         this.state.night = false;
+        localStorage.setItem("isNight", false);
       }
       console.log("stay time...");
       this.timeStay += 1;
@@ -72,9 +76,11 @@ export class DayNight {
       // it's becoming day
       if (opacity_now > 0.90) {
         this.state.night = false;
+        localStorage.setItem("isNight", false);
         opacity_now = 1.0;
       } else {
         this.state.night = false;
+        localStorage.setItem("isNight", false);
         opacity_now = parseFloat(parseFloat(opacity_now) + 0.10);
       }
     } else {
@@ -86,6 +92,10 @@ export class DayNight {
       }
     }
     opacity_now = parseFloat(opacity_now).toFixed(2);
+    if (opacity_now == 0.40) {
+      this.state.night = true;
+      localStorage.setItem("isNight", true);
+    }
     console.log("new opacity", opacity_now);
     $("#game-container canvas").animate({"opacity": opacity_now}, this.tickerCycle);
   }

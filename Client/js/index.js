@@ -499,14 +499,23 @@ function create() {
   });
 }
 
+var lastCheck = Math.round((new Date()).getTime() / 1000);
 function update(time, delta) {
   SED.updateAIs();
 
   /**
    * If it's nighttime, create AIs around the player
    */
-  if (eventModifiableState.night) {
-    SED.blockingCreateAIs(100, 4);
+  // if (eventModifiableState.night) {
+  //   console.log("SPAWN THE AIS, IT's NIGHT");
+  //   SED.blockingCreateAIs(200, 3);
+  // } else {
+  //   console.log(eventModifiableState.night);
+  // }
+  if (Math.round((new Date()).getTime() / 1000) - lastCheck >= 3) {
+    if (JSON.parse(localStorage.getItem("isNight"))) {
+      SED.blockingCreateAIs(200, 3);
+    }
   }
 
   /**
@@ -705,6 +714,11 @@ function tileInteraction(data, itemType) {
         act.game.destroy();
         const loader = new MapLoader();
         loader.loadMap({map: "SAC.js", prevMapLoc: {x: player.x, y: player.y}});
+      } else if (["door-frey-hall"].includes(itemType)) {
+        console.log("Loading Frey");
+        act.game.destroy();
+        const loader = new MapLoader();
+        loader.loadMap({map: "Classroom3.js", prevMapLoc: {x: player.x, y: player.y}});
       } else {
         console.log("DEFAULTING TO CLASSROOM!");
         act.game.destroy();
