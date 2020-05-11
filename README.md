@@ -7,7 +7,7 @@ Live: <https://UniversitySimulator.com>
 ``` text
 Ilan Kleiman
 Dhruba Roy
-(David) Shih-Chuan Lin
+Shih-Chuan (David) Lin
 ```
 
 ## About
